@@ -1,0 +1,17 @@
+user_type (user_type_id, name) //owner, decorater, admin
+user (user_id, user_type_id, username, hashed_password, name, lastname, gender, address, contact_number, email, photo_id, credit_card_number, user_status_id)
+user_status (user_status_id, status) //pending, active, denied, blocked
+photo (photo_id, path)
+company (company_id, name, address, latitude, longitude, contact_number, contact_person)
+company_holiday (company_holiday_id, company_id, start_date_time, end_date_time)
+job_review (job_review_id, job_id, comment, grade)
+service (service_id, company_id, price, service_name, service_description)
+worker (user_id, company_id)
+job (job_id, user_id, company_id, worker_id, job_status_id, request_date_time, start_date_time, end_date_time, garden_size, garden_type_id, description)
+garden_type (garden_type_id, type) //private, restaurant
+private_garden (job_id, pool_size, number_of_pools, grass_size, paved_size)
+restaurant_garden (job_id, fountain_size, number_of_fountains, grass_size, number_of_tables, number_of_seats)
+job_service (job_service_id, job_id, service_id)
+job_status (job_status_id, status, rejected_description) //pending, rejected, accepted, in progress, done, cancelled
+job_photo (job_photo_id, job_id, photo_id)
+maintainance (maintainance_id, job_id, job_status_id, request_date_time, start_date_time, estimated_end_date_time, worker_id)
