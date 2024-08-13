@@ -86,7 +86,11 @@ public class CompanyController {
 
     @GetMapping("/holyday/getByCompanyId")
     public ResponseEntity<?> getHolidaysByCompanyId(@RequestParam("companyId") Integer companyId) {
-        List<CompanyHoliday> holidays = companyHolidayRepository.findByCompanyId(companyId);
+        Optional<Company> company = companyRepository.findById(companyId);
+        if (!company.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Company not found");
+        }
+        List<CompanyHoliday> holidays = companyHolidayRepository.findByCompanyId(company.get());
         if (holidays.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No holidays found for the given company");
         } else {
