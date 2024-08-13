@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence           http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+  <persistence-unit name="com.example_backend_jar_0.0.1-SNAPSHOTPU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>dreamgarden.entities.JobPhoto</class>
+    <class>dreamgarden.entities.User</class>
+    <class>dreamgarden.entities.Worker</class>
+    <class>dreamgarden.entities.GardenType</class>
+    <class>dreamgarden.entities.CompanyHoliday</class>
+    <class>dreamgarden.entities.UserType</class>
+    <class>dreamgarden.entities.JobReview</class>
+    <class>dreamgarden.entities.RestaurantGarden</class>
+    <class>dreamgarden.entities.Photo</class>
+    <class>dreamgarden.entities.Service</class>
+    <class>dreamgarden.entities.UserStatus</class>
+    <class>dreamgarden.entities.JobStatus</class>
+    <class>dreamgarden.entities.Job</class>
+    <class>dreamgarden.entities.Maintainance</class>
+    <class>dreamgarden.entities.PrivateGarden</class>
+    <class>dreamgarden.entities.Company</class>
+    <class>dreamgarden.entities.JobService</class>
+    <properties>
+      <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/dream_garden?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
+      <property name="jakarta.persistence.jdbc.user" value="root"/>
+      <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+      <property name="jakarta.persistence.jdbc.password" value=""/>
+    </properties>
+  </persistence-unit>
+</persistence>
