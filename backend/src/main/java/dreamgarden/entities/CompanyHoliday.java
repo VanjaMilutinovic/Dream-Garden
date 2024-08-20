@@ -4,6 +4,7 @@
  */
 package dreamgarden.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -47,6 +48,7 @@ public class CompanyHoliday implements Serializable {
     @Column(name = "end_date_time")
     @Temporal(TemporalType.TIMESTAMP)
     private Date endDateTime;
+    @JsonIgnore
     @JoinColumn(name = "company_id", referencedColumnName = "company_id")
     @ManyToOne
     private Company companyId;
@@ -118,7 +120,7 @@ public class CompanyHoliday implements Serializable {
 
     @Override
     public String toString() {
-        return "dreamgarden.entities.CompanyHoliday[ companyHolidayId=" + companyHolidayId + " ]";
+        return "{companyHolidayId=" + companyHolidayId + ", startDateTime= " + startDateTime + ", endDateTime " + endDateTime + " }";
     }
     
 }

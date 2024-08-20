@@ -67,7 +67,7 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<String> createUser(@RequestBody CreateUserRequest request) {
+    public ResponseEntity<?> createUser(@RequestBody CreateUserRequest request) {
         Optional<User> findByUsername = userRepository.findByUsername(request.getUsername());        
         if (findByUsername.isPresent()){
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Username must be unique");
@@ -101,8 +101,8 @@ public class UserController {
         user.setUserTypeId(userType.get());
         user.setPhotoId(photo.get());
         user.setUserStatusId(userStatus.get());
-        userRepository.saveAndFlush(user);
-        return ResponseEntity.ok("User saved successfully");
+        user = userRepository.saveAndFlush(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 
     @PostMapping("/delete")

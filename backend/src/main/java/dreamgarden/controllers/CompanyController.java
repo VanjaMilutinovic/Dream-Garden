@@ -9,6 +9,9 @@ import dreamgarden.entities.Company;
 import dreamgarden.entities.CompanyHoliday;
 import dreamgarden.repositories.CompanyRepository;
 import dreamgarden.repositories.CompanyHolidayRepository;
+import dreamgarden.request.CreateCompanyHolidayRequest;
+import dreamgarden.request.CreateCompanyRequest;
+import java.util.Date;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,52 +28,65 @@ public class CompanyController {
     private CompanyHolidayRepository companyHolidayRepository;
 
 
+    @GetMapping("/getAll")
+    public ResponseEntity<?> getAllUsers() {
+        List<Company> companies = companyRepository.findAll();
+        return ResponseEntity.ok(companies);
+    }
+    
     @GetMapping("/getById")
     public ResponseEntity<?> getCompanyById(@RequestParam("id") Integer id) {
         Optional<Company> company = companyRepository.findById(id);
         if (company.isPresent()) {
             return ResponseEntity.ok(company.get());
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Company not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Company not found for id " + id);
         }
     }
 
     @GetMapping("/getByName")
     public ResponseEntity<?> getCompanyByName(@RequestParam("name") String name) {
-        List<Company> companies = companyRepository.findByName(name);
+        Optional<Company> companies = companyRepository.findByName(name);
         if (companies.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No companies found with the given name");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No companies found with name " + name);
         } else {
             return ResponseEntity.ok(companies);
         }
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> createCompany(@RequestBody Company company) {
-        Company savedCompany = companyRepository.save(company);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedCompany);
-    }
-
-    @PostMapping("/update")
-    public ResponseEntity<?> updateCompany(@RequestParam("id") Integer id, @RequestBody Company updatedCompany) {
-        Optional<Company> existingCompany = companyRepository.findById(id);
-        if (existingCompany.isPresent()) {
-            updatedCompany.setCompanyId(id);
-            companyRepository.save(updatedCompany);
-            return ResponseEntity.ok(updatedCompany);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Company not found");
+    public ResponseEntity<?> createCompany(@RequestBody CreateCompanyRequest request) {
+        if (request.getName() == null ||
+           request.getAddress() == null ||
+           request.getLatitude() == null ||
+           request.getLongitude() == null ||
+           request.getContactNumber() == null ||
+           request.getContactPerson() == null) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Name, Address, Latitude, Longitude, COntactNumer, and ContactPerson are mandatory");
         }
+        Optional<Company> companyByName = companyRepository.findByName(request.getName());
+        if (companyByName.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Company name must be unique.");
+        }
+        Company company = new Company();
+        company.setName(request.getName());
+        company.setAddress(request.getAddress());
+        company.setLatitude(request.getLatitude());
+        company.setLongitude(request.getLongitude());
+        company.setContactNumber(request.getContactNumber());
+        company.setContactPerson(request.getContactPerson());
+        company = companyRepository.saveAndFlush(company);
+        return ResponseEntity.status(HttpStatus.CREATED).body(company);
     }
 
     @PostMapping("/delete")
     public ResponseEntity<?> deleteCompany(@RequestParam("id") Integer id) {
-        Optional<Company> existingCompany = companyRepository.findById(id);
-        if (existingCompany.isPresent()) {
-            companyRepository.delete(existingCompany.get());
+        if (companyRepository.existsById(id)) {
+            companyRepository.deleteById(id);
             return ResponseEntity.ok("Company deleted successfully");
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Company not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                                 .body("Company not found for ID " + id);
         }
     }
 
@@ -87,8 +103,8 @@ public class CompanyController {
     @GetMapping("/holyday/getByCompanyId")
     public ResponseEntity<?> getHolidaysByCompanyId(@RequestParam("companyId") Integer companyId) {
         Optional<Company> company = companyRepository.findById(companyId);
-        if (!company.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Company not found");
+        if (company.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Company not found for id " + companyId);
         }
         List<CompanyHoliday> holidays = companyHolidayRepository.findByCompanyId(company.get());
         if (holidays.isEmpty()) {
@@ -99,31 +115,43 @@ public class CompanyController {
     }
 
     @PostMapping("/holyday/create")
-    public ResponseEntity<?> createCompanyHoliday(@RequestBody CompanyHoliday companyHoliday) {
-        CompanyHoliday savedHoliday = companyHolidayRepository.save(companyHoliday);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedHoliday);
+    public ResponseEntity<?> createCompanyHoliday(@RequestBody CreateCompanyHolidayRequest request) {
+        if (request.getEndDateTime().before(request.getStartDateTime()) ||
+            request.getEndDateTime().equals(request.getStartDateTime())) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("EndDate must be after StartDate");
+        }
+        Optional<Company> company = companyRepository.findById(request.getCompanyId());
+        if (company.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Company not found for id " + request.getCompanyId());
+        }
+        CompanyHoliday overlap = checkOverlapHolidays(company.get(), request.getStartDateTime(), request.getEndDateTime());
+        if(overlap != null) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Holiday overlapping with " + overlap);
+        }
+        CompanyHoliday companyHoliday = new CompanyHoliday();
+        companyHoliday.setStartDateTime(request.getStartDateTime());
+        companyHoliday.setEndDateTime(request.getEndDateTime());
+        companyHoliday.setCompanyId(company.get());
+        companyHoliday = companyHolidayRepository.saveAndFlush(companyHoliday);
+        return ResponseEntity.status(HttpStatus.CREATED).body(companyHoliday);
+    }
+    private boolean beforeOrEqual(Date date1, Date date2) {
+        return (date1.before(date2) || date1.equals(date2));
+    }
+    private boolean afterOrEqual(Date date1, Date date2) {
+        return (date1.after(date2) || date1.equals(date2));
+    }
+    private CompanyHoliday checkOverlapHolidays(Company company, Date startDate, Date endDate){
+        List<CompanyHoliday> holidays = companyHolidayRepository.findByCompanyId(company);
+        for (CompanyHoliday holiday : holidays) {
+            Date holidayStart = holiday.getStartDateTime();
+            Date holidayEnd = holiday.getEndDateTime();
+            if ((beforeOrEqual(startDate, holidayStart) && afterOrEqual(endDate, holidayStart)) ||
+                (beforeOrEqual(startDate, holidayEnd) && afterOrEqual(endDate, holidayEnd))) {
+                return holiday;
+            }
+        }
+        return null;
     }
 
-    @PostMapping("/holyday/update")
-    public ResponseEntity<?> updateCompanyHoliday(@RequestParam("id") Integer id, @RequestBody CompanyHoliday updatedHoliday) {
-        Optional<CompanyHoliday> existingHoliday = companyHolidayRepository.findById(id);
-        if (existingHoliday.isPresent()) {
-            updatedHoliday.setCompanyHolidayId(id);
-            companyHolidayRepository.save(updatedHoliday);
-            return ResponseEntity.ok(updatedHoliday);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Company Holiday not found");
-        }
-    }
-
-    @PostMapping("/holyday/delete")
-    public ResponseEntity<?> deleteCompanyHoliday(@RequestParam("id") Integer id) {
-        Optional<CompanyHoliday> existingHoliday = companyHolidayRepository.findById(id);
-        if (existingHoliday.isPresent()) {
-            companyHolidayRepository.delete(existingHoliday.get());
-            return ResponseEntity.ok("Company Holiday deleted successfully");
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Company Holiday not found");
-        }
-    }
 }
