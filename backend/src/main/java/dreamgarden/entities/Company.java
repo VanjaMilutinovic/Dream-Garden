@@ -4,9 +4,7 @@
  */
 package dreamgarden.entities;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,6 +16,9 @@ import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.List;
 
 /**
  *
@@ -59,12 +60,16 @@ public class Company implements Serializable {
     @Basic(optional = false)
     @Column(name = "contact_person")
     private String contactPerson;
+    @JsonIgnore
     @OneToMany(mappedBy = "companyId")
     private List<CompanyHoliday> companyHolidayList;
+    @JsonIgnore
     @OneToMany(mappedBy = "companyId")
     private List<Service> serviceList;
+    @JsonIgnore
     @OneToMany(mappedBy = "companyId")
     private List<Job> jobList;
+    @JsonIgnore
     @OneToMany(mappedBy = "companyId")
     private List<Worker> workerList;
 

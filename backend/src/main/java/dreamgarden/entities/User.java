@@ -4,10 +4,8 @@
  */
 package dreamgarden.entities;
 
-import java.io.Serializable;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Basic;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,8 +17,9 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import java.io.Serializable;
+import java.util.List;
 
 /**
  *
@@ -74,14 +73,18 @@ public class User implements Serializable {
     private String email;
     @Column(name = "credit_card_number")
     private String creditCardNumber;
+    @JsonIgnore
     @OneToMany(mappedBy = "workerId")
     private List<Maintainance> maintainanceList;
+    @JsonIgnore
     @OneToMany(mappedBy = "userId")
     private List<Job> jobList;
+    @JsonIgnore
     @OneToMany(mappedBy = "workerId")
     private List<Job> jobList1;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
-    private Worker worker;
+    @JsonIgnore
+    @OneToMany(mappedBy = "userId")
+    private List<Worker> workerList;
     @JoinColumn(name = "user_type_id", referencedColumnName = "user_type_id")
     @ManyToOne
     private UserType userTypeId;
@@ -215,12 +218,12 @@ public class User implements Serializable {
         this.jobList1 = jobList1;
     }
 
-    public Worker getWorker() {
-        return worker;
+    public List<Worker> getWorkerList() {
+        return workerList;
     }
 
-    public void setWorker(Worker worker) {
-        this.worker = worker;
+    public void setWorkerList(List<Worker> workerList) {
+        this.workerList = workerList;
     }
 
     public UserType getUserTypeId() {

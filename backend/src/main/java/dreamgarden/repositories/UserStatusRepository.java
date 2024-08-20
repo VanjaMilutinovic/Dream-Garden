@@ -1,7 +1,7 @@
 package dreamgarden.repositories;
 
 import dreamgarden.entities.UserStatus;
-import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,5 +10,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface UserStatusRepository extends JpaRepository<UserStatus, Integer> {
-    List<UserStatus> findByStatus(String status);
+    Optional<UserStatus> findByStatus(String status);
 }

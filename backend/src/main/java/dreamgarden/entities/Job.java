@@ -4,10 +4,7 @@
  */
 package dreamgarden.entities;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -25,6 +22,10 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -67,8 +68,10 @@ public class Job implements Serializable {
     @Lob
     @Column(name = "rejected_description")
     private String rejectedDescription;
+    @JsonIgnore
     @OneToMany(mappedBy = "jobId")
     private List<JobPhoto> jobPhotoList;
+    @JsonIgnore
     @OneToMany(mappedBy = "jobId")
     private List<Maintainance> maintainanceList;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "job")
@@ -90,8 +93,10 @@ public class Job implements Serializable {
     @JoinColumn(name = "garden_type_id", referencedColumnName = "garden_type_id")
     @ManyToOne
     private GardenType gardenTypeId;
+    @JsonIgnore
     @OneToMany(mappedBy = "jobId")
     private List<JobService> jobServiceList;
+    @JsonIgnore
     @OneToMany(mappedBy = "jobId")
     private List<JobReview> jobReviewList;
 

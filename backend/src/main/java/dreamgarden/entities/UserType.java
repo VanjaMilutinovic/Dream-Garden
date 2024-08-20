@@ -4,8 +4,7 @@
  */
 package dreamgarden.entities;
 
-import java.io.Serializable;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,6 +15,8 @@ import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.io.Serializable;
+import java.util.List;
 
 /**
  *
@@ -38,6 +39,7 @@ public class UserType implements Serializable {
     @Basic(optional = false)
     @Column(name = "name")
     private String name;
+    @JsonIgnore
     @OneToMany(mappedBy = "userTypeId")
     private List<User> userList;
 

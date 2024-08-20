@@ -4,17 +4,18 @@
  */
 package dreamgarden.entities;
 
-import java.io.Serializable;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import java.io.Serializable;
 
 /**
  *
@@ -24,17 +25,18 @@ import jakarta.persistence.Table;
 @Table(name = "worker")
 @NamedQueries({
     @NamedQuery(name = "Worker.findAll", query = "SELECT w FROM Worker w"),
-    @NamedQuery(name = "Worker.findByUserId", query = "SELECT w FROM Worker w WHERE w.userId = :userId")})
+    @NamedQuery(name = "Worker.findByWorkerId", query = "SELECT w FROM Worker w WHERE w.workerId = :workerId")})
 public class Worker implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "user_id")
-    private Integer userId;
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id", insertable = false, updatable = false)
-    @OneToOne(optional = false)
-    private User user;
+    @Column(name = "worker_id")
+    private Integer workerId;
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    @ManyToOne
+    private User userId;
     @JoinColumn(name = "company_id", referencedColumnName = "company_id")
     @ManyToOne
     private Company companyId;
@@ -42,24 +44,24 @@ public class Worker implements Serializable {
     public Worker() {
     }
 
-    public Worker(Integer userId) {
-        this.userId = userId;
+    public Worker(Integer workerId) {
+        this.workerId = workerId;
     }
 
-    public Integer getUserId() {
+    public Integer getWorkerId() {
+        return workerId;
+    }
+
+    public void setWorkerId(Integer workerId) {
+        this.workerId = workerId;
+    }
+
+    public User getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(User userId) {
         this.userId = userId;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public Company getCompanyId() {
@@ -73,7 +75,7 @@ public class Worker implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (userId != null ? userId.hashCode() : 0);
+        hash += (workerId != null ? workerId.hashCode() : 0);
         return hash;
     }
 
@@ -84,7 +86,7 @@ public class Worker implements Serializable {
             return false;
         }
         Worker other = (Worker) object;
-        if ((this.userId == null && other.userId != null) || (this.userId != null && !this.userId.equals(other.userId))) {
+        if ((this.workerId == null && other.workerId != null) || (this.workerId != null && !this.workerId.equals(other.workerId))) {
             return false;
         }
         return true;
@@ -92,7 +94,7 @@ public class Worker implements Serializable {
 
     @Override
     public String toString() {
-        return "dreamgarden.entities.Worker[ userId=" + userId + " ]";
+        return "dreamgarden.entities.Worker[ workerId=" + workerId + " ]";
     }
     
 }

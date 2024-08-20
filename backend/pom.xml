@@ -46,6 +46,12 @@
 			<version>8.0.33</version>
 			<scope>runtime</scope>
 		</dependency>
+                <dependency>
+                    <groupId>org.projectlombok</groupId>
+                    <artifactId>lombok</artifactId>
+                    <version>1.18.28</version> <!-- Check for the latest version -->
+                    <scope>provided</scope>
+                </dependency>
 	 <dependency>
 	  <groupId>org.eclipse.persistence</groupId>
 	  <artifactId>org.eclipse.persistence.core</artifactId>

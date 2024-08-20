@@ -126,7 +126,8 @@ CREATE TABLE service (
 
 -- Table: worker
 CREATE TABLE worker (
-    user_id INT PRIMARY KEY,
+	worker_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
     company_id INT,
     FOREIGN KEY (user_id) REFERENCES user(user_id),
     FOREIGN KEY (company_id) REFERENCES company(company_id)

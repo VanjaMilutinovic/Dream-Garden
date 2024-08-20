@@ -4,8 +4,7 @@
  */
 package dreamgarden.entities;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,6 +14,8 @@ import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  *
@@ -48,6 +49,7 @@ public class RestaurantGarden implements Serializable {
     private Integer numberOfTables;
     @Column(name = "number_of_seats")
     private Integer numberOfSeats;
+    @JsonIgnore
     @JoinColumn(name = "job_id", referencedColumnName = "job_id", insertable = false, updatable = false)
     @OneToOne(optional = false)
     private Job job;
