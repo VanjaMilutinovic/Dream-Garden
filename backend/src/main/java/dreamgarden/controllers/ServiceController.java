@@ -1,7 +1,10 @@
 package dreamgarden.controllers;
 
+import dreamgarden.entities.Company;
 import dreamgarden.entities.Service;
+import dreamgarden.repositories.CompanyRepository;
 import dreamgarden.repositories.ServiceRepository;
+import dreamgarden.request.CreateServiceRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +20,14 @@ import java.util.Optional;
  * @author vamilutinovic
  */
 @RestController
-@RequestMapping("/services")
+@RequestMapping("/service")
 public class ServiceController {
 
     @Autowired
     private ServiceRepository serviceRepository;
+    
+    @Autowired
+    private CompanyRepository companyRepository;
 
     @GetMapping("/getAll")
     public ResponseEntity<List<Service>> getAllServices() {
@@ -29,46 +35,46 @@ public class ServiceController {
         return ResponseEntity.ok(services);
     }
 
-    @GetMapping("/getById")
-    public ResponseEntity<?> getServiceById(@RequestParam Integer serviceId) {
-        Optional<Service> service = serviceRepository.findById(serviceId);
-        if (service.isPresent()) {
-            return ResponseEntity.ok(service.get());
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Service not found");
+    @GetMapping("/getByCompanyId")
+    public ResponseEntity<?> getServiceById(@RequestParam Integer companyId) {
+        Optional<Company> company = companyRepository.findById(companyId);
+        if (company.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Company not found for id " + companyId);
+        } 
+        List<Service> services = serviceRepository.findByCompanyId(company.get());
+        if (services.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No services found for companyId " + companyId);
         }
+        return ResponseEntity.ok(services);
     }
 
     @PostMapping("/create")
-    public ResponseEntity<String> createService(@RequestBody Service service) {
-        serviceRepository.save(service);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Service added successfully");
+    public ResponseEntity<?> createService(@RequestBody CreateServiceRequest request) {
+        Optional<Company> company = companyRepository.findById(request.getCompanyId());
+        if (company.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Company not found for id " + request.getCompanyId());
+        }
+        List<Service> serviceByCompanyIdAndServiceName = serviceRepository.findByCompanyIdAndServiceName(company.get(), request.getServiceName());
+        if (!serviceByCompanyIdAndServiceName.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Company must have unique service names. Conflicts with: " + serviceByCompanyIdAndServiceName);
+        }
+        Service service = new Service();
+        service.setPrice(request.getPrice());
+        service.setServiceName(request.getServiceName());
+        service.setServiceDescription(request.getServiceDescription());
+        service.setCompanyId(company.get());
+        service = serviceRepository.saveAndFlush(service);
+        return ResponseEntity.status(HttpStatus.CREATED).body(service);
     }
     
     @PostMapping("/delete")
     public ResponseEntity<String> deleteService(@RequestParam Integer serviceId) {
-        Optional<Service> existingService = serviceRepository.findById(serviceId);
-        if (existingService.isPresent()) {
+        if (serviceRepository.existsById(serviceId)) {
             serviceRepository.deleteById(serviceId);
             return ResponseEntity.ok("Service deleted successfully");
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Service not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Service not found for ID " + serviceId);
         }
     }
-    
-    @PostMapping("/update")
-    public ResponseEntity<String> updateService(@RequestParam Integer serviceId, @RequestBody Service updatedService) {
-        Optional<Service> existingService = serviceRepository.findById(serviceId);
-        if (existingService.isPresent()) {
-            Service service = existingService.get();
-            service.setPrice(updatedService.getPrice());
-            service.setServiceName(updatedService.getServiceName());
-            service.setServiceDescription(updatedService.getServiceDescription());
-            service.setCompanyId(updatedService.getCompanyId());
-            serviceRepository.save(service);
-            return ResponseEntity.ok("Service updated successfully");
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Service not found");
-        }
-    }
+
 }

@@ -31,6 +31,8 @@ import java.util.List;
 @NamedQueries({
     @NamedQuery(name = "Service.findAll", query = "SELECT s FROM Service s"),
     @NamedQuery(name = "Service.findByServiceId", query = "SELECT s FROM Service s WHERE s.serviceId = :serviceId"),
+    @NamedQuery(name = "Service.findByCompanyId", query = "SELECT s FROM Service s WHERE s.companyId = :companyId"),
+    @NamedQuery(name = "Service.findByCompanyIdAndServiceName", query = "SELECT s FROM Service s WHERE s.companyId = :companyId AND s.serviceName = :serviceName"),
     @NamedQuery(name = "Service.findByPrice", query = "SELECT s FROM Service s WHERE s.price = :price"),
     @NamedQuery(name = "Service.findByServiceName", query = "SELECT s FROM Service s WHERE s.serviceName = :serviceName")})
 public class Service implements Serializable {
@@ -51,6 +53,7 @@ public class Service implements Serializable {
     @Lob
     @Column(name = "service_description")
     private String serviceDescription;
+    @JsonIgnore
     @JoinColumn(name = "company_id", referencedColumnName = "company_id")
     @ManyToOne
     private Company companyId;
@@ -141,7 +144,7 @@ public class Service implements Serializable {
 
     @Override
     public String toString() {
-        return "dreamgarden.entities.Service[ serviceId=" + serviceId + " ]";
+        return "{serviceId=" + serviceId + ", price=" + price + ", serviceName=" + serviceName + " }";
     }
     
 }
