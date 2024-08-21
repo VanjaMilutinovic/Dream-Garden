@@ -128,7 +128,9 @@ public class PrivateGarden implements Serializable {
 
     @Override
     public String toString() {
-        return "dreamgarden.entities.PrivateGarden[ jobId=" + jobId + " ]";
+        return "PrivateGarden{" + "jobId=" + jobId + ", poolSize=" + poolSize + ", numberOfPools=" + numberOfPools + ", grassSize=" + grassSize + ", pavedSize=" + pavedSize + ", job=" + job + '}';
     }
+
+    
     
 }

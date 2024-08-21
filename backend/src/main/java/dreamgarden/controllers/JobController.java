@@ -122,7 +122,6 @@ public class JobController {
             garden.setNumberOfPools(gardenRequest.getNumberOfPools());
             garden.setPavedSize(gardenRequest.getPavedSize());
             garden.setPoolSize(gardenRequest.getPoolSize());
-            privateGardenRepository.saveAndFlush(garden);
             job.setPrivateGarden(garden);
         }
         else if (job.getGardenTypeId().getGardenTypeId() == 2) {
@@ -134,9 +133,13 @@ public class JobController {
             garden.setFountainSize(gardenRequest.getFountainSize());
             garden.setNumberOfSeats(gardenRequest.getNumberOfSeats());
             garden.setNumberOfTables(gardenRequest.getNumberOfTables());
-            restaurantGardenRepository.saveAndFlush(garden);
             job.setRestaurantGarden(garden);
         }
+        /*
+            Није потребно одвојено чувати PrivateGarden и RestaurantGarden 
+        објекте зато што су дио Job објекта. Кад се позове следећа линија, она 
+        ће рекурзивно да сачува објекте који сачинјавају објекат Job job.
+        */
         job = jobRepository.saveAndFlush(job);
         return ResponseEntity.status(HttpStatus.CREATED).body(job);
     }
