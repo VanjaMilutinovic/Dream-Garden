@@ -124,7 +124,7 @@ public class JobController {
                 job.setRestaurantGarden(restaurantGarden);
             }
             default -> {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("GardenType not found for ID " + request.getGardenTypeId());
+                return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body("GardenType ID " + request.getGardenTypeId()+" is currenty unsupported");
             }
         }
         
