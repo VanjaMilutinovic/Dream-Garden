@@ -114,14 +114,20 @@ public class JobController {
         job.setWorkerId(worker.get());
         job = jobRepository.saveAndFlush(job);
         
-        if (job.getGardenTypeId().getGardenTypeId() == 1) {
-            PrivateGarden garden = new PrivateGarden(job.getJobId(), request.getPrivateGarden());
-            job.setPrivateGarden(garden);
+        switch(job.getGardenTypeId().getGardenTypeId()){
+            case 1 -> {
+                PrivateGarden privateGarden = new PrivateGarden(job.getJobId(), request.getPrivateGarden());
+                job.setPrivateGarden(privateGarden);
+            }
+            case 2 -> {
+                RestaurantGarden restaurantGarden = new RestaurantGarden(job.getJobId(), request.getRestaurantGarden());
+                job.setRestaurantGarden(restaurantGarden);
+            }
+            default -> {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("GardenType not found for ID " + request.getGardenTypeId());
+            }
         }
-        else if (job.getGardenTypeId().getGardenTypeId() == 2) {
-            RestaurantGarden garden = new RestaurantGarden(job.getJobId(), request.getRestaurantGarden());
-            job.setRestaurantGarden(garden);
-        }
+        
         /*
             Није потребно одвојено чувати PrivateGarden и RestaurantGarden 
         објекте зато што су дио Job објекта. Кад се позове следећа линија, она 
