@@ -68,12 +68,6 @@ public class JobController {
     private GardenTypeRepository gardenTypeRepository;
     
     @Autowired
-    private PrivateGardenRepository privateGardenRepository;
-    
-    @Autowired
-    private RestaurantGardenRepository restaurantGardenRepository;
-    
-    @Autowired
     private UserRepository userRepository;
     
     @Autowired
@@ -101,13 +95,12 @@ public class JobController {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("StartDate must be in the future. Given: " + request.getStartDateTime());
         }
         
-        Optional<JobStatus> jobStatusPending = jobStatusRepository.findById(1);
         Job job = new Job();
         job.setCompanyId(company.get());
         job.setDescription(request.getDescription());
         job.setGardenSize(request.getGardenSize());
         job.setGardenTypeId(gardenType.get());
-        job.setJobStatusId(jobStatusPending.get());
+        job.setJobStatusId(new JobStatus(1));
         job.setRequestDateTime(new Date());
         job.setStartDateTime(request.getStartDateTime());
         job.setUserId(user.get());
@@ -124,6 +117,11 @@ public class JobController {
                 job.setRestaurantGarden(restaurantGarden);
             }
             default -> {
+                /*
+                    Ово ако се деси у бази ће остати Job креиран изнад switcha.
+                Тај Job неће имати свој ред у некој од наслеђених табела. 
+                Потребно је направити да се у овом случају избрише тај Job.
+                */
                 return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body("GardenType ID " + request.getGardenTypeId()+" is currenty unsupported");
             }
         }
