@@ -1,19 +1,33 @@
 package dreamgarden.controllers;
 
+import dreamgarden.entities.Company;
+import dreamgarden.entities.GardenType;
 import dreamgarden.entities.Job;
 import dreamgarden.entities.JobPhoto;
 import dreamgarden.entities.JobReview;
 import dreamgarden.entities.JobService;
 import dreamgarden.entities.JobStatus;
 import dreamgarden.entities.Photo;
+import dreamgarden.entities.PrivateGarden;
+import dreamgarden.entities.RestaurantGarden;
 import dreamgarden.entities.Service;
+import dreamgarden.entities.User;
+import dreamgarden.repositories.CompanyRepository;
+import dreamgarden.repositories.GardenTypeRepository;
 import dreamgarden.repositories.JobPhotoRepository;
 import dreamgarden.repositories.JobRepository;
 import dreamgarden.repositories.JobReviewRepository;
 import dreamgarden.repositories.JobServiceRepository;
 import dreamgarden.repositories.JobStatusRepository;
 import dreamgarden.repositories.PhotoRepository;
+import dreamgarden.repositories.PrivateGardenRepository;
+import dreamgarden.repositories.RestaurantGardenRepository;
 import dreamgarden.repositories.ServiceRepository;
+import dreamgarden.repositories.UserRepository;
+import dreamgarden.request.CreateJobRequest;
+import dreamgarden.request.CreatePrivateGardenRequest;
+import dreamgarden.request.CreateRestaurantGardenRequest;
+import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,11 +63,82 @@ public class JobController {
 
     @Autowired
     private ServiceRepository serviceRepository;
+    
+    @Autowired
+    private GardenTypeRepository gardenTypeRepository;
+    
+    @Autowired
+    private PrivateGardenRepository privateGardenRepository;
+    
+    @Autowired
+    private RestaurantGardenRepository restaurantGardenRepository;
+    
+    @Autowired
+    private UserRepository userRepository;
+    
+    @Autowired
+    private CompanyRepository companyRepository;
 
     @PostMapping("/create")
-    public ResponseEntity<Job> createJob(@RequestBody Job job) {
-        Job savedJob = jobRepository.save(job);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedJob);
+    public ResponseEntity<?> createJob(@RequestBody CreateJobRequest request) {
+        Optional<User> user = userRepository.findById(request.getUserId());
+        if(user.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found for ID " + request.getUserId());
+        }
+        Optional<User> worker = userRepository.findById(request.getWorkerId());
+        if(worker.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found for ID " + request.getWorkerId());
+        }
+        Optional<Company> company = companyRepository.findById(request.getCompanyId());
+        if (company.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Company not found for id " + request.getCompanyId());
+        }
+        Optional<GardenType> gardenType = gardenTypeRepository.findById(request.getGardenTypeId());
+        if(gardenType.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("GardenType not found for ID " + request.getGardenTypeId());
+        }
+        if(request.getStartDateTime().after(new Date())) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("StartDate must be in the future. Given: " + request.getStartDateTime());
+        }
+        
+        Optional<JobStatus> jobStatusPending = jobStatusRepository.findById(1);
+        Job job = new Job();
+        job.setCompanyId(company.get());
+        job.setDescription(request.getDescription());
+        job.setGardenSize(request.getGardenSize());
+        job.setGardenTypeId(gardenType.get());
+        job.setJobStatusId(jobStatusPending.get());
+        job.setRequestDateTime(new Date());
+        job.setStartDateTime(request.getStartDateTime());
+        job.setUserId(user.get());
+        job.setWorkerId(worker.get());
+        job = jobRepository.saveAndFlush(job);
+        
+        if (job.getGardenTypeId().getGardenTypeId() == 1) {
+            PrivateGarden garden = new PrivateGarden(job.getJobId());
+            garden.setJob(job);
+            CreatePrivateGardenRequest gardenRequest = request.getPrivateGarden();
+            garden.setGrassSize(gardenRequest.getGrassSize());
+            garden.setNumberOfPools(gardenRequest.getNumberOfPools());
+            garden.setPavedSize(gardenRequest.getPavedSize());
+            garden.setPoolSize(gardenRequest.getPoolSize());
+            privateGardenRepository.saveAndFlush(garden);
+            job.setPrivateGarden(garden);
+        }
+        else if (job.getGardenTypeId().getGardenTypeId() == 2) {
+            RestaurantGarden garden = new RestaurantGarden(job.getJobId());
+            garden.setJob(job);
+            CreateRestaurantGardenRequest gardenRequest = request.getRestaurantGarden();
+            garden.setGrassSize(gardenRequest.getGrassSize());
+            garden.setNumberOfFountains(gardenRequest.getNumberOfFountains());
+            garden.setFountainSize(gardenRequest.getFountainSize());
+            garden.setNumberOfSeats(gardenRequest.getNumberOfSeats());
+            garden.setNumberOfTables(gardenRequest.getNumberOfTables());
+            restaurantGardenRepository.saveAndFlush(garden);
+            job.setRestaurantGarden(garden);
+        }
+        job = jobRepository.saveAndFlush(job);
+        return ResponseEntity.status(HttpStatus.CREATED).body(job);
     }
 
     @GetMapping("/getAll")
@@ -68,7 +153,7 @@ public class JobController {
         if (jobOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.OK).body(jobOptional.get());
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Job not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Job not found for id " + jobId);
         }
     }
 

@@ -85,8 +85,7 @@ public class CompanyController {
             companyRepository.deleteById(id);
             return ResponseEntity.ok("Company deleted successfully");
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                                 .body("Company not found for ID " + id);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Company not found for ID " + id);
         }
     }
 
