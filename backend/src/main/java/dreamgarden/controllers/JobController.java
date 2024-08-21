@@ -68,12 +68,6 @@ public class JobController {
     private GardenTypeRepository gardenTypeRepository;
     
     @Autowired
-    private PrivateGardenRepository privateGardenRepository;
-    
-    @Autowired
-    private RestaurantGardenRepository restaurantGardenRepository;
-    
-    @Autowired
     private UserRepository userRepository;
     
     @Autowired
@@ -97,46 +91,46 @@ public class JobController {
         if(gardenType.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("GardenType not found for ID " + request.getGardenTypeId());
         }
-        if(request.getStartDateTime().after(new Date())) {
+        if(request.getStartDateTime().before(new Date())) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("StartDate must be in the future. Given: " + request.getStartDateTime());
         }
         
-        Optional<JobStatus> jobStatusPending = jobStatusRepository.findById(1);
         Job job = new Job();
         job.setCompanyId(company.get());
         job.setDescription(request.getDescription());
         job.setGardenSize(request.getGardenSize());
         job.setGardenTypeId(gardenType.get());
-        job.setJobStatusId(jobStatusPending.get());
+        job.setJobStatusId(new JobStatus(1));
         job.setRequestDateTime(new Date());
         job.setStartDateTime(request.getStartDateTime());
         job.setUserId(user.get());
         job.setWorkerId(worker.get());
         job = jobRepository.saveAndFlush(job);
         
-        if (job.getGardenTypeId().getGardenTypeId() == 1) {
-            PrivateGarden garden = new PrivateGarden(job.getJobId());
-            garden.setJob(job);
-            CreatePrivateGardenRequest gardenRequest = request.getPrivateGarden();
-            garden.setGrassSize(gardenRequest.getGrassSize());
-            garden.setNumberOfPools(gardenRequest.getNumberOfPools());
-            garden.setPavedSize(gardenRequest.getPavedSize());
-            garden.setPoolSize(gardenRequest.getPoolSize());
-            privateGardenRepository.saveAndFlush(garden);
-            job.setPrivateGarden(garden);
+        switch(job.getGardenTypeId().getGardenTypeId()){
+            case 1 -> {
+                PrivateGarden privateGarden = new PrivateGarden(job.getJobId(), request.getPrivateGarden());
+                job.setPrivateGarden(privateGarden);
+            }
+            case 2 -> {
+                RestaurantGarden restaurantGarden = new RestaurantGarden(job.getJobId(), request.getRestaurantGarden());
+                job.setRestaurantGarden(restaurantGarden);
+            }
+            default -> {
+                /*
+                    Ово ако се деси у бази ће остати Job креиран изнад switcha.
+                Тај Job неће имати свој ред у некој од наслеђених табела. 
+                Потребно је направити да се у овом случају избрише тај Job.
+                */
+                return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body("GardenType ID " + request.getGardenTypeId()+" is currenty unsupported");
+            }
         }
-        else if (job.getGardenTypeId().getGardenTypeId() == 2) {
-            RestaurantGarden garden = new RestaurantGarden(job.getJobId());
-            garden.setJob(job);
-            CreateRestaurantGardenRequest gardenRequest = request.getRestaurantGarden();
-            garden.setGrassSize(gardenRequest.getGrassSize());
-            garden.setNumberOfFountains(gardenRequest.getNumberOfFountains());
-            garden.setFountainSize(gardenRequest.getFountainSize());
-            garden.setNumberOfSeats(gardenRequest.getNumberOfSeats());
-            garden.setNumberOfTables(gardenRequest.getNumberOfTables());
-            restaurantGardenRepository.saveAndFlush(garden);
-            job.setRestaurantGarden(garden);
-        }
+        
+        /*
+            Није потребно одвојено чувати PrivateGarden и RestaurantGarden 
+        објекте зато што су дио Job објекта. Кад се позове следећа линија, она 
+        ће рекурзивно да сачува објекте који сачинјавају објекат Job job.
+        */
         job = jobRepository.saveAndFlush(job);
         return ResponseEntity.status(HttpStatus.CREATED).body(job);
     }

@@ -5,6 +5,7 @@
 package dreamgarden.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import dreamgarden.request.CreatePrivateGardenRequest;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -56,6 +57,14 @@ public class PrivateGarden implements Serializable {
 
     public PrivateGarden(Integer jobId) {
         this.jobId = jobId;
+    }
+
+    public PrivateGarden(Integer jobId, CreatePrivateGardenRequest gardenRequest) {
+        this.jobId = jobId;
+        this.grassSize = gardenRequest.getGrassSize();
+        this.numberOfPools = gardenRequest.getNumberOfPools();
+        this.pavedSize = gardenRequest.getPavedSize();
+        this.poolSize = gardenRequest.getPoolSize();
     }
 
     public Integer getJobId() {
@@ -128,7 +137,9 @@ public class PrivateGarden implements Serializable {
 
     @Override
     public String toString() {
-        return "dreamgarden.entities.PrivateGarden[ jobId=" + jobId + " ]";
+        return "PrivateGarden{" + "jobId=" + jobId + ", poolSize=" + poolSize + ", numberOfPools=" + numberOfPools + ", grassSize=" + grassSize + ", pavedSize=" + pavedSize + ", job=" + job + '}';
     }
+
+    
     
 }
