@@ -97,7 +97,7 @@ public class JobController {
         if(gardenType.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("GardenType not found for ID " + request.getGardenTypeId());
         }
-        if(request.getStartDateTime().after(new Date())) {
+        if(request.getStartDateTime().before(new Date())) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("StartDate must be in the future. Given: " + request.getStartDateTime());
         }
         
