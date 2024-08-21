@@ -115,24 +115,11 @@ public class JobController {
         job = jobRepository.saveAndFlush(job);
         
         if (job.getGardenTypeId().getGardenTypeId() == 1) {
-            PrivateGarden garden = new PrivateGarden(job.getJobId());
-            garden.setJob(job);
-            CreatePrivateGardenRequest gardenRequest = request.getPrivateGarden();
-            garden.setGrassSize(gardenRequest.getGrassSize());
-            garden.setNumberOfPools(gardenRequest.getNumberOfPools());
-            garden.setPavedSize(gardenRequest.getPavedSize());
-            garden.setPoolSize(gardenRequest.getPoolSize());
+            PrivateGarden garden = new PrivateGarden(job.getJobId(), request.getPrivateGarden());
             job.setPrivateGarden(garden);
         }
         else if (job.getGardenTypeId().getGardenTypeId() == 2) {
-            RestaurantGarden garden = new RestaurantGarden(job.getJobId());
-            garden.setJob(job);
-            CreateRestaurantGardenRequest gardenRequest = request.getRestaurantGarden();
-            garden.setGrassSize(gardenRequest.getGrassSize());
-            garden.setNumberOfFountains(gardenRequest.getNumberOfFountains());
-            garden.setFountainSize(gardenRequest.getFountainSize());
-            garden.setNumberOfSeats(gardenRequest.getNumberOfSeats());
-            garden.setNumberOfTables(gardenRequest.getNumberOfTables());
+            RestaurantGarden garden = new RestaurantGarden(job.getJobId(), request.getRestaurantGarden());
             job.setRestaurantGarden(garden);
         }
         /*

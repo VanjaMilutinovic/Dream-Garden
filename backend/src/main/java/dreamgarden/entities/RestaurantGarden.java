@@ -5,6 +5,7 @@
 package dreamgarden.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import dreamgarden.request.CreateRestaurantGardenRequest;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -59,6 +60,15 @@ public class RestaurantGarden implements Serializable {
 
     public RestaurantGarden(Integer jobId) {
         this.jobId = jobId;
+    }
+
+    public RestaurantGarden(Integer jobId, CreateRestaurantGardenRequest gardenRequest) {
+        this.jobId = jobId;
+        this.grassSize = gardenRequest.getGrassSize();
+        this.numberOfFountains = gardenRequest.getNumberOfFountains();
+        this.fountainSize = gardenRequest.getFountainSize();
+        this.numberOfSeats = gardenRequest.getNumberOfSeats();
+        this.numberOfTables = gardenRequest.getNumberOfTables();
     }
 
     public Integer getJobId() {
@@ -141,5 +151,5 @@ public class RestaurantGarden implements Serializable {
     public String toString() {
         return "dreamgarden.entities.RestaurantGarden[ jobId=" + jobId + " ]";
     }
-    
+
 }
