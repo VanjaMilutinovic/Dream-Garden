@@ -27,6 +27,7 @@ import java.io.Serializable;
 @NamedQueries({
     @NamedQuery(name = "JobReview.findAll", query = "SELECT j FROM JobReview j"),
     @NamedQuery(name = "JobReview.findByJobReviewId", query = "SELECT j FROM JobReview j WHERE j.jobReviewId = :jobReviewId"),
+    @NamedQuery(name = "JobReview.findByJobId", query = "SELECT j FROM JobReview j WHERE j.jobId = :jobId"),
     @NamedQuery(name = "JobReview.findByGrade", query = "SELECT j FROM JobReview j WHERE j.grade = :grade")})
 public class JobReview implements Serializable {
 

@@ -49,6 +49,7 @@ public class User implements Serializable {
     @Basic(optional = false)
     @Column(name = "username")
     private String username;
+    @JsonIgnore
     @Basic(optional = false)
     @Column(name = "hashed_password")
     private String hashedPassword;

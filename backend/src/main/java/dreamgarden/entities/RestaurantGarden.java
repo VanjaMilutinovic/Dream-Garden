@@ -149,7 +149,8 @@ public class RestaurantGarden implements Serializable {
 
     @Override
     public String toString() {
-        return "dreamgarden.entities.RestaurantGarden[ jobId=" + jobId + " ]";
+        return "RestaurantGarden{" + "jobId=" + jobId + ", fountainSize=" + fountainSize + ", numberOfFountains=" + numberOfFountains + 
+                ", grassSize=" + grassSize + ", numberOfSeats=" + numberOfSeats + ", numberOfTables=" + numberOfTables + '}';
     }
 
 }

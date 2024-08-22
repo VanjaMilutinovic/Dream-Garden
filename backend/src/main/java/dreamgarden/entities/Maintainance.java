@@ -28,6 +28,7 @@ import java.util.Date;
 @Table(name = "maintainance")
 @NamedQueries({
     @NamedQuery(name = "Maintainance.findAll", query = "SELECT m FROM Maintainance m"),
+    @NamedQuery(name = "Maintainance.findByJobId", query = "SELECT m FROM Maintainance m WHERE m.jobId = :jobId"),
     @NamedQuery(name = "Maintainance.findByMaintainanceId", query = "SELECT m FROM Maintainance m WHERE m.maintainanceId = :maintainanceId"),
     @NamedQuery(name = "Maintainance.findByRequestDateTime", query = "SELECT m FROM Maintainance m WHERE m.requestDateTime = :requestDateTime"),
     @NamedQuery(name = "Maintainance.findByStartDateTime", query = "SELECT m FROM Maintainance m WHERE m.startDateTime = :startDateTime"),

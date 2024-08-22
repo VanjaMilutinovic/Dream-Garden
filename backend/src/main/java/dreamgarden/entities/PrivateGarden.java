@@ -137,7 +137,8 @@ public class PrivateGarden implements Serializable {
 
     @Override
     public String toString() {
-        return "PrivateGarden{" + "jobId=" + jobId + ", poolSize=" + poolSize + ", numberOfPools=" + numberOfPools + ", grassSize=" + grassSize + ", pavedSize=" + pavedSize + ", job=" + job + '}';
+        return "PrivateGarden{" + "jobId=" + jobId + ", poolSize=" + poolSize + ", numberOfPools=" + numberOfPools + 
+                ", grassSize=" + grassSize + ", pavedSize=" + pavedSize + "}";
     }
 
     
