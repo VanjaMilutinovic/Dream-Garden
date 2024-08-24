@@ -77,24 +77,11 @@ public class JobController {
     
     @Autowired
     private CompanyRepository companyRepository;
-
-    private boolean checkCreateJobRequest(CreateJobRequest request) {
-        return request.getGardenSize()!= null
-            && request.getStartDateTime() != null
-            && request.getJobId() != null
-            && request.getDescription() != null
-            && request.getUserId() != null
-            && request.getCompanyId() != null
-            && request.getWorkerId() != null
-            && request.getGardenTypeId() != null
-            && ((request.getGardenTypeId() == 1 && request.getPrivateGarden() != null)
-            || (request.getGardenTypeId() == 2 && request.getRestaurantGarden()!= null));
-    }
     
     @PostMapping("/create")
     @Transactional
     public ResponseEntity<?> createJob(@RequestBody CreateJobRequest request) {
-        if (checkCreateJobRequest(request)) {
+        if (request.checkCreateJobRequest()) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("CreateJobRequest not adequate");
         }
         Optional<User> user = userRepository.findById(request.getUserId());
@@ -214,15 +201,9 @@ public class JobController {
         return ResponseEntity.status(HttpStatus.CREATED).body(jobPhoto);
     }   
     
-    private boolean checkCreateJobReviewRequest(CreateJobReviewRequest request){
-        return request.getComment()!= null
-            && request.getGrade() != null
-            && request.getJobId() != null;
-    }
-    
     @PostMapping("/review/add")
     public ResponseEntity<?> addJobReview(@RequestBody CreateJobReviewRequest request) {
-        if (!checkCreateJobReviewRequest(request)) {
+        if (!request.checkCreateJobReviewRequest()) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Comment, Grade, and JobId required!");
         }
         Optional<Job> job = jobRepository.findById(request.getJobId());
@@ -248,7 +229,8 @@ public class JobController {
     
     @PostMapping("/status/update")
     public ResponseEntity<?> updateJobStatus(@RequestParam(name = "jobId", required = true) Integer jobId, 
-                                             @RequestParam(name = "jobStatusId", required = true) Integer jobStatusId) {
+                                             @RequestParam(name = "jobStatusId", required = true) Integer jobStatusId,
+                                             @RequestParam(name = "rejectedDescription", required = false) String rejectedDescription) {
         Optional<Job> job = jobRepository.findById(jobId);
         if (job.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Job not found for id " + jobId);
@@ -257,8 +239,13 @@ public class JobController {
         if (jobStatus.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("JobStatus not found for id " + jobStatusId);
         }
+        if (jobStatus.get().getStatus().equals(2) && rejectedDescription.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Declination description is mandatory when rejecting a job");
+        }
 
         job.get().setJobStatusId(jobStatus.get());
+        if (jobStatus.get().getStatus().equals(2)) 
+            job.get().setRejectedDescription(rejectedDescription);
         Job savedJob = jobRepository.saveAndFlush(job.get());
         return ResponseEntity.status(HttpStatus.OK).body(savedJob);
     }

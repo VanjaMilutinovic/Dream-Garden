@@ -10,17 +10,23 @@ import java.util.Date;
  *
  * @author vamilutinovic
  */
-public class CreateMaintainanceRequest {
+public class CreateMaintenanceRequest {
     Date startDateTime;
     Integer jobId;
 
-    public CreateMaintainanceRequest() { }
+    public CreateMaintenanceRequest() { }
 
-    public CreateMaintainanceRequest(Date startDateTime, Integer jobId) {
+    public CreateMaintenanceRequest(Date startDateTime, Integer jobId) {
         this.startDateTime = startDateTime;
         this.jobId = jobId;
     }
 
+    public boolean checkCreateMaintainanceRequest(){
+        return this.jobId!= null &&
+               this.startDateTime!= null && 
+               this.startDateTime.after(new Date());
+    }
+    
     public Date getStartDateTime() {
         return startDateTime;
     }

@@ -21,6 +21,13 @@ public class CreateJobReviewRequest {
         this.grade = grade;
         this.jobId = jobId;
     }
+    
+    public boolean checkCreateJobReviewRequest(){
+        return this.comment != null
+            && this.grade != null
+            && this.jobId != null;
+    }
+    
 
     public String getComment() {
         return comment;

@@ -15,10 +15,10 @@
     <class>dreamgarden.entities.UserStatus</class>
     <class>dreamgarden.entities.JobStatus</class>
     <class>dreamgarden.entities.Job</class>
-    <class>dreamgarden.entities.Maintainance</class>
     <class>dreamgarden.entities.PrivateGarden</class>
     <class>dreamgarden.entities.Company</class>
     <class>dreamgarden.entities.JobService</class>
+    <class>dreamgarden.entities.Maintenance</class>
     <properties>
       <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/dream_garden?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
       <property name="jakarta.persistence.jdbc.user" value="root"/>

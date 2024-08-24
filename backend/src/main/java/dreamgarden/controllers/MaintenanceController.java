@@ -2,15 +2,15 @@ package dreamgarden.controllers;
 
 import dreamgarden.entities.Job;
 import dreamgarden.entities.JobStatus;
-import dreamgarden.entities.Maintainance;
+import dreamgarden.entities.Maintenance;
 import dreamgarden.entities.User;
 import dreamgarden.entities.Worker;
 import dreamgarden.repositories.JobRepository;
 import dreamgarden.repositories.JobStatusRepository;
-import dreamgarden.repositories.MaintainanceRepository;
+import dreamgarden.repositories.MaintenanceRepository;
 import dreamgarden.repositories.UserRepository;
 import dreamgarden.repositories.WorkerRepository;
-import dreamgarden.request.CreateMaintainanceRequest;
+import dreamgarden.request.CreateMaintenanceRequest;
 import dreamgarden.request.UpdateEstimatedEndaDateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,17 +22,17 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Controller for managing Maintainance-related operations.
- * Provides endpoints to interact with Maintainance entities.
+ * Controller for managing Maintenance-related operations.
+ * Provides endpoints to interact with Maintenance entities.
  * 
  * @author vamilutinovic
  */
 @RestController
-@RequestMapping("/maintainance")
-public class MaintainanceController {
+@RequestMapping("/maintenance")
+public class MaintenanceController {
 
     @Autowired
-    private MaintainanceRepository maintainanceRepository;
+    private MaintenanceRepository maintainanceRepository;
 
     @Autowired
     private JobRepository jobRepository;
@@ -43,9 +43,9 @@ public class MaintainanceController {
     @Autowired
     private WorkerRepository workerRepository;
 
-    @PostMapping("/save")
-    public ResponseEntity<?> saveMaintainance(@RequestBody CreateMaintainanceRequest request) {
-        if (!checkCreateMaintainanceRequest(request)) {
+    @PostMapping("/create")
+    public ResponseEntity<?> saveMaintenance(@RequestBody CreateMaintenanceRequest request) {
+        if (!request.checkCreateMaintainanceRequest()) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("JobId, WorkerId, and StartDateTime(in future) are required.");
         }
         Optional<Job> job = jobRepository.findById(request.getJobId());
@@ -56,11 +56,11 @@ public class MaintainanceController {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Job must be finished. Job in status: " + job.get().getJobStatusId().getStatus());
         }
 
-        List<Maintainance> existingMaintainances = maintainanceRepository.findByJobId(job.get());
-        if(checkUnfinishedMaintainances(existingMaintainances)){
+        List<Maintenance> existingMaintenances = maintainanceRepository.findByJobId(job.get());
+        if(checkUnfinishedMaintenances(existingMaintenances)){
             return ResponseEntity.status(HttpStatus.CONFLICT).body("You have an unfinished maintainance scheduled");
         }
-        Maintainance maintainance = new Maintainance();
+        Maintenance maintainance = new Maintenance();
         maintainance.setJobId(job.get());
         maintainance.setJobStatusId(new JobStatus(1));
         maintainance.setRequestDateTime(new Date());
@@ -68,16 +68,10 @@ public class MaintainanceController {
         maintainance = maintainanceRepository.saveAndFlush(maintainance);
         return ResponseEntity.ok(maintainance);
     }
-
-    private boolean checkCreateMaintainanceRequest(CreateMaintainanceRequest request){
-        return request.getJobId() != null &&
-               request.getStartDateTime() != null && 
-               request.getStartDateTime().after(new Date());
-    }
     
-    private boolean checkUnfinishedMaintainances(List<Maintainance> maintainances){
+    private boolean checkUnfinishedMaintenances(List<Maintenance> maintainances){
         Date now = new Date();
-        for(Maintainance m: maintainances){
+        for(Maintenance m: maintainances){
             if ((m.getEstimatedEndDateTime() == null ||m.getEstimatedEndDateTime().after(now)) && 
                 (m.getJobStatusId().getJobStatusId()==1 || m.getJobStatusId().getJobStatusId()==3 || m.getJobStatusId().getJobStatusId()==4))
                 return true;
@@ -86,23 +80,23 @@ public class MaintainanceController {
     }
     
     @PostMapping("/estimateEndDate")
-    public ResponseEntity<?> updateEstimatedEndaDate(@RequestBody UpdateEstimatedEndaDateRequest request){
-        if (!checkUpdateEstimatedEndaDateRequest(request)) {
+    public ResponseEntity<?> updateEstimatedEndsDate(@RequestBody UpdateEstimatedEndaDateRequest request){
+        if (!request.checkUpdateEstimatedEndaDateRequest()) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("maintainanceId, workerUserId, and estimatedEndDateTime are required");
         }
         Integer maintainanceId = request.getMaintainanceId();
         Integer workerUserId= request.getWorkerUserId();
         Date estimatedEndDateTime = request.getEstimatedEndDateTime();
-        Optional<Maintainance> maintainanceOptional = maintainanceRepository.findById(maintainanceId);
+        Optional<Maintenance> maintainanceOptional = maintainanceRepository.findById(maintainanceId);
         if (maintainanceOptional.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Maintainance not found for ID " + maintainanceId);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Maintenance not found for ID " + maintainanceId);
         }
         if (maintainanceOptional.get().getEstimatedEndDateTime() != null) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Maintainance alredy estimated");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Maintenance alredy estimated");
         }
         if (maintainanceOptional.get().getJobStatusId().getJobStatusId() != 1) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
-                    .body("Only pending maintainance requests can be estimated. Maintainance in status: " + maintainanceOptional.get().getJobStatusId().getStatus());
+                    .body("Only pending maintainance requests can be estimated. Maintenance in status: " + maintainanceOptional.get().getJobStatusId().getStatus());
         }
         if(maintainanceOptional.get().getStartDateTime().after(estimatedEndDateTime)) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("EstimatedEnd can't be before StartDateTime");
@@ -121,7 +115,7 @@ public class MaintainanceController {
                    job.getCompanyId() + ") that did the initial job" + workerUserId);
         }
 
-        Maintainance maintainance = maintainanceOptional.get();
+        Maintenance maintainance = maintainanceOptional.get();
         maintainance.setEstimatedEndDateTime(estimatedEndDateTime);
         maintainance.setJobStatusId(new JobStatus(3));
         maintainance.setWorkerId(userWorker.get());
@@ -129,19 +123,13 @@ public class MaintainanceController {
         return ResponseEntity.ok(maintainance);
     }
     
-    private boolean checkUpdateEstimatedEndaDateRequest(UpdateEstimatedEndaDateRequest request){
-        return request.getEstimatedEndDateTime() != null &&
-               request.getMaintainanceId() != null &&
-               request.getWorkerUserId() != null;
-    }
-    
     @GetMapping("/findById")
-    public ResponseEntity<?> getMaintainanceById(@RequestParam(name = "maintainanceId", required = true) Integer maintainanceId) {
-        Optional<Maintainance> maintainanceOptional = maintainanceRepository.findById(maintainanceId);
+    public ResponseEntity<?> getMaintenanceById(@RequestParam(name = "maintainanceId", required = true) Integer maintainanceId) {
+        Optional<Maintenance> maintainanceOptional = maintainanceRepository.findById(maintainanceId);
         if (maintainanceOptional.isPresent()) {
             return ResponseEntity.ok(maintainanceOptional.get());
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Maintainance not found for ID " + maintainanceId);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Maintenance not found for ID " + maintainanceId);
         }
     }
     

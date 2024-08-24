@@ -39,6 +39,19 @@ public class CreateJobRequest {
         this.gardenTypeId = gardenTypeId;
     }
 
+    public boolean checkCreateJobRequest() {
+        return this.gardenSize!= null
+            && this.startDateTime != null
+            && this.jobId != null
+            && this.description != null
+            && this.userId!= null
+            && this.companyId != null
+            && this.workerId != null
+            && this.gardenTypeId != null
+            && ((this.gardenTypeId == 1 && this.privateGarden != null)
+            || (this.gardenTypeId == 2 && this.restaurantGarden!= null));
+    }
+    
     public Integer getJobId() {
         return jobId;
     }

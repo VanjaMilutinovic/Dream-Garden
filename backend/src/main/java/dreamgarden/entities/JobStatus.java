@@ -41,7 +41,7 @@ public class JobStatus implements Serializable {
     private String status;
     @JsonIgnore
     @OneToMany(mappedBy = "jobStatusId")
-    private List<Maintainance> maintainanceList;
+    private List<Maintenance> maintainanceList;
     @JsonIgnore
     @OneToMany(mappedBy = "jobStatusId")
     private List<Job> jobList;
@@ -74,11 +74,11 @@ public class JobStatus implements Serializable {
         this.status = status;
     }
 
-    public List<Maintainance> getMaintainanceList() {
+    public List<Maintenance> getMaintainanceList() {
         return maintainanceList;
     }
 
-    public void setMaintainanceList(List<Maintainance> maintainanceList) {
+    public void setMaintainanceList(List<Maintenance> maintainanceList) {
         this.maintainanceList = maintainanceList;
     }
 

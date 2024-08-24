@@ -19,8 +19,7 @@ public class CreateUserRequest {
     private Integer userTypeId;
     private Integer photoId;
 
-    public CreateUserRequest() {
-    }
+    public CreateUserRequest() { }
 
     public CreateUserRequest(String username, String hashedPassword, String name, String lastname, Character gender, String address, String contactNumber, String email, String creditCardNumber, Integer userTypeId, Integer photoId) {
         this.username = username;
@@ -36,6 +35,11 @@ public class CreateUserRequest {
         this.photoId = photoId;
     }
 
+    public boolean checkCreateUserRequest(){
+        //TODO implementation
+        return this.username != null;
+    }
+    
     public String getUsername() {
         return username;
     }

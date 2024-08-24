@@ -76,7 +76,7 @@ public class User implements Serializable {
     private String creditCardNumber;
     @JsonIgnore
     @OneToMany(mappedBy = "workerId")
-    private List<Maintainance> maintainanceList;
+    private List<Maintenance> maintainanceList;
     @JsonIgnore
     @OneToMany(mappedBy = "userId")
     private List<Job> jobList;
@@ -195,11 +195,11 @@ public class User implements Serializable {
         this.creditCardNumber = creditCardNumber;
     }
 
-    public List<Maintainance> getMaintainanceList() {
+    public List<Maintenance> getMaintainanceList() {
         return maintainanceList;
     }
 
-    public void setMaintainanceList(List<Maintainance> maintainanceList) {
+    public void setMaintainanceList(List<Maintenance> maintainanceList) {
         this.maintainanceList = maintainanceList;
     }
 

@@ -4,6 +4,7 @@
  */
 package dreamgarden.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -42,6 +43,7 @@ public class JobReview implements Serializable {
     private String comment;
     @Column(name = "grade")
     private Integer grade;
+    @JsonIgnore
     @JoinColumn(name = "job_id", referencedColumnName = "job_id")
     @ManyToOne
     private Job jobId;

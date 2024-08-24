@@ -68,6 +68,8 @@ public class UserController {
 
     @PostMapping("/create")
     public ResponseEntity<?> createUser(@RequestBody CreateUserRequest request) {
+        // TODO 
+        request.checkCreateUserRequest();
         Optional<User> findByUsername = userRepository.findByUsername(request.getUsername());        
         if (findByUsername.isPresent()){
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Username must be unique");
@@ -87,7 +89,6 @@ public class UserController {
         if (!request.getGender().equals('F') && !request.getGender().equals('M')){
            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Gender must be 'F' or 'M', provided gender not acceptable: " + request.getGender());
         }
-        Optional<UserStatus> userStatus = userStatusRepository.findByStatus("pending");
         User user = new User();
         user.setUsername(request.getUsername());
         user.setHashedPassword(request.getHashedPassword());
@@ -100,7 +101,7 @@ public class UserController {
         user.setCreditCardNumber(request.getCreditCardNumber());
         user.setUserTypeId(userType.get());
         user.setPhotoId(photo.get());
-        user.setUserStatusId(userStatus.get());
+        user.setUserStatusId(new UserStatus(1)); //pending
         user = userRepository.saveAndFlush(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }

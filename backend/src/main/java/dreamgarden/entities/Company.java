@@ -63,7 +63,6 @@ public class Company implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy = "companyId")
     private List<CompanyHoliday> companyHolidayList;
-    @JsonIgnore
     @OneToMany(mappedBy = "companyId")
     private List<Service> serviceList;
     @JsonIgnore

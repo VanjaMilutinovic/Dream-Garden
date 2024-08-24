@@ -73,7 +73,7 @@ public class Job implements Serializable {
     private List<JobPhoto> jobPhotoList;
     @JsonIgnore
     @OneToMany(mappedBy = "jobId")
-    private List<Maintainance> maintainanceList;
+    private List<Maintenance> maintainanceList;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "job")
     private PrivateGarden privateGarden;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "job")
@@ -93,10 +93,8 @@ public class Job implements Serializable {
     @JoinColumn(name = "garden_type_id", referencedColumnName = "garden_type_id")
     @ManyToOne
     private GardenType gardenTypeId;
-    @JsonIgnore
     @OneToMany(mappedBy = "jobId")
     private List<JobService> jobServiceList;
-    @JsonIgnore
     @OneToMany(mappedBy = "jobId")
     private List<JobReview> jobReviewList;
 
@@ -177,11 +175,11 @@ public class Job implements Serializable {
         this.jobPhotoList = jobPhotoList;
     }
 
-    public List<Maintainance> getMaintainanceList() {
+    public List<Maintenance> getMaintainanceList() {
         return maintainanceList;
     }
 
-    public void setMaintainanceList(List<Maintainance> maintainanceList) {
+    public void setMaintainanceList(List<Maintenance> maintainanceList) {
         this.maintainanceList = maintainanceList;
     }
 

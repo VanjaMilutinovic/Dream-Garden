@@ -25,22 +25,22 @@ import java.util.Date;
  * @author vamilutinovic
  */
 @Entity
-@Table(name = "maintainance")
+@Table(name = "maintenance")
 @NamedQueries({
-    @NamedQuery(name = "Maintainance.findAll", query = "SELECT m FROM Maintainance m"),
-    @NamedQuery(name = "Maintainance.findByJobId", query = "SELECT m FROM Maintainance m WHERE m.jobId = :jobId"),
-    @NamedQuery(name = "Maintainance.findByMaintainanceId", query = "SELECT m FROM Maintainance m WHERE m.maintainanceId = :maintainanceId"),
-    @NamedQuery(name = "Maintainance.findByRequestDateTime", query = "SELECT m FROM Maintainance m WHERE m.requestDateTime = :requestDateTime"),
-    @NamedQuery(name = "Maintainance.findByStartDateTime", query = "SELECT m FROM Maintainance m WHERE m.startDateTime = :startDateTime"),
-    @NamedQuery(name = "Maintainance.findByEstimatedEndDateTime", query = "SELECT m FROM Maintainance m WHERE m.estimatedEndDateTime = :estimatedEndDateTime")})
-public class Maintainance implements Serializable {
+    @NamedQuery(name = "Maintenance.findAll", query = "SELECT m FROM Maintenance m"),
+    @NamedQuery(name = "Maintenance.findByJobId", query = "SELECT m FROM Maintenance m WHERE m.jobId = :jobId"),
+    @NamedQuery(name = "Maintenance.findByMaintenanceId", query = "SELECT m FROM Maintenance m WHERE m.maintenanceId = :maintenanceId"),
+    @NamedQuery(name = "Maintenance.findByRequestDateTime", query = "SELECT m FROM Maintenance m WHERE m.requestDateTime = :requestDateTime"),
+    @NamedQuery(name = "Maintenance.findByStartDateTime", query = "SELECT m FROM Maintenance m WHERE m.startDateTime = :startDateTime"),
+    @NamedQuery(name = "Maintenance.findByEstimatedEndDateTime", query = "SELECT m FROM Maintenance m WHERE m.estimatedEndDateTime = :estimatedEndDateTime")})
+public class Maintenance implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "maintainance_id")
-    private Integer maintainanceId;
+    @Column(name = "maintenance_id")
+    private Integer maintenanceId;
     @Basic(optional = false)
     @Column(name = "request_date_time")
     @Temporal(TemporalType.TIMESTAMP)
@@ -61,24 +61,24 @@ public class Maintainance implements Serializable {
     @ManyToOne
     private User workerId;
 
-    public Maintainance() {
+    public Maintenance() {
     }
 
-    public Maintainance(Integer maintainanceId) {
-        this.maintainanceId = maintainanceId;
+    public Maintenance(Integer maintainanceId) {
+        this.maintenanceId = maintainanceId;
     }
 
-    public Maintainance(Integer maintainanceId, Date requestDateTime) {
-        this.maintainanceId = maintainanceId;
+    public Maintenance(Integer maintainanceId, Date requestDateTime) {
+        this.maintenanceId = maintainanceId;
         this.requestDateTime = requestDateTime;
     }
 
-    public Integer getMaintainanceId() {
-        return maintainanceId;
+    public Integer getMaintenanceId() {
+        return maintenanceId;
     }
 
-    public void setMaintainanceId(Integer maintainanceId) {
-        this.maintainanceId = maintainanceId;
+    public void setMaintenanceId(Integer maintainanceId) {
+        this.maintenanceId = maintainanceId;
     }
 
     public Date getRequestDateTime() {
@@ -132,18 +132,18 @@ public class Maintainance implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (maintainanceId != null ? maintainanceId.hashCode() : 0);
+        hash += (maintenanceId != null ? maintenanceId.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Maintainance)) {
+        if (!(object instanceof Maintenance)) {
             return false;
         }
-        Maintainance other = (Maintainance) object;
-        if ((this.maintainanceId == null && other.maintainanceId != null) || (this.maintainanceId != null && !this.maintainanceId.equals(other.maintainanceId))) {
+        Maintenance other = (Maintenance) object;
+        if ((this.maintenanceId == null && other.maintenanceId != null) || (this.maintenanceId != null && !this.maintenanceId.equals(other.maintenanceId))) {
             return false;
         }
         return true;
@@ -151,7 +151,7 @@ public class Maintainance implements Serializable {
 
     @Override
     public String toString() {
-        return "dreamgarden.entities.Maintainance[ maintainanceId=" + maintainanceId + " ]";
+        return "dreamgarden.entities.Maintenance[ maintainanceId=" + maintenanceId + " ]";
     }
     
 }

@@ -23,6 +23,12 @@ public class UpdateEstimatedEndaDateRequest {
         this.estimatedEndDateTime = estimatedEndDateTime;
     }
 
+    public boolean checkUpdateEstimatedEndaDateRequest(){
+        return this.estimatedEndDateTime != null &&
+               this.maintainanceId != null &&
+               this.workerUserId != null;
+    }
+    
     public Integer getMaintainanceId() {
         return maintainanceId;
     }
