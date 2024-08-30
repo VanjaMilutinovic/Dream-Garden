@@ -1,18 +1,21 @@
 package dreamgarden.controllers;
 
 import dreamgarden.entities.Company;
+import dreamgarden.entities.CompanyHoliday;
 import dreamgarden.entities.GardenType;
 import dreamgarden.entities.Job;
 import dreamgarden.entities.JobPhoto;
 import dreamgarden.entities.JobReview;
 import dreamgarden.entities.JobService;
 import dreamgarden.entities.JobStatus;
+import dreamgarden.entities.Maintenance;
 import dreamgarden.entities.Photo;
 import dreamgarden.entities.PrivateGarden;
 import dreamgarden.entities.RestaurantGarden;
 import dreamgarden.entities.Service;
 import dreamgarden.entities.User;
 import dreamgarden.entities.Worker;
+import dreamgarden.repositories.CompanyHolidayRepository;
 import dreamgarden.repositories.CompanyRepository;
 import dreamgarden.repositories.GardenTypeRepository;
 import dreamgarden.repositories.JobPhotoRepository;
@@ -20,6 +23,7 @@ import dreamgarden.repositories.JobRepository;
 import dreamgarden.repositories.JobReviewRepository;
 import dreamgarden.repositories.JobServiceRepository;
 import dreamgarden.repositories.JobStatusRepository;
+import dreamgarden.repositories.MaintenanceRepository;
 import dreamgarden.repositories.PhotoRepository;
 import dreamgarden.repositories.ServiceRepository;
 import dreamgarden.repositories.UserRepository;
@@ -27,6 +31,7 @@ import dreamgarden.repositories.WorkerRepository;
 import dreamgarden.request.AddJobServicesRequest;
 import dreamgarden.request.CreateJobRequest;
 import dreamgarden.request.CreateJobReviewRequest;
+import dreamgarden.request.SetJobStatusRequest;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
@@ -78,6 +83,40 @@ public class JobController {
     @Autowired
     private CompanyRepository companyRepository;
     
+    @Autowired
+    private CompanyHolidayRepository companyHolidayRepository;
+    
+    @Autowired
+    private MaintenanceRepository maintenanceRepository;
+    
+    private CompanyHoliday checkCompanyHoliday(Date date, Company company) {
+        List<CompanyHoliday> companyHolidays = companyHolidayRepository.findByCompanyId(company);
+        if (companyHolidays.isEmpty()) {
+            return null;
+        }
+        for (CompanyHoliday holiday: companyHolidays) {
+            if (holiday.getStartDateTime().before(date) && holiday.getEndDateTime().after(date))
+                return holiday;
+        }
+        return null;
+    }
+    
+    private boolean areAllWorkersBusyOnDateForCompany(Date jobDate, Company company) {
+        // Step 1: Retrieve all workers for the given company
+        List<Worker> workers = workerRepository.findByCompanyId(company);
+        // Step 2: Check availability of each worker
+        for (Worker worker : workers) {
+            List<Job> jobs = jobRepository.findByWorkerIdAndCompanyIdAndDateRange(worker.getUserId().getUserId(), company.getCompanyId(), jobDate);
+            List<Maintenance> maintenances = maintenanceRepository.findByWorkerIdAndCompanyIdAndDateRange(worker.getUserId().getUserId(), company.getCompanyId(), jobDate);
+            // If the worker has no jobs or maintenance tasks scheduled during the jobDate, they are available
+            if (jobs.isEmpty() && maintenances.isEmpty()) {
+                return false; // At least one worker is available
+            }
+        }
+        // Step 3: If all workers are busy, return true
+        return true;
+    }
+    
     @PostMapping("/create")
     @Transactional
     public ResponseEntity<?> createJob(@RequestBody CreateJobRequest request) {
@@ -106,9 +145,16 @@ public class JobController {
         if (company.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Company not found for id " + request.getCompanyId());
         }
-        if(workerObj.get().getCompanyId().getCompanyId() != request.getCompanyId()) {
+        CompanyHoliday checkCompanyHoliday = checkCompanyHoliday(request.getStartDateTime(), company.get());
+        if (checkCompanyHoliday != null) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Company on holiday during: " + checkCompanyHoliday);
+        }
+        if(!workerObj.get().getCompanyId().getCompanyId().equals(request.getCompanyId())) {
              return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Worker not employed by given company. Worker company: "
                                                                            + workerObj.get().getCompanyId() + ", company: " + company.get());
+        }
+        if (areAllWorkersBusyOnDateForCompany(request.getStartDateTime(), company.get())) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No workers available at " + request.getStartDateTime());
         }
         Optional<GardenType> gardenType = gardenTypeRepository.findById(request.getGardenTypeId());
         if(gardenType.isEmpty()) {
@@ -164,7 +210,103 @@ public class JobController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Job not found for id " + jobId);
         }
     }
+    
+    @GetMapping("/getByStatusAndUser")
+    public ResponseEntity<?> getByStatusAndUser(@RequestParam(name = "userId", required = true) Integer userId,
+                                                @RequestParam(name = "jobStatusId", required = true) Integer jobStatusId) {
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No users found with ID " + userId);
+        }
+        Optional<JobStatus> jobStatus = jobStatusRepository.findById(jobStatusId);
+        if (jobStatus.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No JobStatus found with ID " + jobStatusId);
+        }
+        List<Job> jobs = jobRepository.findByUserIdAndJobStatusId(user.get(), jobStatus.get());
+        if (jobs.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No jobs for user: " + user.get() + " in status " + jobStatus.get().getStatus());
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(jobs);
+    }
 
+
+    @PostMapping("worker/setStatus")
+    public ResponseEntity<?> setStatusForWorker(@RequestBody SetJobStatusRequest request){
+        if (!request.checkSetJobStatusRequest()) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("SetJobStatusRequest not adequate: " + request);
+        }
+        Optional<User> worker = userRepository.findById(request.getUserWorkerId());
+        if (worker.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No users found with ID " + request.getUserWorkerId());
+        }
+        Optional<Job> job = jobRepository.findById(request.getJobId());
+        if (job.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No jobs found with ID " + request.getJobId());
+        }
+        Optional<JobStatus> jobStatus = jobStatusRepository.findById(request.getStatusId());
+        if (job.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No job status found with ID " + request.getJobId());
+        }
+        if (jobStatus.get().getJobStatusId() == 5 && !job.get().getWorkerId().equals(worker.get())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Wokrer not employeed at this job");
+        }
+        if ((jobStatus.get().getJobStatusId() == 2 || jobStatus.get().getJobStatusId() == 3) 
+                && worker.get().getUserStatusId().getUserStatusId() == 4) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Worker must be active to set status: " + jobStatus.get().getStatus() + 
+                    ", Worker in status: " + worker.get().getUserStatusId().getStatus() + " instead");
+        }
+        
+        switch (jobStatus.get().getJobStatusId()) {
+            case 2 ->  {
+                job.get().setWorkerId(worker.get());
+            }
+            case 3 ->  {
+                job.get().setRejectedDescription(request.getRejectionDescription());
+            }
+            case 5 ->  {
+                job.get().setEndDateTime(new Date());
+            }
+            case 1, 4, 6 -> {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Wokrer cannot set status " + jobStatus.get().getStatus());
+            }
+            default -> {
+                return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body("Status not implemented yet");
+            }
+        }
+        job.get().setJobStatusId(jobStatus.get());
+        Job savedJob = jobRepository.saveAndFlush(job.get());
+        return ResponseEntity.status(HttpStatus.OK).body(savedJob);
+    }
+    
+    private boolean isDifferenceLessThanOneDay(Date date) {
+        // Get the difference in milliseconds
+        long diffInMillis = Math.abs((new Date()).getTime() - date.getTime());
+        // Convert milliseconds to days
+        long diffInDays = diffInMillis / (24 * 60 * 60 * 1000);
+        // Check if the difference is greater than one day
+        return diffInDays < 1;
+    }
+    
+    @PostMapping("owner/cancel")
+    public ResponseEntity<?> cancel(@RequestParam(name = "userId", required = true) Integer userId,
+                                    @RequestParam(name = "jobId", required = true) Integer jobId){
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No users found with ID " + userId);
+        }
+        Optional<Job> job = jobRepository.findById(jobId);
+        if (job.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No jobs found with ID " + jobId);
+        }
+        if(isDifferenceLessThanOneDay(job.get().getStartDateTime())) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Cannot be cancelled less than 24 hours before job");
+        }
+        job.get().setJobStatusId(new JobStatus(6)); //cancelled
+        job.get().setWorkerId(null); //free worker
+        Job savedJob = jobRepository.saveAndFlush(job.get());
+        return ResponseEntity.status(HttpStatus.OK).body(savedJob);  
+    }
+    
     @PostMapping("/delete")
     public ResponseEntity<?> deleteJob(@RequestParam(name = "jobId", required = true) Integer jobId) {
         Optional<Job> jobOptional = jobRepository.findById(jobId);
@@ -200,6 +342,14 @@ public class JobController {
         jobPhoto = jobPhotoRepository.save(jobPhoto);
         return ResponseEntity.status(HttpStatus.CREATED).body(jobPhoto);
     }   
+    
+    @GetMapping("/photo/getTopK")
+    public ResponseEntity<?> getTopKJobPhotos(@RequestParam(name = "k", required = true) Integer k){
+        if (k<3)
+            k =3;
+        List<String> paths = photoRepository.findTopKByPhotoPath(k);
+        return ResponseEntity.status(HttpStatus.OK).body(paths);
+    }
     
     @PostMapping("/review/add")
     public ResponseEntity<?> addJobReview(@RequestBody CreateJobReviewRequest request) {

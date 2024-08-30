@@ -1,0 +1,108 @@
+<!-- STATISTIC -->
+<div class="container">
+  <h2>Statistic</h2>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card text-center">
+        <div class="card-body">
+          <h1 class="display-1">{{decoratedGardens}}</h1>
+          <p class="card-text">Gardens Decorated</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-center">
+        <div class="card-body">
+          <h1 class="display-1">{{registeredOwners}}</h1>
+          <p class="card-text">Registered Owners</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-center">
+        <div class="card-body">
+          <h1 class="display-1">{{registeredDecorators }}</h1>
+          <p class="card-text">Registered Decorators</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card text-center">
+        <div class="card-body">
+          <h1 class="display-1">{{job24Hours}}</h1>
+          <p class="card-text">Jobs in last 24 hours</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-center">
+        <div class="card-body">
+          <h1 class="display-1">{{job7Days}}</h1>
+          <p class="card-text">Jobs in last 7 days</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-center">
+        <div class="card-body">
+          <h1 class="display-1">{{job30Days }}</h1>
+          <p class="card-text">Jobs in last 30 days</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- GALLERY -->
+<div class="container">
+  <h2>Gallery</h2>
+  <div class="row">
+    <div class="col-md-4" *ngFor="let image of images">
+      <div class="card text-center">
+        <img [src]="image" class="card-img-top" alt="Image">
+      </div>
+    </div>
+  </div>
+</div>
+<!-- COMPANIES -->
+<div class="container">
+  <h2>Companies and Workers</h2>
+  <div class="mb-3">
+    <input type="text" class="form-control m-1 row" placeholder="Search by company name" [(ngModel)]="searchTermName">
+    <input type="text" class="form-control m-1 row" placeholder="Search by address" [(ngModel)]="searchTermAddress">
+    <div class="row m-1">
+      <button class="btn btn-primary search-button col-md-3" (click)="search()">Search</button>
+      <span class="col-md-1"></span>
+      <button class="btn btn-secondary sort-button col-md-3" (click)="sortByName()">Sort by Name ({{ sortDirectionName }})</button>
+      <span class="col-md-1"></span>
+      <button class="btn btn-secondary sort-button col-md-3" (click)="sortByAddress()">Sort by Address ({{ sortDirectionAddress }})</button>
+    </div>
+  </div>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Company ID</th>
+        <th>Company Name</th>
+        <th>Address</th>
+        <th>Workers</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let company of viewCompanies">
+        <td>{{ company.companyId }}</td>
+        <td>{{ company.name }}</td>
+        <td>{{ company.address }}</td>
+        <td>
+          <ul>
+            <li *ngFor="let worker of company.workers">
+              {{ worker.name }} {{ worker.lastname }}
+            </li>
+          </ul>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,28 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <img class="navbar-brand navbar-logo" src="../../../../assets/photos/Logo.png" alt="Logo">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item" *ngIf="notLogged">
+        <a class="nav-link" href='/home'>Home</a>
+      </li>
+      <li class="nav-item" *ngIf="notLogged">
+        <a class="nav-link" href='/login'>Login</a>
+      </li>
+      <li class="nav-item" *ngIf="isAdmin">
+        <a class="nav-link" href="#">Admin Dashboard</a>
+      </li>
+      <li class="nav-item" *ngIf="isOwner">
+        <a class="nav-link" href="#">Owner Profile</a>
+      </li>
+      <li class="nav-item" *ngIf="isDecorator">
+        <a class="nav-link" href="#">Decorator Tools</a>
+      </li>
+      <li class="nav-item" *ngIf="!notLogged">
+        <a class="nav-link" href="/home" (click)="logout()">Logout</a>
+      </li>
+    </ul>
+  </div>
+</nav>

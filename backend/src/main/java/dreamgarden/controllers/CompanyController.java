@@ -7,10 +7,17 @@ import org.springframework.web.bind.annotation.*;
 
 import dreamgarden.entities.Company;
 import dreamgarden.entities.CompanyHoliday;
+import dreamgarden.entities.User;
+import dreamgarden.entities.Worker;
 import dreamgarden.repositories.CompanyRepository;
 import dreamgarden.repositories.CompanyHolidayRepository;
+import dreamgarden.repositories.JobReviewRepository;
+import dreamgarden.repositories.UserRepository;
+import dreamgarden.repositories.WorkerRepository;
 import dreamgarden.request.CreateCompanyHolidayRequest;
 import dreamgarden.request.CreateCompanyRequest;
+import dreamgarden.response.CompanyWithWorkersResponse;
+import java.util.ArrayList;
 import java.util.Date;
 
 import java.util.List;
@@ -18,7 +25,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/company")
-//@CrossOrigin(origins = "http://localhost:4200/")
 public class CompanyController {
     
     @Autowired
@@ -26,6 +32,15 @@ public class CompanyController {
 
     @Autowired
     private CompanyHolidayRepository companyHolidayRepository;
+    
+    @Autowired
+    private WorkerRepository workerRepository;
+    
+    @Autowired
+    private UserRepository userRepository;
+    
+    @Autowired
+    private JobReviewRepository jobReviewRepository;
 
 
     @GetMapping("/getAll")
@@ -52,6 +67,46 @@ public class CompanyController {
         } else {
             return ResponseEntity.ok(companies);
         }
+    }
+    
+    private Double getRating(Company company) {
+        Double rating = jobReviewRepository.getRating(company.getCompanyId());
+        return rating == null ? 0.0 : rating;
+    }
+    
+    @GetMapping("/getAllCompaniesWithWorkers")
+    public ResponseEntity<?> getAllCompaniesWithWorkers() {
+        List<Company> companies = companyRepository.findAll();
+        List<CompanyWithWorkersResponse> companyWithWorkersList = new ArrayList<>();
+
+        for (Company company : companies) {
+            // Get workers associated with this company
+            List<Worker> workers = workerRepository.findByCompanyId(company);
+
+            // Create a CompanyWithWorkersResponse object and populate it
+            CompanyWithWorkersResponse companyWithWorkersResponse = new CompanyWithWorkersResponse();
+            companyWithWorkersResponse.setCompanyId(company.getCompanyId());
+            companyWithWorkersResponse.setName(company.getName());
+            companyWithWorkersResponse.setAddress(company.getAddress());
+            companyWithWorkersResponse.setRating(getRating(company));
+            List<CompanyWithWorkersResponse.WorkerResponse> workerResponses = new ArrayList<>();
+
+            for (Worker worker : workers) {
+                Optional<User> user = userRepository.findById(worker.getUserId().getUserId());
+                if (user.isEmpty()) {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found for worker " + worker);
+                }
+                CompanyWithWorkersResponse.WorkerResponse workerResponse = companyWithWorkersResponse.createWorkerResponse(user.get().getName(), user.get().getLastname());
+                workerResponses.add(workerResponse);
+            }
+            companyWithWorkersResponse.setWorkers(workerResponses);
+
+            
+            // Add the company response to the list
+            companyWithWorkersList.add(companyWithWorkersResponse);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(companyWithWorkersList);
     }
 
     @PostMapping("/create")

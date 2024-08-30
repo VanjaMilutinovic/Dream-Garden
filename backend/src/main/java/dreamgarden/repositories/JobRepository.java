@@ -1,7 +1,11 @@
 package dreamgarden.repositories;
 
+import dreamgarden.entities.Company;
 import dreamgarden.entities.Job;
-import dreamgarden.response.CountingStatisticResponse;
+import dreamgarden.entities.JobStatus;
+import dreamgarden.entities.Maintenance;
+import dreamgarden.entities.User;
+import java.util.Date;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -13,6 +17,10 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface JobRepository extends JpaRepository<Job, Integer> {
+    
+    List<Job> findByWorkerIdAndJobStatusId(User workerId, JobStatus jobStatusId);
+    List<Job> findByUserIdAndJobStatusId(User userId, JobStatus jobStatusId);
+    List<Job> findByCompanyIdAndJobStatusId(Company companyId, JobStatus jobStatusId);
     
     @Query(value = """
         SELECT DATE_FORMAT(j.start_date_time, '%M %Y') AS variableName, COUNT(j.job_id) AS variableCount
@@ -57,5 +65,13 @@ public interface JobRepository extends JpaRepository<Job, Integer> {
     """, nativeQuery = true)
     List<Object[]> findJobCountsByDay();
 
- 
+    @Query(value = """
+        SELECT j.* 
+        FROM job j 
+        WHERE j.worker_id = :workerId 
+            AND j.company_id = :companyId
+            AND :jobDate BETWEEN j.start_date_time AND j.end_date_time""", nativeQuery = true)
+    List<Job> findByWorkerIdAndCompanyIdAndDateRange(@Param("workerId") Integer workerId, 
+            @Param("companyId") Integer companyId, @Param("jobDate") Date jobDate);
+    
 }

@@ -11,9 +11,9 @@ import java.util.Date;
  * @author vamilutinovic
  */
 public class UpdateEstimatedEndaDateRequest {
-    Integer maintainanceId;
-    Integer workerUserId;
-    Date estimatedEndDateTime;
+    private Integer maintainanceId;
+    private Integer workerUserId;
+    private Date estimatedEndDateTime;
 
     public UpdateEstimatedEndaDateRequest() { }
 

@@ -25,7 +25,8 @@ import java.io.Serializable;
 @Table(name = "job_photo")
 @NamedQueries({
     @NamedQuery(name = "JobPhoto.findAll", query = "SELECT j FROM JobPhoto j"),
-    @NamedQuery(name = "JobPhoto.findByJobPhotoId", query = "SELECT j FROM JobPhoto j WHERE j.jobPhotoId = :jobPhotoId")})
+    @NamedQuery(name = "JobPhoto.findByJobPhotoId", query = "SELECT j FROM JobPhoto j WHERE j.jobPhotoId = :jobPhotoId"),
+    @NamedQuery(name = "JobPhoto.findByJobId", query = "SELECT j FROM JobPhoto j WHERE j.jobId = :jobId")})
 public class JobPhoto implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -17,11 +17,11 @@ public class CreateUserRequest {
     private String email;
     private String creditCardNumber;
     private Integer userTypeId;
-    private Integer photoId;
+    private String photoPath;
 
     public CreateUserRequest() { }
 
-    public CreateUserRequest(String username, String hashedPassword, String name, String lastname, Character gender, String address, String contactNumber, String email, String creditCardNumber, Integer userTypeId, Integer photoId) {
+    public CreateUserRequest(String username, String hashedPassword, String name, String lastname, Character gender, String address, String contactNumber, String email, String creditCardNumber, Integer userTypeId, String photoPath) {
         this.username = username;
         this.hashedPassword = hashedPassword;
         this.name = name;
@@ -32,12 +32,18 @@ public class CreateUserRequest {
         this.email = email;
         this.creditCardNumber = creditCardNumber;
         this.userTypeId = userTypeId;
-        this.photoId = photoId;
+        this.photoPath = photoPath;
     }
 
     public boolean checkCreateUserRequest(){
-        //TODO implementation
-        return this.username != null;
+        return this.username != null &&
+               this.hashedPassword != null &&
+               this.name != null &&
+               this.lastname != null &&
+               this.gender != null &&
+               this.address != null &&
+               this.contactNumber != null &&
+               this.email != null;
     }
     
     public String getUsername() {
@@ -120,12 +126,12 @@ public class CreateUserRequest {
         this.userTypeId = userTypeId;
     }
 
-    public Integer getPhotoId() {
-        return photoId;
+    public String getPhotoPath() {
+        return photoPath;
     }
 
-    public void setPhotoId(Integer photoId) {
-        this.photoId = photoId;
+    public void setPhotoPath(String photoPath) {
+        this.photoPath = photoPath;
     }
 
 }

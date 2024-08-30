@@ -25,7 +25,8 @@ import java.io.Serializable;
 @Table(name = "worker")
 @NamedQueries({
     @NamedQuery(name = "Worker.findAll", query = "SELECT w FROM Worker w"),
-    @NamedQuery(name = "Worker.findByWorkerId", query = "SELECT w FROM Worker w WHERE w.workerId = :workerId")})
+    @NamedQuery(name = "Worker.findByWorkerId", query = "SELECT w FROM Worker w WHERE w.workerId = :workerId"),
+    @NamedQuery(name = "Worker.findByCompanyId", query = "SELECT w FROM Worker w WHERE w.companyId = :companyId")})
 public class Worker implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -37,7 +37,8 @@ import java.util.List;
     @NamedQuery(name = "User.findByGender", query = "SELECT u FROM User u WHERE u.gender = :gender"),
     @NamedQuery(name = "User.findByContactNumber", query = "SELECT u FROM User u WHERE u.contactNumber = :contactNumber"),
     @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email"),
-    @NamedQuery(name = "User.findByCreditCardNumber", query = "SELECT u FROM User u WHERE u.creditCardNumber = :creditCardNumber")})
+    @NamedQuery(name = "User.findByCreditCardNumber", query = "SELECT u FROM User u WHERE u.creditCardNumber = :creditCardNumber"),
+    @NamedQuery(name = "User.findByUserTypeId", query = "SELECT u FROM User u WHERE u.userTypeId = :userTypeId")})
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;

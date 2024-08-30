@@ -39,7 +39,10 @@ import java.util.List;
     @NamedQuery(name = "Job.findByRequestDateTime", query = "SELECT j FROM Job j WHERE j.requestDateTime = :requestDateTime"),
     @NamedQuery(name = "Job.findByStartDateTime", query = "SELECT j FROM Job j WHERE j.startDateTime = :startDateTime"),
     @NamedQuery(name = "Job.findByEndDateTime", query = "SELECT j FROM Job j WHERE j.endDateTime = :endDateTime"),
-    @NamedQuery(name = "Job.findByGardenSize", query = "SELECT j FROM Job j WHERE j.gardenSize = :gardenSize")})
+    @NamedQuery(name = "Job.findByGardenSize", query = "SELECT j FROM Job j WHERE j.gardenSize = :gardenSize"),
+    @NamedQuery(name = "findByWorkerIdAndJobStatusId", query = "SELECT j FROM Job j WHERE j.workerId = :workerId AND j.jobStatusId = :jobStatusId"),
+    @NamedQuery(name = "findByUserIdAndJobStatusId", query = "SELECT j FROM Job j WHERE j.userId = :userId AND j.jobStatusId = :jobStatusId"),
+    @NamedQuery(name = "findByCompanyIdAndJobStatusId", query = "SELECT j FROM Job j WHERE j.companyId = :companyId AND j.jobStatusId = :jobStatusId")})
 public class Job implements Serializable {
 
     private static final long serialVersionUID = 1L;
