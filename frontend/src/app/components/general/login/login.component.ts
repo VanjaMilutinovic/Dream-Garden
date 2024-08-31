@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { sha512 } from 'js-sha512';
 import { firstValueFrom } from 'rxjs';
+import { User } from 'src/app/models/user.model';
 import { UserService } from 'src/app/services/user/user.service';
 @Component({
   selector: 'app-login',
@@ -10,7 +12,20 @@ import { UserService } from 'src/app/services/user/user.service';
 })
 export class LoginComponent {
 
-  constructor(private userService: UserService){}
+  constructor(
+    private userService: UserService,
+    private router: Router
+  ){
+    const user = localStorage.getItem("user");
+    if(user){
+      try{
+        const type = (JSON.parse(user) as User).userTypeId.name;
+        this.router.navigate([type+'/profile'])
+      }catch(error){
+        console.warn("Nekako se u localStorage upisao nevalidan User");
+      }
+    }
+  }
 
   form: FormGroup = new FormGroup({
     username: new FormControl(""),
@@ -43,7 +58,10 @@ export class LoginComponent {
     this.invalidCredentials = false;
     this.waitingForResponse = true;
     try{
-      const user = await firstValueFrom(this.userService.login(username,password));
+      const user = await firstValueFrom(this.userService.login(username,password)) as User;
+      localStorage.setItem("user",JSON.stringify(user));
+      //Probao sam sa router.navigate ali kad dodjem na stranicu profila header ostane nepromenjen :(
+      window.location.href = user.userTypeId.name+'/profile';
     }catch(error: any){
       this.invalidCredentials = true;
       this.errorMessage = error.error;
