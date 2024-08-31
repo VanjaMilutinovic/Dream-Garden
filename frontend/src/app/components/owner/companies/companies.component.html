@@ -1,0 +1,42 @@
+<!-- COMPANIES -->
+<div class="container">
+    <h2>Kompanije i radnici</h2>
+    <div class="mb-3">
+      <input type="text" class="form-control m-1 row" placeholder="Pretraži po imenu" [(ngModel)]="searchTermName">
+      <input type="text" class="form-control m-1 row" placeholder="Pretraži po adresi" [(ngModel)]="searchTermAddress">
+      <div class="row m-1">
+        <button class="btn btn-primary search-button col-md-3" (click)="search()">Pretraži</button>
+        <span class="col-md-1"></span>
+        <button class="btn btn-secondary sort-button col-md-3" (click)="sortByName()">Sortiraj po imenu ({{ sortDirectionName }})</button>
+        <span class="col-md-1"></span>
+        <button class="btn btn-secondary sort-button col-md-3" (click)="sortByAddress()">Sortiraj po adresi ({{ sortDirectionAddress }})</button>
+      </div>
+    </div>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID Kompanije</th>
+          <th>Ime Kompanije</th>
+          <th>Adresa</th>
+          <th>Radnici</th>
+          <th>Ocena</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let company of viewCompanies">
+          <td>{{ company.companyId }}</td>
+          <td>{{ company.name }}</td>
+          <td>{{ company.address }}</td>
+          <td>
+            <ul>
+              <li *ngFor="let worker of company.workers">
+                {{ worker.name }} {{ worker.lastname }}
+              </li>
+            </ul>
+          </td>
+          <td>{{ company.rating }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

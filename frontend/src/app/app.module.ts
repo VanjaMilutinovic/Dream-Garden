@@ -20,6 +20,7 @@ import { UsersComponent } from './components/admin/users/users.component';
 import { CreateWorkerComponent } from './components/admin/create-worker/create-worker.component';
 import { CompaniesComponent as AdminCompaniesComponent} from './components/admin/companies/companies.component';
 import { CreateCompanyComponent } from './components/admin/create-company/create-company.component';
+import { LeafletMapComponent } from './components/general/leaflet-map/leaflet-map.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { CreateCompanyComponent } from './components/admin/create-company/create
     UsersComponent,
     CreateWorkerComponent,
     AdminCompaniesComponent,
-    CreateCompanyComponent
+    CreateCompanyComponent,
+    LeafletMapComponent
   ],
   imports: [
     BrowserModule,

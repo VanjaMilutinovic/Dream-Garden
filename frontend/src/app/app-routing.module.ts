@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+
 import { LoginComponent as GeneralLoginComponent } from './components/general/login/login.component';
 import { HomeComponent } from './components/general/home/home.component';
+import { RegisterComponent } from './components/general/register/register.component';
 
 import { ProfileComponent as OwnerProfileComponent} from './components/owner/profile/profile.component';
 import { CompaniesComponent as OwnerCompaniesComponent } from './components/owner/companies/companies.component';
@@ -22,6 +24,7 @@ import { CreateCompanyComponent as AdminCreateCompanyComponent } from './compone
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'login', component: GeneralLoginComponent },
+  { path: 'register', component: RegisterComponent },
   // OWNER
   { path: 'owner/profile', component: OwnerProfileComponent },
   { path: 'owner/companies', component: OwnerCompaniesComponent },

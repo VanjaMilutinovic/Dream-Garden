@@ -1,0 +1,87 @@
+<div class="container">
+    <h2>Svi Korisnici</h2>
+    <p><strong>OVDE DODATI FILTER PO STATUSU I TIPU</strong></p>
+    <p style="color: crimson;">{{ errorMsg }}</p>
+    <!-- <div class="mb-3">
+        <input type="text" class="form-control m-1 row" placeholder="Pretraži po imenu" [(ngModel)]="searchTermName">
+        <input type="text" class="form-control m-1 row" placeholder="Pretraži po adresi" [(ngModel)]="searchTermAddress">
+        <div class="row m-1">
+        <button class="btn btn-primary search-button col-md-3" (click)="search()">Pretraži</button>
+        <span class="col-md-1"></span>
+        <button class="btn btn-secondary sort-button col-md-3" (click)="sortByName()">Sortiraj po imenu ({{ sortDirectionName }})</button>
+        <span class="col-md-1"></span>
+        <button class="btn btn-secondary sort-button col-md-3" (click)="sortByAddress()">Sortiraj po adresi ({{ sortDirectionAddress }})</button>
+        </div>
+    </div> -->
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Korisničko ime</th>
+            <th>Ime i Prezime</th>
+            <th>Kontakt Telefon</th>
+            <th>Tip Korisnika</th>
+            <th>Status Korisnika</th>
+            <th><!-- Buttons --></th>
+            <th><!-- Edit --></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let user of viewUsers">
+            <td>{{ user.username }}</td>
+            <td>{{ user.name }} {{ user.lastname }}</td>
+            <td>{{ user.contactNumber }}</td>
+            <td>{{ user.userTypeId.name }}</td>
+            <td>{{ user.userStatusId.status }}</td>
+            <td>
+            <button *ngIf="user.userStatusId.status == 'pending'" class="btn btn-primary m-1 mb-0 mt-0" 
+                (click)="activate(user)">Prihvati</button>
+            <button *ngIf="user.userStatusId.status == 'pending'" class="btn btn-secondary m-1 mb-0 mt-0" 
+                (click)="reject(user)">Odbij</button>
+            <button *ngIf="user.userStatusId.status == 'blocked'" class="btn btn-primary m-1 mb-0 mt-0" 
+                (click)="unblock(user)">Odblokiraj</button>
+            <button *ngIf="user.userStatusId.status == 'active'" class="btn btn-secondary m-1 mb-0 mt-0" 
+                (click)="block(user)">Deaktiviraj</button>
+            </td>
+            <td>
+                <button class="btn btn-primary m-1 mb-0 mt-0" 
+                (click)="show(user)">Pregledaj i Uredi</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="row mb-3">
+        <div class="col-md-6">
+        <button class="btn btn-primary" (click)="createNewDecorator()">Kreiraj novog dekoratera</button>
+        </div>
+    </div>
+</div>
+<!-- USER VIEW -->
+<div class="container" *ngIf="currenyUserFlag == true">
+    <div class="card">
+        <div class="card-header">
+        <h4>Detalji o Korisniku</h4>
+        <p><strong>OVO TREBA DA BUDE EDITABILNO</strong></p>
+        </div>
+        <div class="card-body">
+        <div class="row">
+            <div class="col-md-4">
+            <img [src]="'../../../assets/photos/'+currentUser.photoId.path" alt="User Photo" class="img-fluid rounded-circle">
+            </div>
+            <div class="col-md-8">
+            <p><strong>ID:</strong> {{ currentUser.userId }}</p>
+            <p><strong>Korisničko Ime:</strong> {{ currentUser.username }}</p>
+            <p><strong>Ime i Prezime:</strong> {{ currentUser.name }} {{ currentUser.lastname }}</p>
+            <p><strong>Pol:</strong> {{ currentUser.gender === 'M' ? 'Muško' : 'Žensko' }}</p>
+            <p><strong>Adresa:</strong> {{ currentUser.address }}</p>
+            <p><strong>Kontakt Telefon:</strong> {{ currentUser.contactNumber }}</p>
+            <p><strong>Email:</strong> {{ currentUser.email }}</p>
+            <p><strong>Tip Korisnika:</strong> {{ currentUser.userTypeId.name }}</p>
+            <p><strong>Status:</strong> {{ currentUser.userStatusId.status }}</p>
+            </div>
+        </div>
+        </div>
+        <div class="card-footer text-right">
+            <button class="btn btn-primary" (click)="editUser()">Sačuvaj izmene</button>
+        </div>
+    </div>      
+</div>
