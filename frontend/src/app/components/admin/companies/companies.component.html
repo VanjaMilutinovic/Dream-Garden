@@ -1,0 +1,80 @@
+<div class="container">
+    <h2>Kompanije</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>ID Kompanije</th>
+            <th>Naziv Kompanije</th>
+            <th>Adresa</th>
+            <th>Kontakt Osoba</th>
+            <th>Kontakt Telefon</th>
+            <th><!-- Edit --></th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let company of viewCompanies">
+                <td>{{ company.companyId }}</td>
+                <td>{{ company.name }}</td>
+                <td>{{ company.address }}</td>
+                <td>{{ company.contactPerson }}</td>
+                <td>{{ company.contactNumber }}</td>
+                <td>
+                    <button class="btn btn-primary m-1 mb-0 mt-0" 
+                    (click)="show(company)">Pregledaj i Uredi</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="row mb-3">
+        <div class="col-md-6">
+        <button class="btn btn-primary" (click)="createNew()">Kreiraj novu kompaniju</button>
+        </div>
+    </div>
+</div>
+<!-- COMPANY VIEW -->
+<div class="container" *ngIf="currenyCompanyFlag == true">
+    <div class="card">
+        <div class="card-header">
+        <h4>Detalji o Kompaniji</h4>
+        <p><strong>OVO TREBA DA BUDE EDITABILNO</strong></p>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <p><strong>ID:</strong> {{ currentCompany.companyId }}</p>
+                    <p><strong>Naziv Kompanije:</strong> {{ currentCompany.name }}</p>
+                    <p><strong>Kontakt Osoba:</strong> {{ currentCompany.contactPerson }}</p>
+                    <p><strong>Kontakt Telefon:</strong> {{ currentCompany.contactNumber }}</p>
+                    <p><strong>Adresa:</strong> {{ currentCompany.address }}</p>
+                </div>
+                <div class="col-md-4">
+                    <p><strong>HELP ME  HERE</strong></p>
+                    <!-- <app-map *ngIf="currentCompany.longitude && currentCompany.latitude"
+                    [latitude]="currentCompany.latitude" [longitude]="currentCompany.longitude"></app-map> -->
+                </div>
+            </div>
+            <h5><strong>Usluge</strong></h5>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>ID Usluge</th>
+                    <th>Naziv</th>
+                    <th>Cena (RSD)</th>
+                    <th>Opis</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let service of currentCompany.serviceList">
+                    <td>{{ service.serviceId}}</td>
+                    <td>{{ service.serviceName }}</td>
+                    <td>{{ service.price }}</td>
+                    <td>{{ service.serviceDescription }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer text-right">
+            <button class="btn btn-primary" (click)="editUser()">Sačuvaj izmene</button>
+        </div>
+    </div>      
+</div>
