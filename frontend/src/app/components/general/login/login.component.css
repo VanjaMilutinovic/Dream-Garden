@@ -193,3 +193,7 @@ input {
     display: flex;
     gap:20px;
 }
+
+.missingCredential{
+    background-color: #ffe6e6;
+}
