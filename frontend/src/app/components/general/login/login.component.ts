@@ -23,6 +23,8 @@ export class LoginComponent {
   invalidCredentials : boolean = false;
   waitingForResponse : boolean = false;
 
+  errorMessage : string = "";
+
 
   async submit(){
 
@@ -43,14 +45,9 @@ export class LoginComponent {
     try{
       const user = await firstValueFrom(this.userService.login(username,password));
     }catch(error: any){
-      switch(error.status){
-        case 401:
-          //Invalid credentials
-          this.invalidCredentials = true;
-          break;
-      }
+      this.invalidCredentials = true;
+      this.errorMessage = error.error;
     }
-    // console.log(user);
     this.waitingForResponse = false;
 
   }
