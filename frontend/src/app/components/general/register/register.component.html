@@ -1,1 +1,55 @@
-<p>register works!</p>
+<h1>Nikoly ovde ti radis</h1>
+<p>@PostMapping("/user/register")</p>
+<p>
+    private String username;
+    private String hashedPassword;
+    private String name;
+    private String lastname;
+    private Character gender;
+    private String address;
+    private String contactNumber;
+    private String email;
+    private String creditCardNumber;
+    private String photoPath;
+</p>
+<p>
+    (1) Лозинку проверити коришћењем регуларног израза (минимално 6 карактера, максимално 10 карактера, од тога бар једно велико слово, три мала слова, један број и један специјални карактер, и мора почињати словом). Лозинку у бази података обавезно чувати као криптовану
+    (2) Број кредитне картице мора да задовољи један од следећих типова картица. Када се унесе валидан број картице, појављује се сличица (иконица) која приказује тај тип картице. Правила су следећа:
+    Картица Diners - почиње са 300, 301, 302, 303, 36, или 38 и има тачно 15 цифара;
+    Картица MasterCard – почиње са 51, 52, 53, 54, или 55 и има тачно 16 цифара;
+    Картица Visa – почиње са 4539, 4556, 4916, 4532, 4929, 4485, 4716, и има тачно 16 цифара.
+</p>
+<p>
+    Приликом регистрације, власници шаљу своју профилну слику (минималне величине 100х100 px, а максималне величине 300х300 px, у JPG/PNG формату); слике у апликацији морају да буду унете преко FileUpload прозора, и није прихватљиво решење да буду већ ручно унете, или да се уносе путем екстерног линка до слике на другој локацији/веб сајту, која је негде већ постављена. Ако се профилна слика не дода, власник добија подразумевану профилну слику, која већ постоји у систему. (default-profile.jpg)
+SVE SLIKE SE NALAZE NA FRONTU U assets/photos, KORISTITI RELATIVNU PUTANJU OD TRENUTNOG FAJLA
+</p>
+<!-- USER VIEW -->
+<!-- <div class="container" *ngIf="currenyUserFlag == true">
+    <div class="card">
+        <div class="card-header">
+        <h4>Detalji o Korisniku</h4>
+        <p><strong>OVO TREBA DA BUDE EDITABILNO</strong></p>
+        </div>
+        <div class="card-body">
+        <div class="row">
+            <div class="col-md-4">
+            <img [src]="'../../../assets/photos/'+currentUser.photoId.path" alt="User Photo" class="img-fluid rounded-circle">
+            </div>
+            <div class="col-md-8">
+            <p><strong>ID:</strong> {{ currentUser.userId }}</p>
+            <p><strong>Korisničko Ime:</strong> {{ currentUser.username }}</p>
+            <p><strong>Ime i Prezime:</strong> {{ currentUser.name }} {{ currentUser.lastname }}</p>
+            <p><strong>Pol:</strong> {{ currentUser.gender === 'M' ? 'Muško' : 'Žensko' }}</p>
+            <p><strong>Adresa:</strong> {{ currentUser.address }}</p>
+            <p><strong>Kontakt Telefon:</strong> {{ currentUser.contactNumber }}</p>
+            <p><strong>Email:</strong> {{ currentUser.email }}</p>
+            <p><strong>Tip Korisnika:</strong> {{ currentUser.userTypeId.name }}</p>
+            <p><strong>Status:</strong> {{ currentUser.userStatusId.status }}</p>
+            </div>
+        </div>
+        </div>
+        <div class="card-footer text-right">
+            <button class="btn btn-primary" (click)="editUser()">Sačuvaj izmene</button>
+        </div>
+    </div>      
+</div> -->
