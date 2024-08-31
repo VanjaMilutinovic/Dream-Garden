@@ -1,16 +1,20 @@
+import { Photo } from "./photo.model";
+import { UserStatus } from "./user-status.model";
+import { UserType } from "./user-type.model";
+
 export class User {
-  user_id: number = 0;
-  user_type_id: number = 1;
+  userId: number = 0;
+  userTypeId: UserType = new UserType();
   username: string = "";
-  hashed_password: string = "";
+  hashedPassword: string = "";
   name: string = "";
   lastname: string = "";
   gender: 'M' | 'F' = `M`;
   address: string = "";
-  contact_number: string = "";
+  contactNumber: string = "";
   email: string = "";
-  photo_id: number = 1;
-  credit_card_number?: string;
-  user_status_id: number = 1;
+  photoId: Photo = new Photo();
+  creditCardNumber?: string;
+  userStatusId: UserStatus = new UserStatus();
 }
   

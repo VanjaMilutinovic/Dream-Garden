@@ -1,44 +1,4 @@
-.card {
-  border: none; /* Remove border if desired */
-  border-radius: 8px; /* Rounded corners */
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Subtle shadow */
-  margin-bottom: 20px; /* Space between rows */
-}
-
-.card-body {
-  padding: 2rem; /* Padding inside the card */
-}
-
 .display-1 {
-  font-size: 6rem; /* Large font size for the number */
-  font-weight: bold; /* Bold text */
-}
-
-.card-text {
-  font-size: 1.25rem; /* Slightly larger text for the description */
-  color: #6c757d; /* Grey color for text */
-}
-.card-img-top {
-  width: 100%; /* Ensures the image takes up the full width of the card */
-  height: auto; /* Maintains the aspect ratio of the image */
-}
-
-.table {
-  width: 100%;
-  margin: 20px 0;
-}
-
-.table th, .table td {
-  text-align: center;
-}
-
-.table ul {
-  padding: 0;
-  list-style-type: none;
-  text-align: left; /* Align text inside the ul to the left */
-  margin: 0; /* Remove margin if needed */
-}
-
-.table ul li {
-  margin-bottom: 5px;
+    font-size: 6rem; /* Large font size for the number */
+    font-weight: bold; /* Bold text */
 }

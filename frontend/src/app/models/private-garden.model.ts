@@ -1,8 +1,8 @@
 export class PrivateGarden {
-  job_id: number = 0;
-  pool_size: number = 0;
-  number_of_pools: number = 0;
-  grass_size: number = 0;
-  paved_size: number = 0;
+  jobId: number = 0;
+  poolSize: number = 0;
+  numberOfPools: number = 0;
+  grassSize: number = 0;
+  pavedSize: number = 0;
 }
   

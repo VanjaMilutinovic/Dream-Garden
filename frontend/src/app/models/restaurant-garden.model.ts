@@ -1,9 +1,9 @@
 export class RestaurantGarden {
-  job_id: number = 0;
-  fountain_size: number = 0;
-  number_of_fountains: number = 0;
-  grass_size: number = 0;
-  number_of_tables: number = 0;
-  number_of_seats: number = 0;
+  jobId: number = 0;
+  fountainSize: number = 0;
+  numberOfFountains: number = 0;
+  grassSize: number = 0;
+  numberOfTables: number = 0;
+  numberOfSeats: number = 0;
 }
   

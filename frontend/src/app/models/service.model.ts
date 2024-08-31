@@ -1,8 +1,8 @@
 export class Service {
-  service_id: number = 0;
-  company_id: number = 0;
+  serviceId: number = 0;
+  companyId: number = 0;
   price: number = 0;
-  service_name: string = "";
-  service_description?: string;
+  serviceName: string = "";
+  serviceDescription?: string;
 }
   

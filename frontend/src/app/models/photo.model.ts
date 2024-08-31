@@ -1,5 +1,5 @@
 export class Photo {
-  photo_id: number = 0;
+  photoId: number = 0;
   path: string = "";
 }
   

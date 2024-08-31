@@ -2,8 +2,6 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { UserType } from 'src/app/enums/user-type.enum';
-import { Company } from 'src/app/models/company.model';
-import { JobService } from 'src/app/models/job-service.model';
 import { Job } from 'src/app/models/job.model';
 import { User } from 'src/app/models/user.model';
 import { CompaniesWithWorkers } from 'src/app/response/companies-with-workers';
@@ -27,20 +25,23 @@ export class HomeComponent {
               private photoService: PhotoService,
               private companyService: CompaniesService,
               private router: Router){}
-
-              decoratedGardens ?:number;
+  // Statistics and gallery
+  decoratedGardens ?:number;
   registeredOwners ?:number;
   registeredDecorators ?:number;
   job24Hours ?:number;
   job7Days ?:number;
   job30Days ?:number;
   images :Array<String> = [];
+  // Companies
   companies :Array<CompaniesWithWorkers> = [];
   viewCompanies :Array<CompaniesWithWorkers> = [];
   searchTermName: string = '';
   searchTermAddress: string = '';
-  sortDirectionName: string = 'asc'; // Default sorting direction for name
-  sortDirectionAddress: string = 'asc'; // Default sorting direction for address
+  sortDirectionName: string = 'rastuće'; // Default sorting direction for name
+  sortDirectionAddress: string = 'rastuće'; // Default sorting direction for address
+  // Error handling
+  errorMsg: any;
 
   async ngOnInit() {
     try {
@@ -63,6 +64,7 @@ export class HomeComponent {
       this.viewCompanies = companies;
     }
     catch(error){
+      this.errorMsg = error;
       console.log(error);
     }
   }
@@ -76,18 +78,18 @@ export class HomeComponent {
   }
 
   sortByName(): void {
-    const direction = this.sortDirectionName === 'asc' ? 1 : -1;
+    const direction = this.sortDirectionName === 'rastuće' ? 1 : -1;
     this.viewCompanies = [...this.viewCompanies].sort((a, b) => 
       a.name.localeCompare(b.name) * direction
     );
-    this.sortDirectionName = this.sortDirectionName === 'asc' ? 'desc' : 'asc';
+    this.sortDirectionName = this.sortDirectionName === 'rastuće' ? 'opadajuće' : 'rastuće';
   }
 
   sortByAddress(): void {
-    const direction = this.sortDirectionAddress === 'asc' ? 1 : -1;
+    const direction = this.sortDirectionAddress === 'rastuće' ? 1 : -1;
     this.viewCompanies = [...this.viewCompanies].sort((a, b) => 
       a.address.localeCompare(b.address) * direction
     );
-    this.sortDirectionAddress = this.sortDirectionAddress === 'asc' ? 'desc' : 'asc';
+    this.sortDirectionAddress = this.sortDirectionAddress === 'rastuće' ? 'opadajuće' : 'rastuće';
   }
 }

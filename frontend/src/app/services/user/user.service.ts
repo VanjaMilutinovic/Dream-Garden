@@ -14,4 +14,5 @@ export class UserService {
     let params = "?userTypeId="+userTypeId;
     return this.http.get<any>(this.path+"getByUserTypeId" + params);
   }
+
 }

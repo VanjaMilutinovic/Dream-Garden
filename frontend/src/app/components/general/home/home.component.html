@@ -1,12 +1,12 @@
 <!-- STATISTIC -->
 <div class="container">
-  <h2>Statistic</h2>
+  <h2>Statistika</h2>
   <div class="row">
     <div class="col-md-4">
       <div class="card text-center">
         <div class="card-body">
           <h1 class="display-1">{{decoratedGardens}}</h1>
-          <p class="card-text">Gardens Decorated</p>
+          <p class="card-text">Uređenih bašti</p>
         </div>
       </div>
     </div>
@@ -14,7 +14,7 @@
       <div class="card text-center">
         <div class="card-body">
           <h1 class="display-1">{{registeredOwners}}</h1>
-          <p class="card-text">Registered Owners</p>
+          <p class="card-text">Registrovanih vlasnika</p>
         </div>
       </div>
     </div>
@@ -22,7 +22,7 @@
       <div class="card text-center">
         <div class="card-body">
           <h1 class="display-1">{{registeredDecorators }}</h1>
-          <p class="card-text">Registered Decorators</p>
+          <p class="card-text">Registrovanih dekoratera</p>
         </div>
       </div>
     </div>
@@ -34,7 +34,7 @@
       <div class="card text-center">
         <div class="card-body">
           <h1 class="display-1">{{job24Hours}}</h1>
-          <p class="card-text">Jobs in last 24 hours</p>
+          <p class="card-text">Zakazanih poslova u poslednjih 24 sata</p>
         </div>
       </div>
     </div>
@@ -42,7 +42,7 @@
       <div class="card text-center">
         <div class="card-body">
           <h1 class="display-1">{{job7Days}}</h1>
-          <p class="card-text">Jobs in last 7 days</p>
+          <p class="card-text">Zakazanih poslova u poslednjih 7 dana</p>
         </div>
       </div>
     </div>
@@ -50,7 +50,7 @@
       <div class="card text-center">
         <div class="card-body">
           <h1 class="display-1">{{job30Days }}</h1>
-          <p class="card-text">Jobs in last 30 days</p>
+          <p class="card-text">Zakazanih poslova u poslednjih 30 dana</p>
         </div>
       </div>
     </div>
@@ -58,7 +58,7 @@
 </div>
 <!-- GALLERY -->
 <div class="container">
-  <h2>Gallery</h2>
+  <h2>Galerija slika</h2>
   <div class="row">
     <div class="col-md-4" *ngFor="let image of images">
       <div class="card text-center">
@@ -69,25 +69,25 @@
 </div>
 <!-- COMPANIES -->
 <div class="container">
-  <h2>Companies and Workers</h2>
+  <h2>Kompanije i radnici</h2>
   <div class="mb-3">
-    <input type="text" class="form-control m-1 row" placeholder="Search by company name" [(ngModel)]="searchTermName">
-    <input type="text" class="form-control m-1 row" placeholder="Search by address" [(ngModel)]="searchTermAddress">
+    <input type="text" class="form-control m-1 row" placeholder="Pretraži po imenu" [(ngModel)]="searchTermName">
+    <input type="text" class="form-control m-1 row" placeholder="Pretraži po adresi" [(ngModel)]="searchTermAddress">
     <div class="row m-1">
-      <button class="btn btn-primary search-button col-md-3" (click)="search()">Search</button>
+      <button class="btn btn-primary search-button col-md-3" (click)="search()">Pretraži</button>
       <span class="col-md-1"></span>
-      <button class="btn btn-secondary sort-button col-md-3" (click)="sortByName()">Sort by Name ({{ sortDirectionName }})</button>
+      <button class="btn btn-secondary sort-button col-md-3" (click)="sortByName()">Sortiraj po imenu ({{ sortDirectionName }})</button>
       <span class="col-md-1"></span>
-      <button class="btn btn-secondary sort-button col-md-3" (click)="sortByAddress()">Sort by Address ({{ sortDirectionAddress }})</button>
+      <button class="btn btn-secondary sort-button col-md-3" (click)="sortByAddress()">Sortiraj po adresi ({{ sortDirectionAddress }})</button>
     </div>
   </div>
   <table class="table table-striped">
     <thead>
       <tr>
-        <th>Company ID</th>
-        <th>Company Name</th>
-        <th>Address</th>
-        <th>Workers</th>
+        <th>ID Kompanije</th>
+        <th>Ime Kompanije</th>
+        <th>Adresa</th>
+        <th>Radnici</th>
       </tr>
     </thead>
     <tbody>

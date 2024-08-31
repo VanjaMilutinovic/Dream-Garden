@@ -1,28 +1,28 @@
 /* Example styles for the header component */
 
 .navbar {
-    border-bottom: 2px solid #f8c6d2; /* Baby pink border for the navbar */
-  }
-  
-  .navbar-brand img {
-    height: 40px;
-  }
-  
-  .nav-link {
-    color: #f06292 !important; /* Baby pink text color */
-  }
-  
-  .nav-link.active {
-    font-weight: bold;
-  }
-  
-  .nav-link.disabled {
-    color: #ccc;
-  }
-  
-  /* header.component.css */
+  border-bottom: 2px solid #f8c6d2; /* Baby pink border for the navbar */
+}
+
+.navbar-brand img {
+  height: 40px;
+}
+
+.nav-link {
+  color: #f06292 !important; /* Baby pink text color */
+}
+
+.nav-link.active {
+  font-weight: bold;
+}
+
+.nav-link.disabled {
+  color: #ccc;
+}
+
+/* header.component.css */
 .navbar {
-  background-color: #f8f9fa; /* Light background color */
+background-color: #f8f9fa; /* Light background color */
 }
 
 .navbar-logo {

@@ -5,23 +5,49 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
+      <!-- NOT LOGGED IN -->
       <li class="nav-item" *ngIf="notLogged">
-        <a class="nav-link" href='/home'>Home</a>
+        <a class="nav-link" href='/home'>Početna</a>
       </li>
       <li class="nav-item" *ngIf="notLogged">
-        <a class="nav-link" href='/login'>Login</a>
+        <a class="nav-link" href='/login'>Uloguj se</a>
+      </li>
+      <!-- ADMIN -->
+      <li class="nav-item" *ngIf="isAdmin">
+        <a class="nav-link" href="/admin/users">Upravljanje Korisnicima</a>
       </li>
       <li class="nav-item" *ngIf="isAdmin">
-        <a class="nav-link" href="#">Admin Dashboard</a>
+        <a class="nav-link" href="/admin/companies">Upravljanje Kompanijama</a>
+      </li>
+      <!-- OWNER -->
+      <li class="nav-item" *ngIf="isOwner">
+        <a class="nav-link" href="/owner/profile">Profil</a>
       </li>
       <li class="nav-item" *ngIf="isOwner">
-        <a class="nav-link" href="#">Owner Profile</a>
+        <a class="nav-link" href="/owner/companies">Kompanije</a>
+      </li>
+      <li class="nav-item" *ngIf="isOwner">
+        <a class="nav-link" href="/owner/job">Zakazivanja</a>
+      </li>
+      <li class="nav-item" *ngIf="isOwner">
+        <a class="nav-link" href="/owner/maintenance">Održavanje</a>
+      </li>
+      <!-- DECORATOR -->
+      <li class="nav-item" *ngIf="isDecorator">
+        <a class="nav-link" href="/decorator/profile">Profil</a>
       </li>
       <li class="nav-item" *ngIf="isDecorator">
-        <a class="nav-link" href="#">Decorator Tools</a>
+        <a class="nav-link" href="/decorator/job">Zakazivanja</a>
       </li>
+      <li class="nav-item" *ngIf="isDecorator">
+        <a class="nav-link" href="/decorator/maintenance">Održavanje</a>
+      </li>
+      <li class="nav-item" *ngIf="isDecorator">
+        <a class="nav-link" href="/decorator/statistic">Statistika</a>
+      </li>
+      <!-- LOGGED IN - EVERYONE -->
       <li class="nav-item" *ngIf="!notLogged">
-        <a class="nav-link" href="/home" (click)="logout()">Logout</a>
+        <a class="nav-link" href="/home" (click)="logout()">Izloguj se</a>
       </li>
     </ul>
   </div>

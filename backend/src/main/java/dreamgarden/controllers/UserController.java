@@ -190,7 +190,10 @@ public class UserController {
         user.setCreditCardNumber(request.getCreditCardNumber());
         user.setUserTypeId(userType.get());
         user.setPhotoId(photo);
-        user.setUserStatusId(new UserStatus(1)); //pending
+        if (userType.get().getUserTypeId()==1)
+            user.setUserStatusId(new UserStatus(1)); //pending
+        else
+            user.setUserStatusId(new UserStatus(2));
         user = userRepository.saveAndFlush(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }

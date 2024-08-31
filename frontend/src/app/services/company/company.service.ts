@@ -10,6 +10,10 @@ export class CompaniesService {
 
   path :string = "http://localhost:8080/company/";
 
+  getAll(){
+    return this.http.get<any>(this.path+"getAll");
+  }
+
   getAllCompaniesWithWorkers(){
     return this.http.get<any>(this.path+"getAllCompaniesWithWorkers");
   }

@@ -1,73 +1,107 @@
 @import "~bootstrap/dist/css/bootstrap.min.css";
 /* General body styles */
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #fce4ec; /* Light baby pink background */
-    color: #333; /* Darker text color for contrast */
-  }
-  
-  /* Header styling */
-  header {
-    background-color: #f8bbd0; /* Baby pink for header */
-    padding: 15px 0;
-  }
-  
+  font-family: 'Arial', sans-serif;
+  background-color: #fce4ec; /* Light baby pink background */
+  color: #333; /* Darker text color for contrast */
+}
+
+/* Header styling */
+header {
+  background-color: #f8bbd0; /* Baby pink for header */
+  padding: 15px 0;
+}
+
+header .navbar {
+  background-color: #f48fb1; /* Slightly darker pink for navbar */
+}
+
+header .navbar-brand {
+  color: #fff; /* White text for brand */
+}
+
+header .navbar-nav .nav-link {
+  color: #fff; /* White text for navigation links */
+}
+
+/* Main content area */
+main {
+  padding: 20px;
+}
+
+/* Cards and buttons with baby pink theme */
+.card {
+  border-color: #f8bbd0; /* Border color matching header */
+  border: none; /* Remove border if desired */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Subtle shadow */
+  margin-bottom: 20px; /* Space between rows */
+}
+
+.card-header, .card-footer {
+  background-color: #fce4ec; /* Light baby pink for card header/footer */
+}
+
+.card-body {
+  background-color: #fff; /* White background for card content */  
+  padding: 2rem; /* Padding inside the card */
+}
+
+.card-text {
+  font-size: 1.25rem; /* Slightly larger text for the description */
+  color: #6c757d; /* Grey color for text */
+}
+
+.card-img-top {
+  width: 100%; /* Ensures the image takes up the full width of the card */
+  height: auto; /* Maintains the aspect ratio of the image */
+}
+
+.btn-primary {
+  background-color: #f48fb1; /* Primary button background */
+  border-color: #f48fb1; /* Button border color */
+  color: #333; /* Button text color */
+}
+
+.btn-primary:hover {
+  background-color: #f06292; /* Slightly darker pink on hover */
+  border-color: #f06292; /* Border color on hover */
+  color: #333; /* Button text color */
+}
+
+.table {
+  width: 100%;
+  margin: 20px 0;
+}
+
+.table th, .table td {
+  text-align: center;
+}
+
+.table ul {
+  padding: 0;
+  list-style-type: none;
+  text-align: left; /* Align text inside the ul to the left */
+  margin: 0; /* Remove margin if needed */
+}
+
+.table ul li {
+  margin-bottom: 5px;
+}
+
+/* Responsive styling */
+@media (max-width: 768px) {
   header .navbar {
-    background-color: #f48fb1; /* Slightly darker pink for navbar */
+    padding: 10px;
   }
-  
-  header .navbar-brand {
-    color: #fff; /* White text for brand */
-  }
-  
-  header .navbar-nav .nav-link {
-    color: #fff; /* White text for navigation links */
-  }
-  
-  /* Main content area */
-  main {
-    padding: 20px;
-  }
-  
-  /* Cards and buttons with baby pink theme */
+
   .card {
-    border-color: #f8bbd0; /* Border color matching header */
+    margin-bottom: 15px;
   }
-  
-  .card-header, .card-footer {
-    background-color: #fce4ec; /* Light baby pink for card header/footer */
-  }
-  
-  .card-body {
-    background-color: #fff; /* White background for card content */
-  }
-  
+}
+
+@media (max-width: 576px) {
   .btn-primary {
-    background-color: #f48fb1; /* Primary button background */
-    border-color: #f48fb1; /* Button border color */
-    color: #333; /* Button text color */
+    width: 100%; /* Full-width buttons on small screens */
   }
-  
-  .btn-primary:hover {
-    background-color: #f06292; /* Slightly darker pink on hover */
-    border-color: #f06292; /* Border color on hover */
-    color: #333; /* Button text color */
-  }
-  
-  /* Responsive styling */
-  @media (max-width: 768px) {
-    header .navbar {
-      padding: 10px;
-    }
-  
-    .card {
-      margin-bottom: 15px;
-    }
-  }
-  
-  @media (max-width: 576px) {
-    .btn-primary {
-      width: 100%; /* Full-width buttons on small screens */
-    }
-  }
-  
+}

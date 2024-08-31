@@ -23,19 +23,19 @@ export class HeaderComponent implements OnInit {
       this.isOwner = false;
       this.isDecorator = false;
     }
-    if (this.user.user_type_id == 3) {
+    if (this.user.userTypeId.userTypeId == 3) {
       this.notLogged = false;
       this.isAdmin = true;
       this.isOwner = false;
       this.isDecorator = false;
     }
-    else if (this.user.user_type_id == 1) {
+    else if (this.user.userTypeId.userTypeId == 1) {
       this.notLogged = false;
       this.isAdmin = false;
       this.isOwner = true;
       this.isDecorator = false;
     }
-    else if (this.user.user_type_id == 2) {
+    else if (this.user.userTypeId.userTypeId == 2) {
       this.notLogged = false;
       this.isAdmin = false;
       this.isDecorator = true;

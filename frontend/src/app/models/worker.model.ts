@@ -1,6 +1,6 @@
 export class Worker {
-  worker_id: number = 0;
-  user_id: number = 0;
-  company_id: number = 0;
+  workerId: number = 0;
+  userId: number = 0;
+  companyId: number = 0;
 }
   

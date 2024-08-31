@@ -44,7 +44,7 @@ public class CompanyController {
 
 
     @GetMapping("/getAll")
-    public ResponseEntity<?> getAllUsers() {
+    public ResponseEntity<?> getAll() {
         List<Company> companies = companyRepository.findAll();
         return ResponseEntity.ok(companies);
     }
