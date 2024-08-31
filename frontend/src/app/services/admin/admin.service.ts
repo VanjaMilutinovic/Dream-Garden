@@ -18,4 +18,9 @@ export class AdminService {
     let params = "?userId="+userId+"&userStatusId="+userStatusId;
     return this.http.post<any>(this.path+"user/setStatus"+params, null);
   }
+
+  login(username:string, hashedPassword:string){
+    let params = "?username="+username+"&hashedPassword="+hashedPassword;
+    return this.http.get<any>(this.path+"login" + params);
+  }
 }

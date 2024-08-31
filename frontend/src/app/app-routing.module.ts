@@ -20,11 +20,13 @@ import { UsersComponent as AdminUsersComponent } from './components/admin/users/
 import { CompaniesComponent as AdminCompaniesComponent } from './components/admin/companies/companies.component';
 import { CreateWorkerComponent as AdminCreateWorkerComponent } from './components/admin/create-worker/create-worker.component';
 import { CreateCompanyComponent as AdminCreateCompanyComponent } from './components/admin/create-company/create-company.component';
+import { ChangePasswordComponent } from './components/general/change-password/change-password.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'login', component: GeneralLoginComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'change-password', component: ChangePasswordComponent },
   // OWNER
   { path: 'owner/profile', component: OwnerProfileComponent },
   { path: 'owner/companies', component: OwnerCompaniesComponent },
@@ -36,7 +38,7 @@ const routes: Routes = [
   { path: 'decorator/maintenance', component: DecoratorMaintenanceComponent },
   { path: 'decorator/statistic', component: DecoratorStatisticComponent },
   // ADMIN
-  { path: 'admin/login', component: AdminLoginComponent },
+  { path: 'admin/login', component: GeneralLoginComponent },
   { path: 'admin/users', component: AdminUsersComponent },
   { path: 'admin/companies', component: AdminCompaniesComponent },
   { path: 'admin/users/createWorker', component: AdminCreateWorkerComponent },
