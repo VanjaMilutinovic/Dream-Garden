@@ -15,7 +15,6 @@ import { JobComponent as DecoratorJobComponent } from './components/decorator/jo
 import { MaintenanceComponent as DecoratorMaintenanceComponent } from './components/decorator/maintenance/maintenance.component';
 import { StatisticComponent as DecoratorStatisticComponent } from './components/decorator/statistic/statistic.component';
 
-import { LoginComponent as AdminLoginComponent } from './components/admin/login/login.component';
 import { UsersComponent as AdminUsersComponent } from './components/admin/users/users.component';
 import { CompaniesComponent as AdminCompaniesComponent } from './components/admin/companies/companies.component';
 import { CreateWorkerComponent as AdminCreateWorkerComponent } from './components/admin/create-worker/create-worker.component';
@@ -30,7 +29,7 @@ const routes: Routes = [
   // OWNER
   { path: 'owner/profile', component: OwnerProfileComponent },
   { path: 'owner/companies', component: OwnerCompaniesComponent },
-  { path: 'owne/job', component: OwnerJobComponent}, 
+  { path: 'owner/job', component: OwnerJobComponent}, 
   { path: 'owner/maintenance', component: OwnerMaintenanceComponent},
   // DECORATOR
   { path: 'decorator/profile', component: DecoratorProfileComponent },

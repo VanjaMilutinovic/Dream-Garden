@@ -60,12 +60,16 @@ export class LoginComponent {
     try{
       const url = this.router.url;
       let user;
-      if(url.startsWith("/admin")) user = await firstValueFrom(this.adminService.login(username,password)) as User;
-      else user = await firstValueFrom(this.userService.login(username,password)) as User;
-
-      localStorage.setItem("user",JSON.stringify(user));
-      //Probao sam sa router.navigate ali kad dodjem na stranicu profila header ostane nepromenjen :(
-      window.location.href = user.userTypeId.name+'/profile';
+      if(url.startsWith("/admin")) {
+        user = await firstValueFrom(this.adminService.login(username,password)) as User;
+        localStorage.setItem("user",JSON.stringify(user));
+        window.location.href = 'admin/users';
+      }      
+      else {
+        user = await firstValueFrom(this.userService.login(username,password)) as User;
+        localStorage.setItem("user",JSON.stringify(user));
+        window.location.href = user.userTypeId.name+'/profile';
+      }
     }catch(error: any){
       this.errorMessage = error.error;
     }

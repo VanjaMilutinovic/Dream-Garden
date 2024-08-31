@@ -10,7 +10,6 @@ import { ChangePasswordComponent } from './components/general/change-password/ch
 import { HeaderComponent } from './components/util/header/header.component';
 import { FooterComponent } from './components/util/footer/footer.component';
 import { HomeComponent } from './components/general/home/home.component';
-import { LoginComponent as AdminLoginComponent } from './components/admin/login/login.component';
 import { ProfileComponent } from './components/owner/profile/profile.component';
 import { CompaniesComponent as OwnerCompaniesComponent} from './components/owner/companies/companies.component';
 import { JobComponent } from './components/owner/job/job.component';
@@ -26,7 +25,6 @@ import { LeafletMapComponent } from './components/general/leaflet-map/leaflet-ma
   declarations: [
     AppComponent,
     GeneralLoginComponent,
-    AdminLoginComponent,
     RegisterComponent,
     ChangePasswordComponent,
     HeaderComponent,

@@ -58,9 +58,9 @@ export class ChangePasswordComponent {
 
     try{
       const user = await firstValueFrom(this.userService.changePassword(username,sha512(oldPassword), sha512(newPassword))) as User;
-      localStorage.setItem("user",JSON.stringify(user));
+      localStorage.removeItem("user");
       //Probao sam sa router.navigate ali kad dodjem na stranicu profila header ostane nepromenjen :(
-      window.location.href = user.userTypeId.name+'/profile';
+      window.location.href = '/login';
     }catch(error: any){
       this.errorMessage = error.error;
     }
