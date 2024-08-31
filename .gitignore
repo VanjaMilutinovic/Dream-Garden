@@ -1,0 +1,11 @@
+# Ignoriše buildovanu verziju backenda 
+backend/target
+
+# Ignoriše angularov keš -- kreira se sa 'ng s' ili 'ng b'
+frontend/.angular
+
+# Ignoriše biblioteke -- kreira se sa 'npm install'
+frontend/node_modules
+
+# Ignoriše buildovani frontend
+frontend/dist
