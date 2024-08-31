@@ -22,7 +22,7 @@
       <h4>Dream Garden</h4>
       <p>Dobrodošli nazad! Ulogujte se koristeći Vaše kredencijale:</p>
       <div class="floating-label">
-        <input [class.missingCredential]="missingCredential" (keyup)="missingCredential = false" placeholder="Korisničko ime" formControlName="username" type="username" name="username" id="username" autocomplete="off">
+        <input [class.missingCredential]="missingUsername" (keyup)="missingUsername = false; invalidCredentials=false;" placeholder="Korisničko ime" formControlName="username" type="username" name="username" id="username" autocomplete="off">
         <label for="username">Korisničko ime:</label>
         <div class="icon">
 
@@ -36,7 +36,7 @@
         </div>
       </div>
       <div class="floating-label">
-        <input [class.missingCredential]="missingCredential" (keyup)="missingCredential = false" placeholder="Šifra" formControlName="password" type="password" name="password" id="password" autocomplete="off">
+        <input [class.missingCredential]="missingPassword" (keyup)="missingPassword = false; invalidCredentials=false;" placeholder="Šifra" formControlName="password" type="password" name="password" id="password" autocomplete="off">
         <label for="password">Šifra:</label>
         <div class="icon">
 

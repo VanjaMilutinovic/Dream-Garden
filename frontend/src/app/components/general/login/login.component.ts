@@ -17,7 +17,9 @@ export class LoginComponent {
     password: new FormControl("")
   });
 
-  missingCredential : boolean = false;
+  missingUsername : boolean = false;
+  missingPassword : boolean = false;
+
   invalidCredentials : boolean = false;
   waitingForResponse : boolean = false;
 
@@ -28,7 +30,8 @@ export class LoginComponent {
 
     const values = this.form.value;
     if(!values.username || !values.password){
-      this.missingCredential = true;
+      this.missingUsername = !values.username;
+      this.missingPassword = !values.password;
       return;
     }
 
