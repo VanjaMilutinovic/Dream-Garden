@@ -100,10 +100,10 @@ public class UserController {
     }
     
     @PostMapping("/changePassword")
-    public ResponseEntity<?> changePassword(@RequestParam(name = "userId", required = true) Integer userId,
+    public ResponseEntity<?> changePassword(@RequestParam(name = "username", required = true) String username,
                                             @RequestParam(name = "oldHashedPassword", required = true) String oldHashedPassword,
                                             @RequestParam(name = "newHashedPassword", required = true) String newHashedPassword) {
-        Optional<User> userOptional = userRepository.findById(userId);
+        Optional<User> userOptional = userRepository.findByUsername(username);
         if (userOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }

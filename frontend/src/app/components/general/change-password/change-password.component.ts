@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import { sha512 } from 'js-sha512';
 import { firstValueFrom } from 'rxjs';
 import { User } from 'src/app/models/user.model';
-import { AdminService } from 'src/app/services/admin/admin.service';
 import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
@@ -33,7 +32,6 @@ export class ChangePasswordComponent {
 
   constructor(
     private userService: UserService,
-    private adminService: AdminService,
     private router: Router
   ){
 
@@ -52,20 +50,19 @@ export class ChangePasswordComponent {
     }
 
     const username = values.username;
-    const password = sha512(values.password);
+    const oldPassword = sha512(values.oldPassword);
+    const newPassword = sha512(values.newPassword);
 
     this.invalidCredentials = false;
     this.waitingForResponse = true;
-    try{
-      const url = this.router.url;
-      let user;
-      if(url.startsWith("/admin")) user = await firstValueFrom(this.adminService.login(username,password)) as User;
-      else user = await firstValueFrom(this.userService.login(username,password)) as User;
 
+    try{
+      const user = await firstValueFrom(this.userService.changePassword(username,oldPassword,newPassword)) as User;
       localStorage.setItem("user",JSON.stringify(user));
       //Probao sam sa router.navigate ali kad dodjem na stranicu profila header ostane nepromenjen :(
       window.location.href = user.userTypeId.name+'/profile';
     }catch(error: any){
+      console.log(error);
       this.invalidCredentials = true;
       this.errorMessage = error.error;
     }

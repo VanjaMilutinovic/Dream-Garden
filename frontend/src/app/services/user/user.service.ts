@@ -20,4 +20,9 @@ export class UserService {
     return this.http.get<any>(this.path+"login" + params);
   }
 
+  changePassword(username:string, oldHashedPassword:string, newHashedPassword:string){
+    let params = "?username="+username+"&oldHashedPassword="+oldHashedPassword+"&newHashedPassword="+newHashedPassword;
+    return this.http.post<any>(this.path+"changePassword" + params, null);
+  }
+
 }
