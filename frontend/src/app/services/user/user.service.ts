@@ -25,4 +25,8 @@ export class UserService {
     return this.http.post<any>(this.path+"changePassword" + params, null);
   }
 
+  register(formData: FormData)  {
+    return this.http.post<any>(this.path + "register", formData);
+  }
+
 }
