@@ -28,12 +28,7 @@ export class ChangePasswordComponent {
   errorMessage : string = "";
 
 
-  constructor(
-    private userService: UserService,
-    private router: Router
-  ){
-
-  }
+  constructor(private userService: UserService){}
 
   async submit(){
 
@@ -48,14 +43,21 @@ export class ChangePasswordComponent {
     }
 
     const username = values.username;
-    const oldPassword = sha512(values.oldPassword);
-    const newPassword = sha512(values.newPassword);
+
+    const oldPassword = values.oldPassword;
+    const newPassword = values.newPassword;
+    if(
+      !newPassword.toString().match(/^(?=.*[A-Z])(?=(.*[a-z]){3,})(?=.*\d)[A-Za-z][A-Za-z\d\W_]{5,9}$/g) 
+    ){
+      this.errorMessage = "New password fails the regex";
+      return;
+    }
 
     this.errorMessage = "";
     this.waitingForResponse = true;
 
     try{
-      const user = await firstValueFrom(this.userService.changePassword(username,oldPassword,newPassword)) as User;
+      const user = await firstValueFrom(this.userService.changePassword(username,sha512(oldPassword), sha512(newPassword))) as User;
       localStorage.setItem("user",JSON.stringify(user));
       //Probao sam sa router.navigate ali kad dodjem na stranicu profila header ostane nepromenjen :(
       window.location.href = user.userTypeId.name+'/profile';
