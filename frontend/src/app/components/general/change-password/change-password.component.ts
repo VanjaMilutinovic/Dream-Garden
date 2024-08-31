@@ -24,9 +24,7 @@ export class ChangePasswordComponent {
   missingOldPassword : boolean = false;
   missingNewPassword : boolean = false;
 
-  invalidCredentials : boolean = false;
   waitingForResponse : boolean = false;
-
   errorMessage : string = "";
 
 
@@ -53,7 +51,7 @@ export class ChangePasswordComponent {
     const oldPassword = sha512(values.oldPassword);
     const newPassword = sha512(values.newPassword);
 
-    this.invalidCredentials = false;
+    this.errorMessage = "";
     this.waitingForResponse = true;
 
     try{
@@ -62,8 +60,6 @@ export class ChangePasswordComponent {
       //Probao sam sa router.navigate ali kad dodjem na stranicu profila header ostane nepromenjen :(
       window.location.href = user.userTypeId.name+'/profile';
     }catch(error: any){
-      console.log(error);
-      this.invalidCredentials = true;
       this.errorMessage = error.error;
     }
     this.waitingForResponse = false;

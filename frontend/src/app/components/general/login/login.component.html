@@ -7,7 +7,7 @@
         <p>Dobrodošli nazad! Ulogujte se koristeći Vaše kredencijale:</p>
         <div class="floating-label">
             <input [class.missingCredential]="missingUsername"
-                (keyup)="missingUsername = false; invalidCredentials=false;" placeholder="Korisničko ime"
+                (keyup)="missingUsername = false; errorMessage = ''" placeholder="Korisničko ime"
                 formControlName="username" type="username" name="username" id="username" autocomplete="off">
             <label for="username">Korisničko ime:</label>
             <div class="icon">
@@ -24,7 +24,7 @@
         </div>
         <div class="floating-label">
             <input [class.missingCredential]="missingPassword"
-                (keyup)="missingPassword = false; invalidCredentials=false;" placeholder="Šifra"
+                (keyup)="missingPassword = false; errorMessage = ''" placeholder="Šifra"
                 formControlName="password" type="password" name="password" id="password" autocomplete="off">
             <label for="password">Šifra:</label>
             <div class="icon">
@@ -56,6 +56,6 @@
         </div>
         <button type="submit" (click)="submit()" onClick="return false;" class="btn btn-primary search-button">Ulogujte
             se</button>
-        <p [class.visible]="invalidCredentials" class="error_message">{{errorMessage}}</p>
+        <p class="error_message">{{errorMessage}}</p>
     </form>
 </div>

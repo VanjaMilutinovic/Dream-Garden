@@ -202,8 +202,4 @@ input {
     color: #ee0000;
     font-size: 11px;
     margin: 0px;
-    visibility: hidden;
-}
-.visible{
-    visibility: visible;
 }

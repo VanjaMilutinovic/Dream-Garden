@@ -37,9 +37,7 @@ export class LoginComponent {
   missingUsername : boolean = false;
   missingPassword : boolean = false;
 
-  invalidCredentials : boolean = false;
   waitingForResponse : boolean = false;
-
   errorMessage : string = "";
 
 
@@ -57,7 +55,7 @@ export class LoginComponent {
     const username = values.username;
     const password = sha512(values.password);
 
-    this.invalidCredentials = false;
+    this.errorMessage = "";
     this.waitingForResponse = true;
     try{
       const url = this.router.url;
@@ -69,7 +67,6 @@ export class LoginComponent {
       //Probao sam sa router.navigate ali kad dodjem na stranicu profila header ostane nepromenjen :(
       window.location.href = user.userTypeId.name+'/profile';
     }catch(error: any){
-      this.invalidCredentials = true;
       this.errorMessage = error.error;
     }
     this.waitingForResponse = false;
