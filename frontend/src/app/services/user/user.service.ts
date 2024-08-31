@@ -15,4 +15,9 @@ export class UserService {
     return this.http.get<any>(this.path+"getByUserTypeId" + params);
   }
 
+  login(username:string, hashedPassword:string){
+    let params = "?username="+username+"&hashedPassword="+hashedPassword;
+    return this.http.get<any>(this.path+"login" + params);
+  }
+
 }

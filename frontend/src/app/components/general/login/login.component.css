@@ -197,3 +197,13 @@ input {
 .missingCredential{
     background-color: #ffe6e6;
 }
+
+.error_message{
+    color: #ee0000;
+    font-size: 11px;
+    margin: 0px;
+    visibility: hidden;
+}
+.visible{
+    visibility: visible;
+}

@@ -53,5 +53,6 @@
         <a href="https://codepen.io/elujambio/pen/yjwzGP" class="discrete" target="_blank">Zaboravili ste šifru?</a>
       </div>
       <button type="submit" (click)="submit()" onClick="return false;" class="btn btn-primary search-button">Ulogujte se</button>
+      <p [class.visible]="invalidCredentials" class="error_message">Uneli ste nevalidne kredencijale</p>
     </form>
   </div>
