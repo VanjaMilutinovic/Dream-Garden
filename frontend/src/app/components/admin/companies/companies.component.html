@@ -56,10 +56,18 @@
             <div class="row">
                 <div class="col-md-8">
                     <p><strong>ID:</strong> {{ currentCompany.companyId }}</p>
-                    <p><strong>Naziv Kompanije:</strong> {{ currentCompany.name }}</p>
-                    <p><strong>Kontakt Osoba:</strong> {{ currentCompany.contactPerson }}</p>
-                    <p><strong>Kontakt Telefon:</strong> {{ currentCompany.contactNumber }}</p>
-                    <p><strong>Adresa:</strong> {{ currentCompany.address }}</p>
+                    <label for="name"><strong>Naziv Kompanije:</strong></label>
+                    <input type="text" id="name" class="form-control"
+                        [(ngModel)]="currentCompany.name" name="name"/>
+                    <label for="contactPerson"><strong>Kontakt Osoba:</strong></label>
+                    <input type="text" id="contactPerson" class="form-control"
+                        [(ngModel)]="currentCompany.contactPerson" name="contactPerson"/>
+                    <label for="contactNumber"><strong>Kontakt Telefon:</strong></label>
+                    <input type="text" id="contactNumber" class="form-control"
+                        [(ngModel)]="currentCompany.contactNumber" name="contactNumber"/>
+                    <label for="address"><strong>Adresa:</strong></label>
+                    <input type="text" id="address" class="form-control"
+                        [(ngModel)]="currentCompany.address" name="address"/>
                 </div>
             </div>
             <h5 class="card-title"><strong>Usluge</strong></h5>
@@ -161,7 +169,7 @@
         </div>
         <div class="card-footer text-right">
             <p class="error-message">{{ errorMsg }}</p>  
-            <button class="btn btn-primary" (click)="editUser()">Sačuvaj izmene</button>
+            <button class="btn btn-primary" (click)="update()">Sačuvaj izmene</button>
         </div>
     </div>      
 </div>

@@ -79,7 +79,25 @@ export class CompaniesComponent {
     this.service.companyId = company;
   }
   
-  editUser(){ }
+  async update(){ 
+    try {
+      let data = {
+        companyId: this.currentCompany.companyId,
+        name: this.currentCompany.name,
+        address: this.currentCompany.address,
+        contactNumber: this.currentCompany.contactNumber,
+        contactPerson: this.currentCompany.contactPerson,
+        latitude: this.currentCompany.latitude,
+        longitude: this.currentCompany.longitude
+      }
+      const c = await firstValueFrom(this.companyService.update(data)) as Company;
+      this.currentCompany = c;
+    }
+    catch(error: any){
+      this.errorMsg = error.error;
+      console.log(error);
+    }
+  }
 
   showNewCompany(){
     this.router.navigate(['admin/companies/createCompany']);
