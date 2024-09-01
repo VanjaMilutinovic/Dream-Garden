@@ -62,7 +62,7 @@
   <div class="row">
     <div class="col-md-4" *ngFor="let image of images">
       <div class="card text-center">
-        <img [src]="image" class="card-img-top" alt="Image">
+        <img [src]="sanitizer.bypassSecurityTrustResourceUrl(image)" class="card-img-top" alt="Image">
       </div>
     </div>
   </div>

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { UserType } from 'src/app/enums/user-type.enum';
@@ -24,7 +25,7 @@ export class HomeComponent {
               private userService: UserService,
               private photoService: PhotoService,
               private companyService: CompaniesService,
-              private router: Router){}
+              public sanitizer: DomSanitizer){}
   // Statistics and gallery
   decoratedGardens ?:number;
   registeredOwners ?:number;
@@ -32,7 +33,7 @@ export class HomeComponent {
   job24Hours ?:number;
   job7Days ?:number;
   job30Days ?:number;
-  images :Array<String> = [];
+  images : string[] = [];
   // Companies
   companies :Array<CompaniesWithWorkers> = [];
   viewCompanies :Array<CompaniesWithWorkers> = [];
@@ -56,9 +57,10 @@ export class HomeComponent {
       this.registeredOwners = owners.length;
       const decorators = await firstValueFrom(this.userService.getByUserTypeId(UserType.Decorator)) as Array<User>;
       this.registeredDecorators = decorators.length;
-      const photos = await firstValueFrom(this.photoService.getTopK(3)) as Array<String>;
+      const photos = await firstValueFrom(this.photoService.getTopK(3)) as string[];
+      console.log(photos);
       photos.forEach(photo => {
-        this.images.push("../../../../assets/photos/"+photo);
+        this.images.push(photo);
       });
       const companies = await firstValueFrom(this.companyService.getAllCompaniesWithWorkers()) as Array<CompaniesWithWorkers>;
       this.companies = companies;
