@@ -23,6 +23,8 @@ export class StatisticComponent {
             label: '# of Votes',
             data: [12, 19, 3, 5, 2, 3],
             borderWidth: 1,
+            backgroundColor: "#f06292",
+          borderRadius: 5
           },
         ],
       },
@@ -80,9 +82,7 @@ export class StatisticComponent {
           data: [
             6,17,28,15
           ],
-          backgroundColor: "red",
-          borderColor: "red",
-          borderWidth: 1,
+          backgroundColor: "#f06292",
           barPercentage: 1,
           categoryPercentage: 1,
           borderRadius: 5,

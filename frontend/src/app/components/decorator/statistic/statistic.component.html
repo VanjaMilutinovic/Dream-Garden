@@ -15,14 +15,26 @@
 <p>@GetMapping("/job/getByDay")</p> -->
 
 <div>
-    <canvas id="barChart">{{barChart}}</canvas>
+	<details>
+		<summary>
+			How do you create an accordion?
+		</summary>
+        <div class="chart_div">
+            <canvas id="barChart">{{barChart}}</canvas>
+        </div>
+	</details>
+	<details>
+		<summary>
+			What if I have to support IE11 or older browsers?
+		</summary>
+        <div class="chart_div">
+		<canvas id="histogramChart">{{histogramChart}}</canvas></div>
+	</details>
+	<details>
+		<summary>
+			What type of content can I have inside one of these?
+		</summary>
+        <div class="chart_div">
+		<canvas id="pieChart">{{pieChart}}</canvas></div>
+	</details>
 </div>
-<br>
-<div>
-    <canvas id="pieChart">{{pieChart}}</canvas>
-</div>
-<br>
-<div>
-    <canvas id="histogramChart">{{histogramChart}}</canvas>
-</div>
-  
