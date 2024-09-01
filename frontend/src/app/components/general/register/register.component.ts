@@ -31,9 +31,7 @@ export class RegisterComponent {
     private fb: FormBuilder, 
     private userService: UserService, 
     private router: Router, 
-    private ngZone: NgZone,
-    private sanitizer: DomSanitizer,
-    private http: HttpClient
+    private sanitizer: DomSanitizer
   ) {
     this.registerForm = this.fb.group({
       username: ['', Validators.required],
@@ -45,7 +43,7 @@ export class RegisterComponent {
       contactNumber: ['', [Validators.required, Validators.pattern(/^\+?\d{9,15}$/)]],
       email: ['', [Validators.required, Validators.email]],
       creditCardNumber: ['', [Validators.required]],
-      photo: [null, Validators.required]
+      photo: [null]
     });
   }
 
@@ -124,9 +122,6 @@ export class RegisterComponent {
       userTypeId: '1', // Assuming '1' for owner
       base64: this.base64Image // The path where the photo is temporarily saved
     };
-    console.log(this.registerForm.get('photo')?.value);
-    console.log(this.previewUrl);
-    console.log(formData);
     this.errorMessage = "";
     this.successMessage = "";
     this.waitingForResponse = true;
