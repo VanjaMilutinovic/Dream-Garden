@@ -95,7 +95,7 @@ export class StatisticComponent {
           },
           title: {
             display: true,
-            text: 'Number of jobs per month'
+            text: 'Broj poslova po mesecima'
           }
         },
         scales: {
@@ -127,7 +127,7 @@ export class StatisticComponent {
           },
           title: {
             display: true,
-            text: 'Number of jobs per person in the company'
+            text: 'Broj poslova po zaposlenima u kompaniji'
           }
         }
       },
@@ -138,7 +138,7 @@ export class StatisticComponent {
       data: {
         labels: histogramChartData.labels,
         datasets: [{
-          label: 'Average monthly jobs on every day of the week',
+          label: 'Prosečan broj poslova po danima u nedelji',
           data: histogramChartData.data,
           backgroundColor: "#f06292",
           barPercentage: 1,

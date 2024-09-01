@@ -71,7 +71,7 @@
 
         <!-- WORKERS -->
         <div class="container col-12 mt-2">
-            <h5>Odaberite nezaposlene radnike</h5>
+            <h5 class="card-title mt-3">Odaberite nezaposlene radnike</h5>
             <div *ngFor="let worker of unemployedWorkers" class="row form-check">
                 <input 
                     class="form-check-input checkbox-input" 
@@ -86,7 +86,7 @@
         </div>
         <!-- SERVICES -->
         <div class="container col-12 mt-2">
-            <h5>Usluge</h5>
+            <h5 class="card-title mt-3 mb-3">Usluge</h5>
             <table *ngIf="addedServices.length>0" class="table table-striped">
                 <thead>
                 <tr>
@@ -149,7 +149,7 @@
         </div>
         <!-- HOLIDAYS -->
         <div class="container col-12 mt-2">
-            <h5>Unesite godišnji odmor</h5>
+            <h5 class="card-title mt-3">Unesite godišnji odmor</h5>
             <div class="row mt-2">
                 <div class="form-group col-md-4">
                     <label for="start-date">Početak odmora:</label>

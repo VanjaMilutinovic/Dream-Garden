@@ -7,6 +7,7 @@ import { Company } from 'src/app/models/company.model';
 import { Service } from 'src/app/models/service.model';
 import { ServicesService } from 'src/app/services/services/services.service';
 import { mapOptions } from '../../util/mapOptions';
+import { CompanyHoliday } from 'src/app/models/company-holiday.model';
 
 @Component({
   selector: 'app-companies',
@@ -40,6 +41,10 @@ export class CompaniesComponent {
   currenyCompanyFlag: boolean = false;
   addServiceFlag: boolean = false;
   service: Service = new Service();
+  addHolidayFlag: boolean = false;
+  holiday: CompanyHoliday = new CompanyHoliday();
+  holidayStart: Date = new Date();
+  holidayEnd: Date = new Date();
 
   async ngOnInit() {
     this.mapOptions.zoom = 14.5;
@@ -53,6 +58,16 @@ export class CompaniesComponent {
       console.log(error);
     }
   }
+
+  moveMap(event: google.maps.MapMouseEvent) {
+    console.log(event)
+    if (event.latLng == null) return;
+    this.pin ={lat: event.latLng.lat(),lng: event.latLng.lng()};
+    this.currentCompany.latitude = event.latLng.lat();
+    this.currentCompany.longitude = event.latLng.lng();
+     this.center = event.latLng.toJSON();
+  }
+
 
   search(): void {
     this.viewCompanies = this.allCompanies.filter(company => {
@@ -78,7 +93,8 @@ export class CompaniesComponent {
     this.sortDirectionAddress = this.sortDirectionAddress === 'rastuće' ? 'opadajuće' : 'rastuće';
   }
 
-  show(company: Company){
+  async show(company: Company){
+    company.holidayList = await firstValueFrom(this.companyService.getHolidays(company.companyId)) as Array<CompanyHoliday>;
     this.currentCompany = company;
     this.currenyCompanyFlag = true;
     this.service.companyId = company;
@@ -86,7 +102,25 @@ export class CompaniesComponent {
     this.center = this.pin;
   }
   
-  editUser(){ }
+  async update(){ 
+    try {
+      let data = {
+        companyId: this.currentCompany.companyId,
+        name: this.currentCompany.name,
+        address: this.currentCompany.address,
+        contactNumber: this.currentCompany.contactNumber,
+        contactPerson: this.currentCompany.contactPerson,
+        latitude: this.currentCompany.latitude,
+        longitude: this.currentCompany.longitude
+      }
+      const c = await firstValueFrom(this.companyService.update(data)) as Company;
+      this.currentCompany = c;
+    }
+    catch(error: any){
+      this.errorMsg = error.error;
+      console.log(error);
+    }
+  }
 
   showNewCompany(){
     this.router.navigate(['admin/companies/createCompany']);
@@ -111,6 +145,26 @@ export class CompaniesComponent {
     catch(error: any){
       this.errorMsg = error.error;
       console.log(error);
+    }
+  }
+
+  async onSubmitHoliday(){
+    if (this.holidayStart == null || this.holidayEnd == null) {
+      alert("Izaberite datum odmora!");
+      return;
+    }
+    if (this.holidayEnd < this.holidayStart) {
+      alert("Datum kraja odmora mora biti posle datuma početka odmora!");
+      return;
+    }
+    try{
+      const holiday = await firstValueFrom(this.companyService.createHoliday(
+        this.currentCompany.companyId, new Date(this.holidayStart), new Date(this.holidayEnd))) as CompanyHoliday;
+      this.currentCompany.holidayList.push(holiday);
+    }
+    catch(error: any){
+      this.errorMsg = error.error;
+      return;
     }
   }
 

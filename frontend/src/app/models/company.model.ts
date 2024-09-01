@@ -1,3 +1,4 @@
+import { CompanyHoliday } from "./company-holiday.model";
 import { Service } from "./service.model";
 
 export class Company {
@@ -9,5 +10,6 @@ export class Company {
   contactNumber: string = "";
   contactPerson: string = "";
   serviceList: Array<Service> = [];
+  holidayList: Array<CompanyHoliday> = [];
 }
   
