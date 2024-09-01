@@ -191,22 +191,25 @@ public class UserController {
         if (userType.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User type not found for ID " + request.getUserTypeId());
         }
-        Optional<Photo> photoOptional = photoRepository.findByBase64(request.getBase64());
-        log.info("photoOptional: " + photoOptional);
-        Photo photo;
-        if (photoOptional.isEmpty()){
-            photo = new Photo();
-            photo.setBase64(request.getBase64());
-            photo = photoRepository.saveAndFlush(photo);
+        
+        User user = new User();
+        if(request.getBase64() != null){    
+            Optional<Photo> photoOptional = photoRepository.findByBase64(request.getBase64());
+            log.info("photoOptional: " + photoOptional);
+            Photo photo;
+            if (photoOptional.isEmpty()){
+                photo = new Photo();
+                photo.setBase64(request.getBase64());
+                photo = photoRepository.saveAndFlush(photo);
+            }
+            else{
+                photo=photoOptional.get();
+            }
+            user.setPhotoId(photo);
         }
-        else{
-            photo=photoOptional.get();
-        }
-
         if (!request.getGender().equals('F') && !request.getGender().equals('M')){
            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Gender must be 'F' or 'M', provided gender not acceptable: " + request.getGender());
         }
-        User user = new User();
         user.setUsername(request.getUsername());
         user.setHashedPassword(request.getHashedPassword());
         user.setName(request.getName());
@@ -217,7 +220,6 @@ public class UserController {
         user.setEmail(request.getEmail());
         user.setCreditCardNumber(request.getCreditCardNumber());
         user.setUserTypeId(userType.get());
-        user.setPhotoId(photo);
         if (userType.get().getUserTypeId()==1)
             user.setUserStatusId(new UserStatus(1)); //pending
         else
