@@ -58,6 +58,7 @@ export class HomeComponent {
       const decorators = await firstValueFrom(this.userService.getByUserTypeId(UserType.Decorator)) as Array<User>;
       this.registeredDecorators = decorators.length;
       const photos = await firstValueFrom(this.photoService.getTopK(3)) as string[];
+      console.log(photos);
       photos.forEach(photo => {
         this.images.push(photo);
       });
