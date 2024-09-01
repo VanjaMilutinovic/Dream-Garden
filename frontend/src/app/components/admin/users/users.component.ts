@@ -6,6 +6,7 @@ import { AdminService } from 'src/app/services/admin/admin.service';
 import { UserStatus } from 'src/app/enums/user-status.enum';
 import { CompaniesService } from 'src/app/services/company/company.service';
 import { UserType } from 'src/app/enums/user-type.enum';
+import { DomSanitizer } from '@angular/platform-browser';
 
 
 @Component({
@@ -16,7 +17,8 @@ import { UserType } from 'src/app/enums/user-type.enum';
 export class UsersComponent {
 
   constructor(private adminService: AdminService,
-              private router: Router){}
+              private router: Router,
+              public sanitizer: DomSanitizer){}
   
   allUsers :Array<User> = [];
   viewUsers :Array<User> = [];
