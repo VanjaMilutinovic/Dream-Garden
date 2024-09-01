@@ -1,4 +1,4 @@
-<h1>Deny ovde ti radis</h1>
+<!-- <h1>Deny ovde ti radis</h1>
 <p>Четврта ставка главног менија је „Статистика“. Унутар ове ставке, декоратер види следеће дијаграме: <br>
     ▪ Дијаграм са колонама/баровима, који приказује број послова по месецима за тог декоратера; <br>
     ▪ Дијаграме „пита“ који приказују расподелу свих послова међу декоратерима, унутар фирме у којој раде; <br>
@@ -12,4 +12,17 @@
     @GetMapping("/job/getByCompany") <br>
     @RequestParam(name = "companyId", required = true) Integer companyId
 </p>
-<p>@GetMapping("/job/getByDay")</p>
+<p>@GetMapping("/job/getByDay")</p> -->
+
+<div>
+    <canvas id="barChart">{{barChart}}</canvas>
+</div>
+<br>
+<div>
+    <canvas id="pieChart">{{pieChart}}</canvas>
+</div>
+<br>
+<div>
+    <canvas id="histogramChart">{{histogramChart}}</canvas>
+</div>
+  
