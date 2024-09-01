@@ -53,6 +53,18 @@
             <h3 class="card-title">Detalji o Kompaniji</h3>
         </div>
         <div class="card-body">
+            <div class="floatMap">
+                <strong>Lokacija:</strong> 
+                <google-map id="mapa" class="mapa"
+                    width="100%"
+                    height="22em"
+                    [options]="mapOptions"
+                    (mapClick)="moveMap($event)"
+                    [center]="center"
+                    >
+                    <map-marker *ngIf="pin" [position]="pin"/>
+                </google-map>
+            </div>
             <div class="row">
                 <div class="col-md-8">
                     <p><strong>ID:</strong> {{ currentCompany.companyId }}</p>
