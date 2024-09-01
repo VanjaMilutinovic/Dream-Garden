@@ -15,12 +15,14 @@ import org.springframework.data.repository.query.Param;
 @Repository
 public interface PhotoRepository extends JpaRepository<Photo, Integer> {
     
-    Optional<Photo> findByPath(String path);
-    
+    Optional<Photo> findByBase64(String base64);
+
+
+    //todo popraviti ovo sranje zbog promjena u bazi
     @Query(value = """
-        SELECT p.path
+        SELECT p.base64
         FROM photo p
-        WHERE p.path LIKE ('job%')
+        WHERE p.base64 LIKE ('job%')
         ORDER BY p.photo_id DESC
         LIMIT :k""", nativeQuery = true)
     List<String> findTopKByPhotoPath(@Param("k") Integer k);

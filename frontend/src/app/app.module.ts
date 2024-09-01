@@ -26,6 +26,7 @@ import { CreateWorkerComponent } from './components/admin/create-worker/create-w
 import { CompaniesComponent as AdminCompaniesComponent} from './components/admin/companies/companies.component';
 import { CreateCompanyComponent } from './components/admin/create-company/create-company.component';
 import { LeafletMapComponent } from './components/general/leaflet-map/leaflet-map.component';import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgxCaptchaModule } from 'ngx-captcha';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { LeafletMapComponent } from './components/general/leaflet-map/leaflet-ma
     MatDatepickerModule,
     MatInputModule,
     MatNativeDateModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    NgxCaptchaModule
   ],
   providers: [],
   bootstrap: [AppComponent]

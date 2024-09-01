@@ -17,7 +17,7 @@ public class CreateUserRequest {
     private String email;
     private String creditCardNumber;
     private Integer userTypeId;
-    private String photoPath;
+    private String base64;
 
     public CreateUserRequest() { }
 
@@ -32,7 +32,7 @@ public class CreateUserRequest {
         this.email = email;
         this.creditCardNumber = creditCardNumber;
         this.userTypeId = userTypeId;
-        this.photoPath = photoPath;
+        this.base64 = photoPath;
     }
 
     public boolean checkCreateUserRequest(){
@@ -126,12 +126,12 @@ public class CreateUserRequest {
         this.userTypeId = userTypeId;
     }
 
-    public String getPhotoPath() {
-        return photoPath;
+    public String getBase64() {
+        return base64;
     }
 
-    public void setPhotoPath(String photoPath) {
-        this.photoPath = photoPath;
+    public void setBase64(String base64) {
+        this.base64 = base64;
     }
 
 }

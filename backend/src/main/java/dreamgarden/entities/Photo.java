@@ -27,7 +27,7 @@ import java.util.List;
 @NamedQueries({
     @NamedQuery(name = "Photo.findAll", query = "SELECT p FROM Photo p"),
     @NamedQuery(name = "Photo.findByPhotoId", query = "SELECT p FROM Photo p WHERE p.photoId = :photoId"),
-    @NamedQuery(name = "Photo.findByPath", query = "SELECT p FROM Photo p WHERE p.path = :path")})
+    @NamedQuery(name = "Photo.findByBase64", query = "SELECT p FROM Photo p WHERE p.base64 = :base64")})
 public class Photo implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -37,8 +37,8 @@ public class Photo implements Serializable {
     @Column(name = "photo_id")
     private Integer photoId;
     @Basic(optional = false)
-    @Column(name = "path")
-    private String path;
+    @Column(name = "base64")
+    private String base64;
     @JsonIgnore
     @OneToMany(mappedBy = "photoId")
     private List<JobPhoto> jobPhotoList;
@@ -53,9 +53,9 @@ public class Photo implements Serializable {
         this.photoId = photoId;
     }
 
-    public Photo(Integer photoId, String path) {
+    public Photo(Integer photoId, String base64) {
         this.photoId = photoId;
-        this.path = path;
+        this.base64 = base64;
     }
 
     public Integer getPhotoId() {
@@ -66,12 +66,12 @@ public class Photo implements Serializable {
         this.photoId = photoId;
     }
 
-    public String getPath() {
-        return path;
+    public String getBase64() {
+        return base64;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setBase64(String base64) {
+        this.base64 = base64;
     }
 
     public List<JobPhoto> getJobPhotoList() {

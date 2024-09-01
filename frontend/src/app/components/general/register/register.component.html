@@ -1,55 +1,100 @@
-<h1>Nikoly ovde ti radis</h1>
-<p>@PostMapping("/user/register")</p>
-<p>
-    private String username;
-    private String hashedPassword;
-    private String name;
-    private String lastname;
-    private Character gender;
-    private String address;
-    private String contactNumber;
-    private String email;
-    private String creditCardNumber;
-    private String photoPath;
-</p>
-<p>
-    (1) Лозинку проверити коришћењем регуларног израза (минимално 6 карактера, максимално 10 карактера, од тога бар једно велико слово, три мала слова, један број и један специјални карактер, и мора почињати словом). Лозинку у бази података обавезно чувати као криптовану
-    (2) Број кредитне картице мора да задовољи један од следећих типова картица. Када се унесе валидан број картице, појављује се сличица (иконица) која приказује тај тип картице. Правила су следећа:
-    Картица Diners - почиње са 300, 301, 302, 303, 36, или 38 и има тачно 15 цифара;
-    Картица MasterCard – почиње са 51, 52, 53, 54, или 55 и има тачно 16 цифара;
-    Картица Visa – почиње са 4539, 4556, 4916, 4532, 4929, 4485, 4716, и има тачно 16 цифара.
-</p>
-<p>
-    Приликом регистрације, власници шаљу своју профилну слику (минималне величине 100х100 px, а максималне величине 300х300 px, у JPG/PNG формату); слике у апликацији морају да буду унете преко FileUpload прозора, и није прихватљиво решење да буду већ ручно унете, или да се уносе путем екстерног линка до слике на другој локацији/веб сајту, која је негде већ постављена. Ако се профилна слика не дода, власник добија подразумевану профилну слику, која већ постоји у систему. (default-profile.jpg)
-SVE SLIKE SE NALAZE NA FRONTU U assets/photos, KORISTITI RELATIVNU PUTANJU OD TRENUTNOG FAJLA
-</p>
-<!-- USER VIEW -->
-<!-- <div class="container" *ngIf="currenyUserFlag == true">
-    <div class="card">
-        <div class="card-header">
-        <h4>Detalji o Korisniku</h4>
-        <p><strong>OVO TREBA DA BUDE EDITABILNO</strong></p>
+<!-- Registration Form -->
+<div class="session" >
+    <div class="left">
+        <img class="logo-light" src="../../../../assets/photos/logo-white-pink-outline.png">
+    </div>
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="log-in" autocomplete="off">
+        <h4>Dream Garden</h4>
+        <p>Registrujte se koristeći sledeće podatke:</p>
+
+        <div class="floating-label">
+            <input placeholder="Korisničko ime" formControlName="username" type="text" class="form-control"
+                id="username" />
+            <div *ngIf="f['username'].errors?.['required'] && f['username'].touched">Korisničko ime je obavezno</div>
         </div>
-        <div class="card-body">
-        <div class="row">
-            <div class="col-md-4">
-            <img [src]="'../../../assets/photos/'+currentUser.photoId.path" alt="User Photo" class="img-fluid rounded-circle">
+
+        <div class="floating-label">
+            <input placeholder="Lozinka" formControlName="hashedPassword" type="password" class="form-control"
+                id="hashedPassword" />
+            <div *ngIf="f['hashedPassword'].errors?.['required'] && f['hashedPassword'].touched">Lozinka je obavezna
             </div>
-            <div class="col-md-8">
-            <p><strong>ID:</strong> {{ currentUser.userId }}</p>
-            <p><strong>Korisničko Ime:</strong> {{ currentUser.username }}</p>
-            <p><strong>Ime i Prezime:</strong> {{ currentUser.name }} {{ currentUser.lastname }}</p>
-            <p><strong>Pol:</strong> {{ currentUser.gender === 'M' ? 'Muško' : 'Žensko' }}</p>
-            <p><strong>Adresa:</strong> {{ currentUser.address }}</p>
-            <p><strong>Kontakt Telefon:</strong> {{ currentUser.contactNumber }}</p>
-            <p><strong>Email:</strong> {{ currentUser.email }}</p>
-            <p><strong>Tip Korisnika:</strong> {{ currentUser.userTypeId.name }}</p>
-            <p><strong>Status:</strong> {{ currentUser.userStatusId.status }}</p>
+            <div *ngIf="f['hashedPassword'].errors?.['pattern'] && f['hashedPassword'].touched">Lozinka nije u ispravnom
+                formatu</div>
+        </div>
+
+        <div class="floating-label">
+            <input placeholder="Ime" formControlName="name" type="text" class="form-control" id="name" />
+            <div *ngIf="f['name'].errors?.['required'] && f['name'].touched">Ime je obavezno</div>
+        </div>
+
+        <div class="floating-label">
+            <input placeholder="Prezime" formControlName="lastname" type="text" class="form-control" id="lastname" />
+            <div *ngIf="f['lastname'].errors?.['required'] && f['lastname'].touched">Prezime je obavezno</div>
+        </div>
+
+        <div class="floating-label" style="width: auto; margin: 1.5%; margin-left: 0px">
+            <select formControlName="gender" class="form-control" id="gender">
+                <option value="" disabled selected hidden>Odaberite pol</option>
+                <option value="M">Muško</option>
+                <option value="Ž">Žensko</option>
+            </select>
+            <div *ngIf="f['gender'].errors?.['required'] && f['gender'].touched">Pol je obavezan</div>
+        </div>
+
+        <div class="floating-label">
+            <input placeholder="Adresa" formControlName="address" type="text" class="form-control" id="address" />
+            <div *ngIf="f['address'].errors?.['required'] && f['address'].touched">Adresa je obavezna</div>
+        </div>
+
+        <div class="floating-label">
+            <input placeholder="Kontakt telefon" formControlName="contactNumber" type="text" class="form-control"
+                id="contactNumber" />
+            <div *ngIf="f['contactNumber'].errors?.['required'] && f['contactNumber'].touched">Kontakt telefon je
+                obavezan</div>
+            <div *ngIf="f['contactNumber'].errors?.['pattern'] && f['contactNumber'].touched">Kontakt telefon nije
+                validan</div>
+        </div>
+
+        <div class="floating-label">
+            <input placeholder="Email" formControlName="email" type="email" class="form-control" id="email" />
+            <div *ngIf="f['email'].errors?.['required'] && f['email'].touched">Email je obavezan</div>
+            <div *ngIf="f['email'].errors?.['email'] && f['email'].touched">Email nije validan</div>
+        </div>
+
+        <div class="floating-label">
+            <input placeholder="Broj kreditne kartice" formControlName="creditCardNumber" type="text"
+                class="form-control" id="creditCardNumber" (input)="detectCardType()" />
+            
+            <img *ngIf="cardType" [src]="cardTypeIcon" alt="{{ cardType }}"  style="margin: 2%;"/>
+            <div *ngIf="f['creditCardNumber'].errors?.['required'] && f['creditCardNumber'].touched">Broj kreditne
+                kartice je obavezan</div>
+            <div *ngIf="f['creditCardNumber'].errors?.['invalidCard'] && f['creditCardNumber'].touched">Broj kreditne
+                kartice nije validan</div>
+        </div>
+
+        <div class="floating-label">
+            <input type="file" id="photo" formControlName="photo" class="form-control" (change)="onFileChange($event)"
+              accept="image/png, image/jpeg" />
+            <div *ngIf="imageError" class="text-danger">
+                {{ imageError }}
             </div>
+            <br>
+            <img *ngIf="previewUrl && !profilePictureInvalid" [src]="previewUrl" alt="Pregled slike" class="img-thumbnail" style="width: 200px; height: 200px; margin-top: 10px;">
         </div>
-        </div>
-        <div class="card-footer text-right">
-            <button class="btn btn-primary" (click)="editUser()">Sačuvaj izmene</button>
-        </div>
-    </div>      
-</div> -->
+        
+        <div class="floating-label">
+            <ngx-recaptcha2 
+              [siteKey]="'6LdYDDQqAAAAAE7x4COZDJpgXflfLl7-L_7QQduK'"
+              (success)="onCaptchaResolved($event)"
+              (error)="onCaptchaError($event)">
+            </ngx-recaptcha2>
+            <div *ngIf="captchaError" class="text-danger">Captcha verification failed. Please try again.</div>
+          </div>
+          
+      
+        <button type="submit" class="btn btn-primary search-button" [disabled]="waitingForResponse">Registrujte se</button>
+      
+        <p class="error_message" *ngIf="errorMessage">{{errorMessage}}</p>
+        <p class="success_message" *ngIf="successMessage">{{successMessage}}</p>
+    </form>
+      </div>

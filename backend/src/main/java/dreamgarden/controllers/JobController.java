@@ -358,18 +358,19 @@ public class JobController {
     @Transactional
     public ResponseEntity<?> addJobPhoto(@RequestParam(name = "jobId", required = true) Integer jobId, 
                                          @RequestParam(name = "photoPath", required = true) String photoPath) {
+        //todo popraviti sranja sa slikom i odje
         Optional<Job> jobOptional = jobRepository.findById(jobId);
         if (!jobOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Job not found for id " + jobId);
         }
-        Optional<Photo> photoByPath = photoRepository.findByPath(photoPath);
+        Optional<Photo> photoByPath = photoRepository.findByBase64(photoPath);
         if(photoByPath.isPresent()) {
             //Workers need to upload new photos for each job!
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Photo with provided path already exists. Path: " + photoPath);
         }
         
         Photo photo = new Photo();
-        photo.setPath(photoPath);
+        photo.setBase64(photoPath);
         photo = photoRepository.saveAndFlush(photo);
 
         JobPhoto jobPhoto = new JobPhoto();

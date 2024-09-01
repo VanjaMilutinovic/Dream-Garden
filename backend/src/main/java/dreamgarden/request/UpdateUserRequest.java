@@ -17,7 +17,7 @@ public class UpdateUserRequest {
     private String contactNumber;
     private String email;
     private String creditCardNumber;
-    private String photoPath;
+    private String base64;
 
     public UpdateUserRequest() { }
 
@@ -29,7 +29,7 @@ public class UpdateUserRequest {
         this.contactNumber = contactNumber;
         this.email = email;
         this.creditCardNumber = creditCardNumber;
-        this.photoPath = photoPath;
+        this.base64 = photoPath;
     }
     
     public boolean checkUpdateUserRequest() {
@@ -40,7 +40,7 @@ public class UpdateUserRequest {
                contactNumber != null &&
                email != null &&
                creditCardNumber != null &&
-               photoPath != null;
+               base64 != null;
     }
 
     public Integer getUserId() {
@@ -99,12 +99,12 @@ public class UpdateUserRequest {
         this.creditCardNumber = creditCardNumber;
     }
 
-    public String getPhotoPath() {
-        return photoPath;
+    public String getBase64() {
+        return base64;
     }
 
-    public void setPhotoPath(String photoPath) {
-        this.photoPath = photoPath;
+    public void setBase64(String base64) {
+        this.base64 = base64;
     }
     
 }
