@@ -92,6 +92,8 @@ export class CompaniesComponent {
       }
       const c = await firstValueFrom(this.companyService.update(data)) as Company;
       this.currentCompany = c;
+      this.currentCompany.holidayList = 
+        await firstValueFrom(this.companyService.getHolidays(c.companyId)) as Array<CompanyHoliday>;
     }
     catch(error: any){
       this.errorMsg = error.error;
