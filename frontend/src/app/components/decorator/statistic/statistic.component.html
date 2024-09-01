@@ -1,24 +1,8 @@
-<!-- <h1>Deny ovde ti radis</h1>
-<p>Четврта ставка главног менија је „Статистика“. Унутар ове ставке, декоратер види следеће дијаграме: <br>
-    ▪ Дијаграм са колонама/баровима, који приказује број послова по месецима за тог декоратера; <br>
-    ▪ Дијаграме „пита“ који приказују расподелу свих послова међу декоратерима, унутар фирме у којој раде; <br>
-    ▪ Дијаграм хистограм, који приказује у којим данима у седмици (ПОН, УТО, … СУБ, НЕД) је просечан месечни број послова у последња 24 месеца.
-</p>
-<p>
-    @GetMapping("/job/getByWorker") <br>
-    @RequestParam(name = "workerId", required = true) Integer workerId
-</p>
-<p>
-    @GetMapping("/job/getByCompany") <br>
-    @RequestParam(name = "companyId", required = true) Integer companyId
-</p>
-<p>@GetMapping("/job/getByDay")</p> -->
-
 <div>
     <p class="error_msg">{{error_msg}}</p>
 	<details>
 		<summary>
-			Number of jobs per month
+			Broj poslova po mesecima
 		</summary>
         <div class="chart_div">
             <canvas id="barChart">{{barChart}}</canvas>
@@ -26,14 +10,14 @@
 	</details>
 	<details>
 		<summary>
-			Average monthly jobs on every day of the week
+			Prosečan broj poslova po danima u nedelji
 		</summary>
         <div class="chart_div">
 		<canvas id="histogramChart">{{histogramChart}}</canvas></div>
 	</details>
 	<details>
 		<summary>
-			Number of jobs per person in the company
+			Broj poslova po zaposlenima u kompaniji
 		</summary>
         <div class="chart_div">
 		<canvas id="pieChart">{{pieChart}}</canvas></div>

@@ -6,6 +6,7 @@ import { CompaniesService } from 'src/app/services/company/company.service';
 import { Company } from 'src/app/models/company.model';
 import { Service } from 'src/app/models/service.model';
 import { ServicesService } from 'src/app/services/services/services.service';
+import { CompanyHoliday } from 'src/app/models/company-holiday.model';
 
 @Component({
   selector: 'app-companies',
@@ -30,6 +31,10 @@ export class CompaniesComponent {
   currenyCompanyFlag: boolean = false;
   addServiceFlag: boolean = false;
   service: Service = new Service();
+  addHolidayFlag: boolean = false;
+  holiday: CompanyHoliday = new CompanyHoliday();
+  holidayStart: Date = new Date();
+  holidayEnd: Date = new Date();
 
   async ngOnInit() {
     try {
@@ -67,7 +72,8 @@ export class CompaniesComponent {
     this.sortDirectionAddress = this.sortDirectionAddress === 'rastuće' ? 'opadajuće' : 'rastuće';
   }
 
-  show(company: Company){
+  async show(company: Company){
+    company.holidayList = await firstValueFrom(this.companyService.getHolidays(company.companyId)) as Array<CompanyHoliday>;
     this.currentCompany = company;
     this.currenyCompanyFlag = true;
     this.service.companyId = company;
@@ -98,6 +104,26 @@ export class CompaniesComponent {
     catch(error: any){
       this.errorMsg = error.error;
       console.log(error);
+    }
+  }
+
+  async onSubmitHoliday(){
+    if (this.holidayStart == null || this.holidayEnd == null) {
+      alert("Izaberite datum odmora!");
+      return;
+    }
+    if (this.holidayEnd < this.holidayStart) {
+      alert("Datum kraja odmora mora biti posle datuma početka odmora!");
+      return;
+    }
+    try{
+      const holiday = await firstValueFrom(this.companyService.createHoliday(
+        this.currentCompany.companyId, new Date(this.holidayStart), new Date(this.holidayEnd))) as CompanyHoliday;
+      this.currentCompany.holidayList.push(holiday);
+    }
+    catch(error: any){
+      this.errorMsg = error.error;
+      return;
     }
   }
 

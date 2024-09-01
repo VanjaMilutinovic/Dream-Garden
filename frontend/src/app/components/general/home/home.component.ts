@@ -45,6 +45,7 @@ export class HomeComponent {
 
   async ngOnInit() {
     try {
+      localStorage.removeItem('user');
       const jobStatistic = await firstValueFrom(this.statisticService.getByRequestTime()) as Array<CountingStatisticResponse>;
       this.job24Hours = jobStatistic[0].variableCount;
       this.job7Days = jobStatistic[1].variableCount;
