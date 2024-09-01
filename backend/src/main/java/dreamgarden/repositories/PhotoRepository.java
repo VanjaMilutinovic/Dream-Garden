@@ -22,7 +22,7 @@ public interface PhotoRepository extends JpaRepository<Photo, Integer> {
     @Query(value = """
         SELECT p.base64
         FROM photo p
-        WHERE p.base64 LIKE ('job%')
+            JOIN job_photo jp ON (jp.photo_id = p.photo_id)
         ORDER BY p.photo_id DESC
         LIMIT :k""", nativeQuery = true)
     List<String> findTopKByPhotoPath(@Param("k") Integer k);
