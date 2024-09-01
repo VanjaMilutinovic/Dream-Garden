@@ -15,9 +15,10 @@
 <p>@GetMapping("/job/getByDay")</p> -->
 
 <div>
+    <p class="error_msg">{{error_msg}}</p>
 	<details>
 		<summary>
-			How do you create an accordion?
+			Number of jobs per month
 		</summary>
         <div class="chart_div">
             <canvas id="barChart">{{barChart}}</canvas>
@@ -25,14 +26,14 @@
 	</details>
 	<details>
 		<summary>
-			What if I have to support IE11 or older browsers?
+			Average monthly jobs on every day of the week
 		</summary>
         <div class="chart_div">
 		<canvas id="histogramChart">{{histogramChart}}</canvas></div>
 	</details>
 	<details>
 		<summary>
-			What type of content can I have inside one of these?
+			Number of jobs per person in the company
 		</summary>
         <div class="chart_div">
 		<canvas id="pieChart">{{pieChart}}</canvas></div>

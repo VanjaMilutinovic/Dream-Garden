@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
-
 *, *:after, *:before {
 	box-sizing: border-box;
 }
@@ -32,6 +30,9 @@ details div {
 	border-left: 2px solid #f06292;
 	border-right: 2px solid #f06292;
 	border-bottom: 2px solid #f06292;
+
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
 	padding: 1.5em;
 }
 
@@ -68,6 +69,7 @@ summary:before {
 	width: 1.75rem;
 	height: 1.75rem;
 	background-color: #f06292;
+	border-radius: 5px;
 	color: #FFF;
 	display: inline-flex;
 	justify-content: center;
@@ -107,4 +109,8 @@ code {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.error_msg{
+	color:red;
 }
