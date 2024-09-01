@@ -36,7 +36,7 @@
             <select formControlName="gender" class="form-control" id="gender">
                 <option value="" disabled selected hidden>Odaberite pol</option>
                 <option value="M">Muško</option>
-                <option value="Ž">Žensko</option>
+                <option value="F">Žensko</option>
             </select>
             <div *ngIf="f['gender'].errors?.['required'] && f['gender'].touched">Pol je obavezan</div>
         </div>

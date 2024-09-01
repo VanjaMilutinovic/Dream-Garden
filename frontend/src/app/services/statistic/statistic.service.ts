@@ -13,4 +13,17 @@ export class StatisticService {
   getByRequestTime(){
     return this.http.get<any>(this.path+"job/getByRequestTime");
   }
+
+  getByWorker(workerId: number){
+    let params = "?workerId="+workerId;
+    return this.http.get<any>(this.path+"job/getByWorker"+params);
+  }
+
+  getByCompany(companyId: number){
+    let params = "?companyId="+companyId;
+    return this.http.get<any>(this.path+"job/getByCompany"+params);
+  }
+  getByDay(){
+    return this.http.get<any>(this.path+"job/getByDay");
+  }
 }

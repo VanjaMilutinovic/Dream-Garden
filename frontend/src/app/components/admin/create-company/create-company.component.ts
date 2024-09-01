@@ -8,6 +8,7 @@ import { Service } from 'src/app/models/service.model';
 import { ServicesService } from 'src/app/services/services/services.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { User } from 'src/app/models/user.model';
+import { mapOptions } from '../../util/mapOptions';
 
 @Component({
   selector: 'app-create-company',
@@ -29,7 +30,23 @@ export class CreateCompanyComponent {
   holidayEnd: Date = new Date();
   addedServices: Array<Service> = [];
   addServiceFlag: boolean = false;
-  service: Service = new Service()
+  service: Service = new Service();
+
+  mapOptions: google.maps.MapOptions = mapOptions
+
+  pin !: any;
+
+  center: google.maps.LatLngLiteral = {
+    lat: 44.794358,
+    lng: 20.4516521,
+  };
+  moveMap(event: google.maps.MapMouseEvent) {
+    if (event.latLng == null) return;
+    this.pin ={lat: event.latLng.lat(),lng: event.latLng.lng()};
+    this.company.latitude = event.latLng.lat();
+    this.company.longitude = event.latLng.lng();
+     this.center = event.latLng.toJSON();
+  }
 
   async ngOnInit() {
     this.unemployedWorkers = await firstValueFrom(this.userService.getUnemployedWorkers());

@@ -15,18 +15,6 @@
                 />
             </div>
             <div class="form-group col-md-4">
-            <label for="latitude">Latitude</label>
-            <input
-                type="number"
-                class="form-control small-input"
-                id="latitude"
-                placeholder="Unesite geografsku širinu"
-                [(ngModel)]="company.latitude"
-                name="latitude"
-                required
-            />
-            </div>
-            <div class="form-group col-md-4">
             <label for="contactPerson">Kontakt Osoba</label>
             <input
                 type="text"
@@ -53,18 +41,6 @@
                 />
             </div>
             <div class="form-group col-md-4">
-            <label for="longitude">Longitude</label>
-            <input
-                type="number"
-                class="form-control small-input"
-                id="longitude"
-                placeholder="Unesite geografsku dužinu"
-                [(ngModel)]="company.longitude"
-                name="longitude"
-                required
-            />
-            </div>
-            <div class="form-group col-md-4">
             <label for="contactNumber">Kontakt Telefon</label>
             <input
                 type="text"
@@ -77,9 +53,25 @@
             />
             </div>
         </div>
+
+        <div class="form-group col-12 col-md-8">
+            <label for="mapa">Lokacija:</label>
+            <google-map id="mapa" class="mapa"
+                width="100%"
+                height="20rem"
+                [options]="mapOptions"
+                [center]="center"
+                (mapClick)="moveMap($event)">
+                <map-marker *ngIf="pin" [position]="pin"/>
+            </google-map>
+            
+        </div>
+
+        
+
         <!-- WORKERS -->
         <div class="container col-12 mt-2">
-            <h5>Odaberite nezaposlene radnike</h5>
+            <h5 class="card-title mt-3">Odaberite nezaposlene radnike</h5>
             <div *ngFor="let worker of unemployedWorkers" class="row form-check">
                 <input 
                     class="form-check-input checkbox-input" 
@@ -94,7 +86,7 @@
         </div>
         <!-- SERVICES -->
         <div class="container col-12 mt-2">
-            <h5>Usluge</h5>
+            <h5 class="card-title mt-3 mb-3">Usluge</h5>
             <table *ngIf="addedServices.length>0" class="table table-striped">
                 <thead>
                 <tr>
@@ -157,7 +149,7 @@
         </div>
         <!-- HOLIDAYS -->
         <div class="container col-12 mt-2">
-            <h5>Unesite godišnji odmor</h5>
+            <h5 class="card-title mt-3">Unesite godišnji odmor</h5>
             <div class="row mt-2">
                 <div class="form-group col-md-4">
                     <label for="start-date">Početak odmora:</label>

@@ -25,7 +25,7 @@ public interface JobRepository extends JpaRepository<Job, Integer> {
     @Query(value = """
         SELECT DATE_FORMAT(j.start_date_time, '%M %Y') AS variableName, COUNT(j.job_id) AS variableCount
         FROM job j
-        WHERE j.worker_id = 3
+        WHERE j.worker_id = :workerId AND job_status_id = 5
         GROUP BY DATE_FORMAT(j.start_date_time, '%M %Y')
         ORDER BY MIN(j.start_date_time) DESC
         LIMIT 25

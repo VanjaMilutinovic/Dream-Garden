@@ -30,4 +30,13 @@ export class CompaniesService {
     };
     return this.http.post<any>(this.path+"holyday/create", data);
   }
+
+  getHolidays(companyId:number){
+    let params = "?companyId="+companyId;
+    return this.http.get<any>(this.path+"holyday/getByCompanyId"+params);
+  }
+
+  update(data:any){
+    return this.http.post<any>(this.path+"update", data);
+  }
 }

@@ -47,22 +47,42 @@
     </div>
 </div>
 <!-- COMPANY VIEW -->
-<div class="container" *ngIf="currenyCompanyFlag == true">
+<div class="container mb-5" *ngIf="currenyCompanyFlag == true">
     <div class="card">
         <div class="card-header">
-        <h4>Detalji o Kompaniji</h4>
+            <h3 class="card-title">Detalji o Kompaniji</h3>
         </div>
         <div class="card-body">
+            <div class="floatMap">
+                <strong>Lokacija:</strong> 
+                <google-map id="mapa" class="mapa"
+                    width="100%"
+                    height="22em"
+                    [options]="mapOptions"
+                    (mapClick)="moveMap($event)"
+                    [center]="center"
+                    >
+                    <map-marker *ngIf="pin" [position]="pin"/>
+                </google-map>
+            </div>
             <div class="row">
                 <div class="col-md-8">
                     <p><strong>ID:</strong> {{ currentCompany.companyId }}</p>
-                    <p><strong>Naziv Kompanije:</strong> {{ currentCompany.name }}</p>
-                    <p><strong>Kontakt Osoba:</strong> {{ currentCompany.contactPerson }}</p>
-                    <p><strong>Kontakt Telefon:</strong> {{ currentCompany.contactNumber }}</p>
-                    <p><strong>Adresa:</strong> {{ currentCompany.address }}</p>
+                    <label for="name"><strong>Naziv Kompanije:</strong></label>
+                    <input type="text" id="name" class="form-control"
+                        [(ngModel)]="currentCompany.name" name="name"/>
+                    <label for="contactPerson"><strong>Kontakt Osoba:</strong></label>
+                    <input type="text" id="contactPerson" class="form-control"
+                        [(ngModel)]="currentCompany.contactPerson" name="contactPerson"/>
+                    <label for="contactNumber"><strong>Kontakt Telefon:</strong></label>
+                    <input type="text" id="contactNumber" class="form-control"
+                        [(ngModel)]="currentCompany.contactNumber" name="contactNumber"/>
+                    <label for="address"><strong>Adresa:</strong></label>
+                    <input type="text" id="address" class="form-control"
+                        [(ngModel)]="currentCompany.address" name="address"/>
                 </div>
             </div>
-            <h5><strong>Usluge</strong></h5>
+            <h5 class="card-title"><strong>Usluge</strong></h5>
             <table class="table table-striped">
                 <thead>
                 <tr>
@@ -125,10 +145,43 @@
                 </div>
                 <button type="submit" class="btn btn-primary mt-3">Dodaj Uslugu</button>
             </form>
-            <p class="error-message">{{ errorMsg }}</p>              
+            <h5 class="card-title mt-3"><strong>Godišnji odmor</strong></h5>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Datum Početka</th>
+                    <th>Datum Kraja</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let holiday of currentCompany.holidayList">
+                    <td>{{ holiday.startDateTime | date:'dd-MM-yyyy hh:mm' }}</td>
+                    <td>{{ holiday.endDateTime | date:'dd-MM-yyyy hh:mm' }}</td>
+                </tr>
+                </tbody>
+            </table>
+            <button *ngIf="addHolidayFlag==false" class="btn btn-secondary" (click)="addHolidayFlag=true">Dodaj odmor</button>
+            <form *ngIf="addHolidayFlag" (ngSubmit)="onSubmitHoliday()">
+                <div class="container col-12">
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label for="start-date">Početak odmora:</label>
+                            <input type="date" id="start-date" name="start-date"
+                                appearance="fill" class="w-100" [(ngModel)]="holidayStart">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="end-date">Kraj odmora:</label>
+                            <input type="date" id="end-date" name="end-date" 
+                                appearance="fill" class="w-100" [(ngModel)]="holidayEnd">
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Dodaj Odmor</button>
+            </form>           
         </div>
         <div class="card-footer text-right">
-            <button class="btn btn-primary" (click)="editUser()">Sačuvaj izmene</button>
+            <p class="error-message">{{ errorMsg }}</p>  
+            <button class="btn btn-primary" (click)="update()">Sačuvaj izmene</button>
         </div>
     </div>      
 </div>
