@@ -1,5 +1,20 @@
 <div class="container">
     <h2>Kompanije</h2>
+    <div class="mb-3">
+        <div class="row">
+            <div class="col-md-4">
+            <input type="text" class="form-control" placeholder="Pretraži po imenu" [(ngModel)]="searchTermName">
+            </div>
+            <div class="col-md-4">
+            <input type="text" class="form-control" placeholder="Pretraži po adresi" [(ngModel)]="searchTermAddress">  
+            </div>
+            <div class="col-md-4 d-flex flex-column" >
+                <button class="btn btn-primary mb-1" (click)="search()">Pretraži</button>
+                <button class="btn btn-secondary mb-1" (click)="sortByName()">Sortiraj po imenu ({{ sortDirectionName }})</button>
+                <button class="btn btn-secondary" (click)="sortByAddress()">Sortiraj po adresi ({{ sortDirectionAddress }})</button>
+            </div>
+        </div>        
+    </div>
     <table class="table table-striped">
         <thead>
         <tr>
@@ -27,7 +42,7 @@
     </table>
     <div class="row mb-3">
         <div class="col-md-6">
-        <button class="btn btn-primary" (click)="createNew()">Kreiraj novu kompaniju</button>
+        <button class="btn btn-primary" (click)="showNewCompany()">Kreiraj novu kompaniju</button>
         </div>
     </div>
 </div>
@@ -36,7 +51,6 @@
     <div class="card">
         <div class="card-header">
         <h4>Detalji o Kompaniji</h4>
-        <p><strong>OVO TREBA DA BUDE EDITABILNO</strong></p>
         </div>
         <div class="card-body">
             <div class="row">
@@ -46,11 +60,6 @@
                     <p><strong>Kontakt Osoba:</strong> {{ currentCompany.contactPerson }}</p>
                     <p><strong>Kontakt Telefon:</strong> {{ currentCompany.contactNumber }}</p>
                     <p><strong>Adresa:</strong> {{ currentCompany.address }}</p>
-                </div>
-                <div class="col-md-4">
-                    <p><strong>HELP ME  HERE</strong></p>
-                    <!-- <app-map *ngIf="currentCompany.longitude && currentCompany.latitude"
-                    [latitude]="currentCompany.latitude" [longitude]="currentCompany.longitude"></app-map> -->
                 </div>
             </div>
             <h5><strong>Usluge</strong></h5>
@@ -72,6 +81,51 @@
                 </tr>
                 </tbody>
             </table>
+            <button *ngIf="addServiceFlag==false" class="btn btn-secondary" (click)="addServiceFlag=true">Dodaj uslugu</button>
+            <form *ngIf="addServiceFlag" (ngSubmit)="onSubmit()">
+                <div class="row">
+                    <div class="form-group col-md-4">
+                        <label for="serviceName">Naziv</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="serviceName"
+                          placeholder="Unesite Naziv"
+                          [(ngModel)]="service.serviceName"
+                          name="serviceName"
+                          required
+                        />
+                      </div>
+                    
+                      <div class="form-group col-md-4">
+                        <label for="serviceDescription">Opis</label>
+                        <textarea
+                          class="form-control"
+                          id="serviceDescription"
+                          rows="3"
+                          placeholder="Unesite Opis"
+                          [(ngModel)]="service.serviceDescription"
+                          name="serviceDescription"
+                          required
+                        ></textarea>
+                      </div>
+                    
+                      <div class="form-group col-md-4">
+                        <label for="servicePrice">Cena</label>
+                        <input
+                          type="number"
+                          class="form-control"
+                          id="servicePrice"
+                          placeholder="Unesite Cenu"
+                          [(ngModel)]="service.price"
+                          name="servicePrice"
+                          required
+                        />
+                      </div>
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Dodaj Uslugu</button>
+            </form>
+            <p class="error-message">{{ errorMsg }}</p>              
         </div>
         <div class="card-footer text-right">
             <button class="btn btn-primary" (click)="editUser()">Sačuvaj izmene</button>

@@ -228,8 +228,44 @@ public class JobController {
         }
         return ResponseEntity.status(HttpStatus.OK).body(jobs);
     }
+    
+    @GetMapping("/getByStatusAndWorker")
+    public ResponseEntity<?> getByStatusAndWorker(@RequestParam(name = "userId", required = true) Integer userId,
+                                                @RequestParam(name = "jobStatusId", required = true) Integer jobStatusId) {
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nema korsnika za ID " + userId);
+        }
+        Optional<Worker> worker = workerRepository.findByUserId(user.get());
+        if (worker.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nema radnika za  userID " + userId);
+        }
+        Optional<JobStatus> jobStatus = jobStatusRepository.findById(jobStatusId);
+        if (jobStatus.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("JobStatus nije nađen za ID " + jobStatusId);
+        }
+        List<Job> jobs = jobRepository.findByWorkerIdAndJobStatusId(user.get(), jobStatus.get());
+        if (jobs.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nema poslova za radnika: " + user.get() + " u statusu " + jobStatus.get().getStatus());
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(jobs);
+    }
 
 
+    @GetMapping("/getPendingByCompanyId")
+    public ResponseEntity<?> getPendingByCompanyId(@RequestParam(name = "companyId", required = true) Integer companyId) {
+        Optional<Company> company = companyRepository.findById(companyId);
+        if (company.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Ne postoji kompanija za ID " + companyId);
+        }
+        List<Job> maintenances = jobRepository.findByCompanyIdAndJobStatusId(company.get().getCompanyId(), 1);
+        if (maintenances.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nema neobrađenih poslova: " + company.get());
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(maintenances);
+    }
+
+    
     @PostMapping("worker/setStatus")
     public ResponseEntity<?> setStatusForWorker(@RequestBody SetJobStatusRequest request){
         if (!request.checkSetJobStatusRequest()) {
@@ -257,10 +293,10 @@ public class JobController {
         }
         
         switch (jobStatus.get().getJobStatusId()) {
-            case 2 ->  {
+            case 3 ->  {
                 job.get().setWorkerId(worker.get());
             }
-            case 3 ->  {
+            case 2 ->  {
                 job.get().setRejectedDescription(request.getRejectionDescription());
             }
             case 5 ->  {

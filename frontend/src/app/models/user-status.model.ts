@@ -1,5 +1,5 @@
 export class UserStatus {
-  userStatusIid: number = 0;
+  userStatusId: number = 0;
   status: string = "";
 }
   

@@ -68,7 +68,8 @@ export class LoginComponent {
       else {
         user = await firstValueFrom(this.userService.login(username,password)) as User;
         localStorage.setItem("user",JSON.stringify(user));
-        window.location.href = user.userTypeId.name+'/profile';
+        if (user.userTypeId.userTypeId == 1) window.location.href = 'owner/profile';
+        else window.location.href = 'decorator/profile';
       }
     }catch(error: any){
       this.errorMessage = error.error;

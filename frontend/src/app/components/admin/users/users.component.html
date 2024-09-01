@@ -1,18 +1,32 @@
 <div class="container">
     <h2>Svi Korisnici</h2>
-    <p><strong>OVDE DODATI FILTER PO STATUSU I TIPU</strong></p>
-    <p style="color: crimson;">{{ errorMsg }}</p>
-    <!-- <div class="mb-3">
-        <input type="text" class="form-control m-1 row" placeholder="Pretraži po imenu" [(ngModel)]="searchTermName">
-        <input type="text" class="form-control m-1 row" placeholder="Pretraži po adresi" [(ngModel)]="searchTermAddress">
-        <div class="row m-1">
-        <button class="btn btn-primary search-button col-md-3" (click)="search()">Pretraži</button>
-        <span class="col-md-1"></span>
-        <button class="btn btn-secondary sort-button col-md-3" (click)="sortByName()">Sortiraj po imenu ({{ sortDirectionName }})</button>
-        <span class="col-md-1"></span>
-        <button class="btn btn-secondary sort-button col-md-3" (click)="sortByAddress()">Sortiraj po adresi ({{ sortDirectionAddress }})</button>
+    <!-- Filters -->
+     <div class="row mb-3">
+        <div class="col-md-4">
+            <label for="userTypeFilter" class="label">Izaberite Tip Korisnika</label>
+            <select id="userTypeFilter" class="form-select" [(ngModel)]="selectedUserType">
+                <option value="0">Svi Tipovi</option>
+                <option value="1">Vlasnik</option>
+                <option value="2">Dekorater</option>
+                <option value="3">Admin</option>
+            </select>
         </div>
-    </div> -->
+        <div class="col-md-4">
+            <label for="userStatusFilter" class="label">Izaberite Status Korisnika</label>
+            <select id="userStatusFilter" class="form-select" [(ngModel)]="selectedUserStatus">
+                <option value="0">Svi Statusi</option>
+                <option value="1">Neobrađen</option>
+                <option value="2">Aktivan</option>
+                <option value="3">Odbijen</option>
+                <option value="4">Blokiran</option>
+            </select>
+        </div>
+        <div class="col-md-4 d-flex flex-column" >
+            <button class="btn btn-primary mt-auto" (click)="filterUsers()">Primeni Filetre</button>
+        </div>
+     </div>
+
+    <p  class="error-message">{{ errorMsg }}</p>
     <table class="table table-striped">
         <thead>
         <tr>
@@ -33,13 +47,13 @@
             <td>{{ user.userTypeId.name }}</td>
             <td>{{ user.userStatusId.status }}</td>
             <td>
-            <button *ngIf="user.userStatusId.status == 'pending'" class="btn btn-primary m-1 mb-0 mt-0" 
+            <button *ngIf="user.userStatusId.userStatusId == 1" class="btn btn-primary m-1 mb-0 mt-0" 
                 (click)="activate(user)">Prihvati</button>
-            <button *ngIf="user.userStatusId.status == 'pending'" class="btn btn-secondary m-1 mb-0 mt-0" 
+            <button *ngIf="user.userStatusId.userStatusId == 1" class="btn btn-secondary m-1 mb-0 mt-0" 
                 (click)="reject(user)">Odbij</button>
-            <button *ngIf="user.userStatusId.status == 'blocked'" class="btn btn-primary m-1 mb-0 mt-0" 
+            <button *ngIf="user.userStatusId.userStatusId == 4" class="btn btn-primary m-1 mb-0 mt-0" 
                 (click)="unblock(user)">Odblokiraj</button>
-            <button *ngIf="user.userStatusId.status == 'active'" class="btn btn-secondary m-1 mb-0 mt-0" 
+            <button *ngIf="user.userStatusId.userStatusId == 2" class="btn btn-secondary m-1 mb-0 mt-0" 
                 (click)="block(user)">Deaktiviraj</button>
             </td>
             <td>

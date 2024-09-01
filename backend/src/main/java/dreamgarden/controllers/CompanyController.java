@@ -7,11 +7,13 @@ import org.springframework.web.bind.annotation.*;
 
 import dreamgarden.entities.Company;
 import dreamgarden.entities.CompanyHoliday;
+import dreamgarden.entities.Service;
 import dreamgarden.entities.User;
 import dreamgarden.entities.Worker;
 import dreamgarden.repositories.CompanyRepository;
 import dreamgarden.repositories.CompanyHolidayRepository;
 import dreamgarden.repositories.JobReviewRepository;
+import dreamgarden.repositories.ServiceRepository;
 import dreamgarden.repositories.UserRepository;
 import dreamgarden.repositories.WorkerRepository;
 import dreamgarden.request.CreateCompanyHolidayRequest;
@@ -41,6 +43,9 @@ public class CompanyController {
     
     @Autowired
     private JobReviewRepository jobReviewRepository;
+    
+    @Autowired
+    private ServiceRepository serviceRepository;
 
 
     @GetMapping("/getAll")
@@ -208,5 +213,6 @@ public class CompanyController {
         }
         return null;
     }
+    
 
 }

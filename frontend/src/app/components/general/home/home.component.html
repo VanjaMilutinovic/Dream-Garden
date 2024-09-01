@@ -71,16 +71,20 @@
 <div class="container">
   <h2>Kompanije i radnici</h2>
   <div class="mb-3">
-    <input type="text" class="form-control m-1 row" placeholder="Pretraži po imenu" [(ngModel)]="searchTermName">
-    <input type="text" class="form-control m-1 row" placeholder="Pretraži po adresi" [(ngModel)]="searchTermAddress">
-    <div class="row m-1">
-      <button class="btn btn-primary search-button col-md-3" (click)="search()">Pretraži</button>
-      <span class="col-md-1"></span>
-      <button class="btn btn-secondary sort-button col-md-3" (click)="sortByName()">Sortiraj po imenu ({{ sortDirectionName }})</button>
-      <span class="col-md-1"></span>
-      <button class="btn btn-secondary sort-button col-md-3" (click)="sortByAddress()">Sortiraj po adresi ({{ sortDirectionAddress }})</button>
-    </div>
-  </div>
+    <div class="row">
+        <div class="col-md-4">
+        <input type="text" class="form-control" placeholder="Pretraži po imenu" [(ngModel)]="searchTermName">
+        </div>
+        <div class="col-md-4">
+        <input type="text" class="form-control" placeholder="Pretraži po adresi" [(ngModel)]="searchTermAddress">  
+        </div>
+        <div class="col-md-4 d-flex flex-column" >
+            <button class="btn btn-primary mb-1" (click)="search()">Pretraži</button>
+            <button class="btn btn-secondary mb-1" (click)="sortByName()">Sortiraj po imenu ({{ sortDirectionName }})</button>
+            <button class="btn btn-secondary" (click)="sortByAddress()">Sortiraj po adresi ({{ sortDirectionAddress }})</button>
+        </div>
+    </div>        
+</div>
   <table class="table table-striped">
     <thead>
       <tr>

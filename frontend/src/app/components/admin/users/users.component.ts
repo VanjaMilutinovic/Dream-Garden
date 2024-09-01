@@ -5,6 +5,7 @@ import { User } from 'src/app/models/user.model';
 import { AdminService } from 'src/app/services/admin/admin.service';
 import { UserStatus } from 'src/app/enums/user-status.enum';
 import { CompaniesService } from 'src/app/services/company/company.service';
+import { UserType } from 'src/app/enums/user-type.enum';
 
 
 @Component({
@@ -22,6 +23,8 @@ export class UsersComponent {
   errorMsg: any;
   currentUser: User = new User();
   currenyUserFlag: boolean = false;
+  selectedUserType: number = 0;
+  selectedUserStatus: number = 0;
 
   async ngOnInit() {
     try {
@@ -33,6 +36,15 @@ export class UsersComponent {
       this.errorMsg = error;
       console.log(error);
     }
+  }
+
+  filterUsers() {
+    this.viewUsers = [];
+    this.allUsers.forEach(u => {
+      if ((this.selectedUserType == 0 || u.userTypeId.userTypeId == this.selectedUserType) &&
+      (this.selectedUserStatus == 0 || u.userStatusId.userStatusId == this.selectedUserStatus))
+        this.viewUsers.push(u);
+    });
   }
 
   async activate(user: User){
