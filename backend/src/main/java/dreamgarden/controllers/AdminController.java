@@ -107,7 +107,7 @@ public class AdminController {
     }
     
     @PostMapping("/worker/employ")
-    public ResponseEntity<String> addCompanyToWorker(@RequestParam(name = "userId", required = true) Integer userId, 
+    public ResponseEntity<?> addCompanyToWorker(@RequestParam(name = "userId", required = true) Integer userId, 
                                                      @RequestParam(name = "companyId", required = true) Integer companyId) {
         Optional<User> user = userRepository.findById(userId);
         if (user.isEmpty()) {
@@ -132,9 +132,9 @@ public class AdminController {
         newWorker.setCompanyId(company.get());
         newWorker.setUserId(user.get());
         System.out.println(company.get());
-        workerRepository.saveAndFlush(newWorker);
+        newWorker = workerRepository.saveAndFlush(newWorker);
 
-        return ResponseEntity.ok("Company added to Worker successfully");
+        return ResponseEntity.status(HttpStatus.OK).body(newWorker);
     }
 
 }

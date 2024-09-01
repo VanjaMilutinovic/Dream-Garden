@@ -82,7 +82,42 @@
                         [(ngModel)]="currentCompany.address" name="address"/>
                 </div>
             </div>
-            <h5 class="card-title"><strong>Usluge</strong></h5>
+            <!-- WORKERS -->
+            <h5 class="card-title mt-3"><strong>Zaposleni radnici</strong></h5>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Korisničko ime</th>
+                        <th>Ime</th>
+                        <th>Prezime</th>
+                        <th>Pol</th>
+                        <th>Adresa</th>
+                        <th>Status</th>
+                        <th>Kontakt Telefon</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let worker of employedWorkers">
+                        <td>{{ worker.username }}</td>
+                        <td>{{ worker.name }}</td>
+                        <td>{{ worker.lastname }}</td>
+                        <td>{{ worker.gender }}</td>
+                        <td>{{ worker.address }}</td>
+                        <td>{{ worker.userStatusId.status }}</td> <!-- Assuming userStatusId has a status property -->
+                        <td>{{ worker.contactNumber }}</td>
+                        <td>{{ worker.email }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h5 *ngIf="unemployedWorkers.length>0"class="card-title"><strong>Dodaj radnike</strong></h5>
+            <div *ngFor="let worker of unemployedWorkers" class="form-check mb-2">
+                <div class="row col-12">
+                    <label class="form-check-label col-md-3"> {{ worker.name }} {{ worker.lastname }}</label>
+                    <button class="btn btn-primary col-md-2" (click)="addWorker(worker)">Dodaj radnika</button>
+                </div>
+            </div>
+            <h5 class="card-title mt-3"><strong>Usluge</strong></h5>
             <table class="table table-striped">
                 <thead>
                 <tr>
@@ -155,8 +190,8 @@
                 </thead>
                 <tbody>
                 <tr *ngFor="let holiday of currentCompany.holidayList">
-                    <td>{{ holiday.startDateTime | date:'dd-MM-yyyy hh:mm' }}</td>
-                    <td>{{ holiday.endDateTime | date:'dd-MM-yyyy hh:mm' }}</td>
+                    <td>{{ holiday.startDateTime | date:'dd-MM-yyyy hh:mm a' }}</td>
+                    <td>{{ holiday.endDateTime | date:'dd-MM-yyyy hh:mm a' }}</td>
                 </tr>
                 </tbody>
             </table>
@@ -166,12 +201,12 @@
                     <div class="row">
                         <div class="form-group col-md-4">
                             <label for="start-date">Početak odmora:</label>
-                            <input type="date" id="start-date" name="start-date"
+                            <input type="datetime-local" id="start-date" name="start-date"
                                 appearance="fill" class="w-100" [(ngModel)]="holidayStart">
                         </div>
                         <div class="form-group col-md-4">
                             <label for="end-date">Kraj odmora:</label>
-                            <input type="date" id="end-date" name="end-date" 
+                            <input type="datetime-local" id="end-date" name="end-date" 
                                 appearance="fill" class="w-100" [(ngModel)]="holidayEnd">
                         </div>
                     </div>

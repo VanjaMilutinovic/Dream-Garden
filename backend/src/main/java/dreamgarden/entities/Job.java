@@ -42,6 +42,7 @@ import java.util.List;
     @NamedQuery(name = "Job.findByGardenSize", query = "SELECT j FROM Job j WHERE j.gardenSize = :gardenSize"),
     @NamedQuery(name = "findByWorkerIdAndJobStatusId", query = "SELECT j FROM Job j WHERE j.workerId = :workerId AND j.jobStatusId = :jobStatusId"),
     @NamedQuery(name = "findByUserIdAndJobStatusId", query = "SELECT j FROM Job j WHERE j.userId = :userId AND j.jobStatusId = :jobStatusId"),
+    @NamedQuery(name = "findByCompanyId", query = "SELECT j FROM Job j WHERE j.companyId = :companyId"),
     @NamedQuery(name = "findByCompanyIdAndJobStatusId", query = "SELECT j FROM Job j WHERE j.companyId = :companyId AND j.jobStatusId = :jobStatusId")})
 public class Job implements Serializable {
 

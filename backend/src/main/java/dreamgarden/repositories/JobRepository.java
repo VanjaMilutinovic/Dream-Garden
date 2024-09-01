@@ -21,6 +21,7 @@ public interface JobRepository extends JpaRepository<Job, Integer> {
     List<Job> findByWorkerIdAndJobStatusId(User workerId, JobStatus jobStatusId);
     List<Job> findByUserIdAndJobStatusId(User userId, JobStatus jobStatusId);
     List<Job> findByCompanyIdAndJobStatusId(Company companyId, JobStatus jobStatusId);
+    List<Job> findByCompanyId(Company companyId);
     
     @Query(value = """
         SELECT DATE_FORMAT(j.start_date_time, '%M %Y') AS variableName, COUNT(j.job_id) AS variableCount

@@ -48,6 +48,9 @@ public class UserController {
     
     @Autowired
     private WorkerRepository workerRepository;
+    
+    @Autowired
+    private CompanyRepository companyRepository;
 
 
     @GetMapping("/login")
@@ -152,6 +155,20 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nisu pronađeni nezaposleni dekorateri. Kreirajte radnike!");
         }
         return ResponseEntity.status(HttpStatus.OK).body(unemployed);
+    }
+    
+    @GetMapping("/worker/getEmployed")
+    public ResponseEntity<?> getEmployed(@RequestParam(name = "companyId", required = true) Integer companyId) {
+        Optional<Company> companies = companyRepository.findById(companyId);
+        if (companies.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nema kompanije za ID " + companyId);
+        }
+        List<Worker> employed = workerRepository.findByCompanyId(companies.get());
+        List<User> users = new ArrayList<>();
+        for (Worker w: employed) {
+            users.add(w.getUserId());
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(users);
     }
     
     @GetMapping("/worker/get")

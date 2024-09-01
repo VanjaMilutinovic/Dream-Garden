@@ -414,6 +414,22 @@ public class JobController {
         return ResponseEntity.status(HttpStatus.CREATED).body(jobReview);
     }
     
+    @GetMapping("/review/getByCompanyId")
+    public ResponseEntity<?> getReviewsForCompany(@RequestParam(name = "companyId", required = true) Integer companyId){
+        Optional<Company> companies = companyRepository.findById(companyId);
+        if (companies.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nema kompanije za ID " + companyId);
+        }
+        List<Job> jobs = jobRepository.findByCompanyId(companies.get());
+        List<JobReview> reviews = new ArrayList<>();
+        for (Job j: jobs) {
+            Optional<JobReview> rev = jobReviewRepository.findByJobId(j);
+            if (rev.isPresent())
+                reviews.add(rev.get());
+        }
+        return ResponseEntity.ok(reviews);
+    }
+    
     @PostMapping("/status/update")
     public ResponseEntity<?> updateJobStatus(@RequestParam(name = "jobId", required = true) Integer jobId, 
                                              @RequestParam(name = "jobStatusId", required = true) Integer jobStatusId,

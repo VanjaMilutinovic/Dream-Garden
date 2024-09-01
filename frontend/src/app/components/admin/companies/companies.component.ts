@@ -8,6 +8,8 @@ import { Service } from 'src/app/models/service.model';
 import { ServicesService } from 'src/app/services/services/services.service';
 import { mapOptions } from '../../util/mapOptions';
 import { CompanyHoliday } from 'src/app/models/company-holiday.model';
+import { User } from 'src/app/models/user.model';
+import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
   selector: 'app-companies',
@@ -18,6 +20,7 @@ export class CompaniesComponent {
 
   constructor(private adminService: AdminService,
     private servicesService: ServicesService,
+    private userService: UserService,
     private companyService: CompaniesService,
     private router: Router){}
 
@@ -45,6 +48,9 @@ export class CompaniesComponent {
   holiday: CompanyHoliday = new CompanyHoliday();
   holidayStart: Date = new Date();
   holidayEnd: Date = new Date();
+  unemployedWorkers: Array<User> = [];
+  employedWorkers: Array<User> = [];
+
 
   async ngOnInit() {
     this.mapOptions.zoom = 14.5;
@@ -100,8 +106,28 @@ export class CompaniesComponent {
     this.service.companyId = company;
     this.pin = { lat: company.latitude, lng: company.longitude }
     this.center = this.pin;
+    try {
+      this.unemployedWorkers = await firstValueFrom(this.userService.getUnemployedWorkers());
+    }
+    catch(error: any){  }
+    try {
+      this.employedWorkers = await firstValueFrom(this.userService.getEmployedWorkers(company.companyId));
+    }
+    catch(error: any){
+      this.errorMsg = error.error;
+    }
   }
   
+  async addWorker(worker: User) {
+    const w = await firstValueFrom(this.adminService.employWorker(worker.userId, this.currentCompany.companyId)) as User;
+    console.log(w);
+    this.employedWorkers.push(worker);
+    const index = this.unemployedWorkers.indexOf(worker);
+      if (index > -1) {
+        this.unemployedWorkers.splice(index, 1);
+      }
+  }
+
   async update(){ 
     try {
       let data = {
@@ -116,7 +142,7 @@ export class CompaniesComponent {
       const c = await firstValueFrom(this.companyService.update(data)) as Company;
       this.currentCompany = c;
       this.currentCompany.holidayList = 
-        await firstValueFrom(this.companyService.getHolidays(c.companyId)) as Array<CompanyHoliday>;
+      await firstValueFrom(this.companyService.getHolidays(c.companyId)) as Array<CompanyHoliday>;
     }
     catch(error: any){
       this.errorMsg = error.error;

@@ -28,6 +28,7 @@ import { CreateCompanyComponent } from './components/admin/create-company/create
 import { LeafletMapComponent } from './components/general/leaflet-map/leaflet-map.component';
 import { GoogleMapsModule } from "@angular/google-maps";
 import { NgxCaptchaModule } from 'ngx-captcha';
+import { CompanyViewComponent } from './components/owner/company-view/company-view.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { NgxCaptchaModule } from 'ngx-captcha';
     AdminCompaniesComponent,
     CreateCompanyComponent,
     LeafletMapComponent,
-    DecoratorJobComponent
+    DecoratorJobComponent,
+    CompanyViewComponent
   ],
   imports: [
     BrowserModule,

@@ -72,4 +72,9 @@ export class CompaniesComponent {
     this.sortDirectionAddress = this.sortDirectionAddress === 'rastuće' ? 'opadajuće' : 'rastuće';
   }
 
+  viewCompany(company: CompaniesWithWorkers): void {
+    localStorage.setItem('companyId', JSON.stringify(company.companyId));
+    this.router.navigate(['/owner/company-view']);
+  }
+
 }
