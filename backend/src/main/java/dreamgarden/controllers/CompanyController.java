@@ -18,6 +18,7 @@ import dreamgarden.repositories.UserRepository;
 import dreamgarden.repositories.WorkerRepository;
 import dreamgarden.request.CreateCompanyHolidayRequest;
 import dreamgarden.request.CreateCompanyRequest;
+import dreamgarden.request.UpdateCompanyRequest;
 import dreamgarden.response.CompanyWithWorkersResponse;
 import java.util.ArrayList;
 import java.util.Date;
@@ -139,6 +140,26 @@ public class CompanyController {
         return ResponseEntity.status(HttpStatus.CREATED).body(company);
     }
 
+    @PostMapping("/update")
+    public ResponseEntity<?> updateCompany(@RequestBody UpdateCompanyRequest request) {
+        if (!request.checkUpdateCompanyRequest()) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Neodgovarajući ulazni parametri");
+        }
+        Optional<Company> companies = companyRepository.findById(request.getCompanyId());
+        if (companies.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nema kompanije za ID " + request.getCompanyId());
+        }
+        Company c = companies.get();
+        c.setAddress(request.getAddress());
+        c.setName(request.getName());
+        c.setLongitude(request.getLongitude());
+        c.setLatitude(request.getLatitude());
+        c.setContactNumber(request.getContactNumber());
+        c.setContactPerson(request.getContactPerson());
+        c = companyRepository.saveAndFlush(c);
+        return ResponseEntity.ok(c);
+    }
+    
     @PostMapping("/delete")
     public ResponseEntity<?> deleteCompany(@RequestParam("id") Integer id) {
         if (companyRepository.existsById(id)) {
