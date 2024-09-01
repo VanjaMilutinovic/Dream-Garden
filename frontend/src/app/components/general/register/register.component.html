@@ -1,4 +1,5 @@
-<div class="session">
+<!-- Registration Form -->
+<div class="session" >
     <div class="left">
         <img class="logo-light" src="../../../../assets/photos/logo-white-pink-outline.png">
     </div>
@@ -72,28 +73,18 @@
         </div>
 
         <div class="floating-label">
-            
             <input type="file" id="photo" formControlName="photo" class="form-control" (change)="onFileChange($event)"
-                accept="image/png, image/jpeg" />
-            <div *ngIf="f['photo'].errors?.['required'] && f['photo'].touched">Profilna slika je obavezna</div>
-            <div *ngIf="f['photo'].errors?.['invalidSize'] && f['photo'].touched">Slika mora biti između 100x100 i
-                300x300 piksela</div>
-            <div *ngIf="f['photo'].errors?.['invalidType'] && f['photo'].touched">Slika mora biti u JPG ili PNG formatu
+              accept="image/png, image/jpeg" />
+            <div *ngIf="imageError" class="text-danger">
+                {{ imageError }}
             </div>
+            <br>
+            <img *ngIf="previewUrl && !profilePictureInvalid" [src]="previewUrl" alt="Pregled slike" class="img-thumbnail" style="width: 200px; height: 200px; margin-top: 10px;">
         </div>
-
-        <div>
-            <!-- <ngx-recaptcha2
-        #captchaElem
-        [siteKey]="'YOUR_CAPTCHA_SITE_KEY'"
-        (success)="handleCaptchaSuccess($event)">
-      </ngx-recaptcha2> -->
-            <div *ngIf="captchaError">Captcha verifikacija nije uspešna</div>
-        </div>
-
-        <button type="submit" class="btn btn-primary search-button">Registrujte se</button>
-
+      
+        <button type="submit" class="btn btn-primary search-button" [disabled]="waitingForResponse">Registrujte se</button>
+      
         <p class="error_message" *ngIf="errorMessage">{{errorMessage}}</p>
         <p class="success_message" *ngIf="successMessage">{{successMessage}}</p>
     </form>
-</div>
+      </div>

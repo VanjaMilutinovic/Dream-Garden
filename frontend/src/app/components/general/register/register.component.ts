@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { sha512 } from 'js-sha512';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user/user.service';
 import { firstValueFrom } from 'rxjs/internal/firstValueFrom';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-register',
@@ -19,8 +21,20 @@ export class RegisterComponent {
   errorMessage: string | null = null;
   successMessage: string | null = null;
   waitingForResponse: boolean = false;
+  isCheckingImage: boolean = false;
+  previewUrl: SafeUrl | null = null;
+  imageError?: string;
+  base64Image?: string | null =null;
+  profilePictureInvalid?: boolean=false;
 
-  constructor(private fb: FormBuilder, private userService: UserService, private router: Router) {
+  constructor(
+    private fb: FormBuilder, 
+    private userService: UserService, 
+    private router: Router, 
+    private ngZone: NgZone,
+    private sanitizer: DomSanitizer,
+    private http: HttpClient
+  ) {
     this.registerForm = this.fb.group({
       username: ['', Validators.required],
       hashedPassword: ['', [Validators.required, Validators.pattern(/^(?=[A-Za-z])(?=.*[A-Z])(?=(.*[a-z]){3,})(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,10}$/)]],
@@ -30,7 +44,7 @@ export class RegisterComponent {
       address: ['', Validators.required],
       contactNumber: ['', [Validators.required, Validators.pattern(/^\+?\d{9,15}$/)]],
       email: ['', [Validators.required, Validators.email]],
-      creditCardNumber: ['', [Validators.required, this.creditCardValidator()]],
+      creditCardNumber: ['', [Validators.required]],
       photo: [null, Validators.required]
     });
   }
@@ -38,75 +52,87 @@ export class RegisterComponent {
   get f() { return this.registerForm.controls; }
 
   onFileChange(event: any) {
-    const file = event.target.files[0];
-    if (file) {
+    if (event.target.files.length > 0) {
+      const file = event.target.files[0];
       const img = new Image();
-      img.onload = () => {
-        if (img.width >= 100 && img.width <= 300 && img.height >= 100 && img.height <= 300) {
-          this.registerForm.patchValue({ photo: file });
+  
+      img.src = URL.createObjectURL(file);
+  
+      img.onload = () => {  
+        const width = img.width;
+        const height = img.height;
+  
+        if (this.isImageDimensionInvalid(width, height)) {
+          this.imageError = 'Slika mora biti dimenzija 100x100 do 300x300 piksela.';
+          this.profilePictureInvalid = true;
         } else {
-          this.registerForm.get('photo')?.setErrors({ invalidSize: true });
+          this.imageError = '';
+          this.profilePictureInvalid = false;
+  
+          // Set the preview URL
+          this.previewUrl = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(file));
+          
+          console.log('Starting Base64 conversion'); // Debugging log
+          const reader = new FileReader();
+          reader.onload = () => {
+            this.base64Image = (reader.result as string); // Remove the base64 prefix
+          };
+          reader.readAsDataURL(file);
         }
       };
       img.onerror = () => {
-        this.registerForm.get('photo')?.setErrors({ invalidType: true });
+        this.imageError = 'Nepravilan format slike.';
+        this.profilePictureInvalid = true;
+        this.previewUrl = null;
+        this.base64Image = null;
       };
-      img.src = URL.createObjectURL(file);
-    }
-  }
-
-  detectCardType() {
-    const cardNumber = this.registerForm.get('creditCardNumber')?.value;
-    if (/^3(00|01|02|03|6|8)\d{12}$/.test(cardNumber)) {
-      this.cardType = 'Diners';
-      this.cardTypeIcon = '../assets/photos/diners.png';
-    } else if (/^5[1-5]\d{14}$/.test(cardNumber)) {
-      this.cardType = 'MasterCard';
-      this.cardTypeIcon = '../assets/photos/mastercard.png';
-    } else if (/^4(539|556|916|532|929|485|716)\d{12}$/.test(cardNumber)) {
-      this.cardType = 'Visa';
-      this.cardTypeIcon = '../assets/photos/visa.png';
     } else {
-      this.cardType = null;
-      this.cardTypeIcon = null;
+      this.profilePictureInvalid = false;
+      this.previewUrl = null;
+      this.base64Image = null;
     }
   }
   
-
-  handleCaptchaSuccess(captchaResponse: string): void {
-    this.captchaToken = captchaResponse;
-    this.captchaError = false;
+  
+  isImageDimensionInvalid(width: number, height: number): boolean {
+    // Define the minimum and maximum dimensions
+    const minDimension = 100;
+    const maxDimension = 300;
+  
+    // Check if the dimensions are outside the allowed range
+    return (width < minDimension || height < minDimension || width > maxDimension || height > maxDimension);
   }
 
   async onSubmit() {
     if (this.waitingForResponse) return;
-
-    this.f['photo'].markAsTouched(); // Ensures photo validation triggers
-
-    if (!this.captchaToken) {
-      this.captchaError = true;
-      return;
+    
+    if (this.registerForm.invalid || this.profilePictureInvalid) {
+      this.errorMessage = "Molimo Vas da popunite sva obavezna polja.";
+        return;
     }
 
-    if (this.registerForm.invalid) {
-      return;
-    }
-
-    const formData = new FormData();
-    Object.keys(this.registerForm.controls).forEach(key => {
-      if (key === 'hashedPassword') {
-        formData.append(key, sha512(this.registerForm.get(key)?.value));
-      } else {
-        formData.append(key, this.registerForm.get(key)!.value);
-      }
-    });
-
+    const formData = {
+      username: this.registerForm.get('username')?.value,
+      hashedPassword: sha512(this.registerForm.get('hashedPassword')?.value),
+      name: this.registerForm.get('name')?.value,
+      lastname: this.registerForm.get('lastname')?.value,
+      gender: this.registerForm.get('gender')?.value,
+      address: this.registerForm.get('address')?.value,
+      contactNumber: this.registerForm.get('contactNumber')?.value,
+      email: this.registerForm.get('email')?.value,
+      creditCardNumber: this.registerForm.get('creditCardNumber')?.value,
+      userTypeId: '1', // Assuming '1' for owner
+      base64: this.base64Image // The path where the photo is temporarily saved
+    };
+    console.log(this.registerForm.get('photo')?.value);
+    console.log(this.previewUrl);
+    console.log(formData);
     this.errorMessage = "";
     this.successMessage = "";
     this.waitingForResponse = true;
 
     try {
-      const response = await firstValueFrom(this.userService.register(formData));
+      const user: any = await firstValueFrom(this.userService.register(formData));
       this.successMessage = "Korisnik je uspešno registrovan.";
       this.router.navigate(['/login']);
     } catch (error: any) {
@@ -136,5 +162,28 @@ export class RegisterComponent {
       }
       return { invalidCard: true };
     };
+  }
+
+  detectCardType() {
+    const cardNumber = this.registerForm.get('creditCardNumber')?.value;
+    if (/^3(00|01|02|03|6|8)\d{12}$/.test(cardNumber)) {
+      this.cardType = 'Diners';
+      this.cardTypeIcon = '../assets/photos/diners.png';
+    } else if (/^5[1-5]\d{14}$/.test(cardNumber)) {
+      this.cardType = 'MasterCard';
+      this.cardTypeIcon = '../assets/photos/mastercard.png';
+    } else if (/^4(539|556|916|532|929|485|716)\d{12}$/.test(cardNumber)) {
+      this.cardType = 'Visa';
+      this.cardTypeIcon = '../assets/photos/visa.png';
+    } else {
+      this.cardType = null;
+      this.cardTypeIcon = null;
+    }
+  }
+  
+
+  handleCaptchaSuccess(captchaResponse: string): void {
+    this.captchaToken = captchaResponse;
+    this.captchaError = false;
   }
 }

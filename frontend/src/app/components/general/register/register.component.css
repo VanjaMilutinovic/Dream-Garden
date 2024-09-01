@@ -125,4 +125,36 @@
     font-weight: 500;
     margin: 0px;
   }
+
+  
+  .modal.d-block {
+    display: block;
+  }
+  
+  .modal-content {
+    background: none;
+    border: none;
+    box-shadow: none;
+  }
+  
+  .modal-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .animation-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 150px;
+    margin-top: 10px;
+  }
+  
+  .img-thumbnail {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
   
