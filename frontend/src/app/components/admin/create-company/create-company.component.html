@@ -1,1 +1,178 @@
-<p>create-company works!</p>
+<div class="container mb-5">
+    <h2>Dodajte Novu Kompaniju</h2>
+    <form (ngSubmit)="onSubmit()" class="p-4 border rounded bg-light">
+        <div class="row col-12">
+            <div class="form-group col-md-4">
+                <label for="companyName">Naziv Kompanije</label>
+                <input
+                type="text"
+                class="form-control small-input"
+                id="companyName"
+                placeholder="Unesite naziv kompanije"
+                [(ngModel)]="company.name"
+                name="companyName"
+                required
+                />
+            </div>
+            <div class="form-group col-md-4">
+            <label for="latitude">Latitude</label>
+            <input
+                type="number"
+                class="form-control small-input"
+                id="latitude"
+                placeholder="Unesite geografsku širinu"
+                [(ngModel)]="company.latitude"
+                name="latitude"
+                required
+            />
+            </div>
+            <div class="form-group col-md-4">
+            <label for="contactPerson">Kontakt Osoba</label>
+            <input
+                type="text"
+                class="form-control small-input"
+                id="contactPerson"
+                placeholder="Unesite ime kontakt osobe"
+                [(ngModel)]="company.contactPerson"
+                name="contactPerson"
+                required
+            />
+            </div>
+        </div>
+        <div class="row col-12">
+            <div class="form-group col-md-4">
+                <label for="companyAddress">Adresa</label>
+                <input
+                type="text"
+                class="form-control small-input"
+                id="companyAddress"
+                placeholder="Unesite adresu"
+                [(ngModel)]="company.address"
+                name="companyAddress"
+                required
+                />
+            </div>
+            <div class="form-group col-md-4">
+            <label for="longitude">Longitude</label>
+            <input
+                type="number"
+                class="form-control small-input"
+                id="longitude"
+                placeholder="Unesite geografsku dužinu"
+                [(ngModel)]="company.longitude"
+                name="longitude"
+                required
+            />
+            </div>
+            <div class="form-group col-md-4">
+            <label for="contactNumber">Kontakt Telefon</label>
+            <input
+                type="text"
+                class="form-control  small-input"
+                id="contactNumber"
+                placeholder="Unesite kontakt telefon"
+                [(ngModel)]="company.contactNumber"
+                name="contactNumber"
+                required
+            />
+            </div>
+        </div>
+        <!-- WORKERS -->
+        <div class="container col-12 mt-2">
+            <h5>Odaberite nezaposlene radnike</h5>
+            <div *ngFor="let worker of unemployedWorkers" class="row form-check">
+                <input 
+                    class="form-check-input checkbox-input" 
+                    type="checkbox" 
+                    [id]="'worker_' + worker.userId" 
+                    [value]="worker.userId" 
+                    (change)="onWorkerSelected(worker, $event)">
+                <label class="form-check-label" [for]="'worker_' + worker.userId">
+                    {{ worker.name }} {{ worker.lastname }}
+                </label>
+            </div>
+        </div>
+        <!-- SERVICES -->
+        <div class="container col-12 mt-2">
+            <h5>Usluge</h5>
+            <table *ngIf="addedServices.length>0" class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Naziv</th>
+                    <th>Cena (RSD)</th>
+                    <th>Opis</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let service of addedServices">
+                    <td>{{ service.serviceName }}</td>
+                    <td>{{ service.price }}</td>
+                    <td>{{ service.serviceDescription }}</td>
+                </tr>
+                </tbody>
+            </table>
+            <button *ngIf="addServiceFlag==false" class="btn btn-secondary" (click)="addServiceFlag=true">Dodaj uslugu</button>
+            <form *ngIf="addServiceFlag" (ngSubmit)="onSubmitService()">
+                <div class="row col-12">
+                    <div class="form-group col-md-4">
+                        <label for="serviceName">Naziv</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="serviceName"
+                          placeholder="Unesite Naziv"
+                          [(ngModel)]="service.serviceName"
+                          name="serviceName"
+                          required
+                        />
+                    </div>                    
+                    <div class="form-group col-md-4">
+                        <label for="serviceDescription">Opis</label>
+                        <textarea
+                          class="form-control"
+                          id="serviceDescription"
+                          rows="3"
+                          placeholder="Unesite Opis"
+                          [(ngModel)]="service.serviceDescription"
+                          name="serviceDescription"
+                          required
+                        ></textarea>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="servicePrice">Cena</label>
+                        <input
+                          type="number"
+                          class="form-control"
+                          id="servicePrice"
+                          placeholder="Unesite Cenu"
+                          [(ngModel)]="service.price"
+                          name="servicePrice"
+                          required
+                        />
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Dodaj Uslugu</button>
+            </form>
+            <p class="error-message">{{ errorMsg }}</p>
+        </div>
+        <!-- HOLIDAYS -->
+        <div class="container col-12 mt-2">
+            <h5>Unesite godišnji odmor</h5>
+            <div class="row mt-2">
+                <div class="form-group col-md-4">
+                    <label for="start-date">Početak odmora:</label>
+                    <input type="date" id="start-date" name="start-date"
+                        appearance="fill" class="w-100" [(ngModel)]="holidayStart">
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="end-date">Kraj odmora</label>
+                    <input type="date" id="end-date" name="end-date" 
+                        appearance="fill" class="w-100" [(ngModel)]="holidayEnd">
+                </div>
+            </div>
+        </div>
+        
+        <button type="submit" class="btn btn-primary mt-3">Dodaj Kompaniju</button>
+    </form>
+  </div>
+  

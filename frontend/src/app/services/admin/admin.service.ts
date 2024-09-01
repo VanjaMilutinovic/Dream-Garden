@@ -23,4 +23,9 @@ export class AdminService {
     let params = "?username="+username+"&hashedPassword="+hashedPassword;
     return this.http.get<any>(this.path+"login" + params);
   }
+
+  employWorker(userId: number, companyId: number){
+    let params = "?userId="+userId+"&companyId="+companyId
+    return this.http.post<any>(this.path+"worker/employ"+params, null);
+  }
 }

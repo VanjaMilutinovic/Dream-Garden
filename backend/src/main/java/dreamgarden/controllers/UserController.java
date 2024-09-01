@@ -1,20 +1,10 @@
 package dreamgarden.controllers;
 
-import dreamgarden.entities.Job;
-import dreamgarden.entities.JobPhoto;
-import dreamgarden.entities.JobStatus;
-import dreamgarden.entities.Photo;
-import dreamgarden.entities.User;
-import dreamgarden.entities.UserStatus;
-import dreamgarden.entities.UserType;
-import dreamgarden.repositories.JobPhotoRepository;
-import dreamgarden.repositories.JobRepository;
-import dreamgarden.repositories.PhotoRepository;
-import dreamgarden.repositories.UserRepository;
-import dreamgarden.repositories.UserStatusRepository;
-import dreamgarden.repositories.UserTypeRepository;
+import dreamgarden.entities.*;
+import dreamgarden.repositories.*;
 import dreamgarden.request.CreateUserRequest;
 import dreamgarden.request.UpdateUserRequest;
+import java.util.ArrayList;
 import java.util.Date;
 
 import org.slf4j.Logger;
@@ -55,6 +45,9 @@ public class UserController {
 
     @Autowired
     private PhotoRepository photoRepository;
+    
+    @Autowired
+    private WorkerRepository workerRepository;
 
 
     @GetMapping("/login")
@@ -140,6 +133,37 @@ public class UserController {
         } else {
             return ResponseEntity.status(HttpStatus.OK).body(user);
         }
+    }
+    
+    @GetMapping("/worker/getUnemployed")
+    public ResponseEntity<?> getUnemployed() {
+        List<User> users = userRepository.findByUserTypeId(new UserType(2));
+        if (users.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nisu pronađeni dekorateri");
+        } 
+        List<User> unemployed = new ArrayList<>();
+        for (User u: users) {
+            Optional<Worker> employed = workerRepository.findByUserId(u);
+            if (employed.isEmpty()) {
+                unemployed.add(u);
+            }
+        }
+        if (unemployed.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nisu pronađeni nezaposleni dekorateri. Kreirajte radnike!");
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(unemployed);
+    }
+    
+    @GetMapping("/worker/get")
+    public ResponseEntity<?> getWorker(@RequestParam(name = "userId", required = true) Integer userId) {
+        Optional<User> users = userRepository.findById(userId);
+        if (users.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nije pronađen korisnik");
+        } 
+        Optional<Worker> worker = workerRepository.findByUserId(users.get());
+        if (worker.isEmpty())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Dekorater nije zaposlen");
+        return ResponseEntity.status(HttpStatus.OK).body(worker.get());
     }
 
     @PostMapping("/register")

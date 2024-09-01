@@ -17,4 +17,17 @@ export class CompaniesService {
   getAllCompaniesWithWorkers(){
     return this.http.get<any>(this.path+"getAllCompaniesWithWorkers");
   }
+
+  create(company:any){
+    return this.http.post<any>(this.path+"create", company);
+  }
+
+  createHoliday(companyId:number, start:Date, end:Date){
+    let data = {
+      "companyId": companyId, 
+      "startDateTime": start, 
+      "endDateTime": end
+    };
+    return this.http.post<any>(this.path+"holyday/create", data);
+  }
 }

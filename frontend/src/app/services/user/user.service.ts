@@ -30,4 +30,13 @@ export class UserService {
   }
 
 
+  getUnemployedWorkers(){
+    return this.http.get<any>(this.path+"worker/getUnemployed");
+  }
+
+  getWorker(userId: number){
+    let params = "?userId="+userId;
+    return this.http.get<any>(this.path+"worker/get" + params);
+  }
+
 }

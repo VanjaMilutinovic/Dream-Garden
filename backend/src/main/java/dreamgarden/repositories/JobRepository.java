@@ -74,4 +74,11 @@ public interface JobRepository extends JpaRepository<Job, Integer> {
     List<Job> findByWorkerIdAndCompanyIdAndDateRange(@Param("workerId") Integer workerId, 
             @Param("companyId") Integer companyId, @Param("jobDate") Date jobDate);
     
+    @Query(value = """
+        SELECT j.*
+        FROM job j 
+        WHERE j.company_id = :companyId
+            AND j.job_status_id = :jobStatusId""", nativeQuery = true)
+    List<Job> findByCompanyIdAndJobStatusId(@Param("companyId") Integer companyId, @Param("jobStatusId") Integer jobStatusId);
+    
 }

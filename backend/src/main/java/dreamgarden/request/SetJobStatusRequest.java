@@ -17,7 +17,7 @@ public class SetJobStatusRequest {
     public boolean checkSetJobStatusRequest(){
         return jobId != null &&
                statusId != null &&
-               (statusId == 3 && rejectionDescription != null) &&
+               ((statusId == 2 && rejectionDescription != null) || statusId != 2) &&
                userWorkerId != null;
     }
 
