@@ -6,6 +6,7 @@ import { CompaniesService } from 'src/app/services/company/company.service';
 import { Company } from 'src/app/models/company.model';
 import { Service } from 'src/app/models/service.model';
 import { ServicesService } from 'src/app/services/services/services.service';
+import { mapOptions } from '../../util/mapOptions';
 
 @Component({
   selector: 'app-companies',
@@ -18,6 +19,15 @@ export class CompaniesComponent {
     private servicesService: ServicesService,
     private companyService: CompaniesService,
     private router: Router){}
+
+  mapOptions: google.maps.MapOptions = mapOptions
+
+  pin !: any;
+
+  center: google.maps.LatLngLiteral = {
+    lat: 44.794358,
+    lng: 20.4516521,
+  };
 
   allCompanies :Array<Company> = [];
   viewCompanies :Array<Company> = [];
@@ -32,6 +42,7 @@ export class CompaniesComponent {
   service: Service = new Service();
 
   async ngOnInit() {
+    this.mapOptions.zoom = 14.5;
     try {
       const c = await firstValueFrom(this.companyService.getAll()) as Array<Company>;
       this.allCompanies = c;
@@ -71,6 +82,8 @@ export class CompaniesComponent {
     this.currentCompany = company;
     this.currenyCompanyFlag = true;
     this.service.companyId = company;
+    this.pin = { lat: company.latitude, lng: company.longitude }
+    this.center = this.pin;
   }
   
   editUser(){ }
