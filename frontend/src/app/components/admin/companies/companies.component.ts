@@ -6,6 +6,7 @@ import { CompaniesService } from 'src/app/services/company/company.service';
 import { Company } from 'src/app/models/company.model';
 import { Service } from 'src/app/models/service.model';
 import { ServicesService } from 'src/app/services/services/services.service';
+import { mapOptions } from '../../util/mapOptions';
 import { CompanyHoliday } from 'src/app/models/company-holiday.model';
 
 @Component({
@@ -19,6 +20,15 @@ export class CompaniesComponent {
     private servicesService: ServicesService,
     private companyService: CompaniesService,
     private router: Router){}
+
+  mapOptions: google.maps.MapOptions = mapOptions
+
+  pin !: any;
+
+  center: google.maps.LatLngLiteral = {
+    lat: 44.794358,
+    lng: 20.4516521,
+  };
 
   allCompanies :Array<Company> = [];
   viewCompanies :Array<Company> = [];
@@ -37,6 +47,7 @@ export class CompaniesComponent {
   holidayEnd: Date = new Date();
 
   async ngOnInit() {
+    this.mapOptions.zoom = 14.5;
     try {
       const c = await firstValueFrom(this.companyService.getAll()) as Array<Company>;
       this.allCompanies = c;
@@ -47,6 +58,16 @@ export class CompaniesComponent {
       console.log(error);
     }
   }
+
+  moveMap(event: google.maps.MapMouseEvent) {
+    console.log(event)
+    if (event.latLng == null) return;
+    this.pin ={lat: event.latLng.lat(),lng: event.latLng.lng()};
+    this.currentCompany.latitude = event.latLng.lat();
+    this.currentCompany.longitude = event.latLng.lng();
+     this.center = event.latLng.toJSON();
+  }
+
 
   search(): void {
     this.viewCompanies = this.allCompanies.filter(company => {
@@ -77,6 +98,8 @@ export class CompaniesComponent {
     this.currentCompany = company;
     this.currenyCompanyFlag = true;
     this.service.companyId = company;
+    this.pin = { lat: company.latitude, lng: company.longitude }
+    this.center = this.pin;
   }
   
   async update(){ 
