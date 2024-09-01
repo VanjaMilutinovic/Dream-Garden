@@ -81,6 +81,16 @@
             <br>
             <img *ngIf="previewUrl && !profilePictureInvalid" [src]="previewUrl" alt="Pregled slike" class="img-thumbnail" style="width: 200px; height: 200px; margin-top: 10px;">
         </div>
+        
+        <div class="floating-label">
+            <ngx-recaptcha2 
+              [siteKey]="'6LdYDDQqAAAAAE7x4COZDJpgXflfLl7-L_7QQduK'"
+              (success)="onCaptchaResolved($event)"
+              (error)="onCaptchaError($event)">
+            </ngx-recaptcha2>
+            <div *ngIf="captchaError" class="text-danger">Captcha verification failed. Please try again.</div>
+          </div>
+          
       
         <button type="submit" class="btn btn-primary search-button" [disabled]="waitingForResponse">Registrujte se</button>
       

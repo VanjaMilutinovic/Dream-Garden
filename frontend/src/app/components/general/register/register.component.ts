@@ -182,8 +182,17 @@ export class RegisterComponent {
   }
   
 
-  handleCaptchaSuccess(captchaResponse: string): void {
-    this.captchaToken = captchaResponse;
-    this.captchaError = false;
+  // Handle CAPTCHA resolved event
+  onCaptchaResolved(captchaResponse: string): void {
+    if (captchaResponse) {
+      this.registerForm.controls['recaptcha'].setValue(captchaResponse);
+      this.captchaError = false;
+    } else {
+      this.captchaError = true;
+    }
+  }
+
+  onCaptchaError(error: any): void {
+    this.captchaError = true;
   }
 }
