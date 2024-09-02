@@ -1,12 +1,21 @@
 p {
     font-family: Lato;
   }
-  
+  .error_msg{
+    color: red;
+    position: absolute;
+    margin-top: -1rem;
+  }
   * { margin:0; padding:0; } /* to remove the top and left whitespace */
-  
+  .action_buttons{
+    display: flex; flex-direction: column;
+  }
+  .action_div{
+    display: flex; gap:15px
+  }
   html, body { width:100%; height:100%; } /* just to be sure these are full screen*/
   
-  canvas { display:block; width: 500px; background-color: white } /* To remove the scrollbars */
+  canvas { display:block; width: 500px; height: 300px; background-color: white } /* To remove the scrollbars */
 
   .canvas_button{
     border: 2px solid black;
@@ -17,6 +26,7 @@ p {
     cursor: pointer;
     margin: 10px;
     height: auto;
+    font-weight: bold;
   }
 
   .canvas_button:hover{

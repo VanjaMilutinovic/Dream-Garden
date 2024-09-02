@@ -1,6 +1,14 @@
 
-<canvas #ele id="canvas" ></canvas>
-<div *ngFor="let shape of shapes" class="shape" [ngClass]="shape.class" cdkDrag (cdkDragEnded)="dragEnd($event)"></div>
+<div class="action_div">
+    <canvas #ele id="canvas" ></canvas>
+    <div class="action_buttons">
+        <div (click)="save()" class="canvas_button">
+            Sačuvaj
+        </div>
+        <p class="error_msg">{{error_msg}}</p>
+    </div>
+</div>
+<div *ngFor="let shape of shapes" class="shape" [ngClass]="shape.class" cdkDrag (cdkDragEnded)="dragEnd($event, shape)"></div>
 
 <div class="row controls">
     <div (click)="create(i)" class="canvas_button" *ngFor="let slika of pictureTitles; let i = index">
