@@ -1,8 +1,10 @@
 
 <canvas #ele id="canvas" ></canvas>
-<div  cdkDrag (CdkDragEnd)="create($event)">
-Drag
-</div>
-<div  cdkDrag (CdkDragEnd)="create($event)">
-Drag 
+<div *ngFor="let shape of shapes" class="shape" [ngClass]="shape.class" cdkDrag (cdkDragEnded)="dragEnd($event)"></div>
+
+<div class="row controls">
+    <div (click)="create(i)" class="canvas_button" *ngFor="let slika of pictureTitles; let i = index">
+        <img [src]="'../../../assets/canvas/'+slika+'.png'">
+    </div>
+
 </div>

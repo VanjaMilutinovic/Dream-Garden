@@ -1,4 +1,6 @@
-import { Component, VERSION, ViewChild, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
+import { CdkDragEnd } from '@angular/cdk/drag-drop';
+import { Component } from '@angular/core';
+import { Shape } from './shape'
 
 @Component({
   selector: 'app-canvas',
@@ -7,19 +9,20 @@ import { Component, VERSION, ViewChild, ViewContainerRef, ComponentFactoryResolv
 })
 export class CanvasComponent {
 
-  name = 'Angular ' + VERSION.major;
-  componentRef: any;
-  count = 0;
-  @ViewChild('ele', { read: ViewContainerRef }) entry !: ViewContainerRef;
+  shapes : Shape[] = []
 
+  pictureTitles : string[] = ["zelenino", "bazen", "fontana", "sto", "stolica"]
 
-  create(event: any) {
-    console.log(event)
-    this.count++;
-    this.componentRef.instance.text = "Draggble" + this.count;
+  dragEnd($event: CdkDragEnd) {
+    console.log($event.source);
   }
-  dropped() {
-    alert("hi")
+
+  create(shapeIndex : number){
+
+    const newShape : Shape = new Shape();
+    newShape.class = this.pictureTitles[shapeIndex]; 
+    this.shapes.push(newShape)
+
   }
 
 }
