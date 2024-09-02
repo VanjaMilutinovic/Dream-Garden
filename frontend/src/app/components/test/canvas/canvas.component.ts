@@ -3,6 +3,7 @@ import { BazenFactory, FontanaFactory,StoFactory,StolicaFactory,ZeleninoFactory 
 import { Component } from '@angular/core';
 import { Shape } from './shape'
 import { CdkDragEnd } from '@angular/cdk/drag-drop';
+import * as uuid from 'uuid';
 
 @Component({
   selector: 'app-canvas',
@@ -34,6 +35,11 @@ export class CanvasComponent {
   save() : void{
     //Svaka sa svakim bmk za O(n^2) ne mogu da razbijam glavu 
 
+    if(this.shapes.length == 0){
+      this.error_msg = "Canvas je prazan";
+      return;
+    }
+
     for(let i = 0; i < this.shapes.length;i++){
       const shapeA = this.shapes[i];
       if(shapeA.x < 0 || shapeA.x+shapeA.width > this.CANVAS_SIZE.width || shapeA.y < -this.CANVAS_SIZE.height || shapeA.y+shapeA.height > 0){
@@ -54,7 +60,24 @@ export class CanvasComponent {
           }
       }
     }
+    // let theJSON = JSON.stringify(this.shapes);
+    // let uri = "data:application/json;charset=UTF-8," + encodeURIComponent(theJSON);
+
+    // let a = document.createElement('a');
+    // a.href = uri;
+    // a.click();
+
+    // let myBlob = new Blob([new Uint8Array(JSON.stringify(this.shapes))], {type: "octet/stream"});
+    // var link = document.createElement('a');
+    // link.href = window.URL.createObjectURL(myBlob);
+    // link.click(); 
+    var a = document.createElement("a");
+    var file = new Blob([JSON.stringify(this.shapes)], {type: "text/plain"});
+    a.href = URL.createObjectURL(file);
+    a.download = "basta_"+uuid.v4()+".json";
+    a.click();
 
     this.error_msg = "";
   }
+
 }

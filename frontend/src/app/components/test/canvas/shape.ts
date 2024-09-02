@@ -3,10 +3,8 @@ export class Shape{
     y : number = -1;
     width : number = 0;
     height : number = 0;
-    class : string = "";
 
-    constructor(private _class: string){
-        this.class = _class;
+    constructor(public cssClass: string){
     }
 
     public getBounds(){
