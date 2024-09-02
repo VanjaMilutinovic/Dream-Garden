@@ -215,7 +215,7 @@
                         </label>
                     </div>
                 </div>
-                <app-canvas [type]="reqType"></app-canvas>
+                <app-canvas [type]="reqType" [existing]="job.canvas" [readOnly]="false"></app-canvas>
                 <button class="btn btn-primary mt-2" (click)="checkStepTwo()">Zakaži</button>
             </div>
         </div>
