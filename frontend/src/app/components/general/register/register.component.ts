@@ -94,8 +94,8 @@ export class RegisterComponent {
   
   isImageDimensionInvalid(width: number, height: number): boolean {
     // Define the minimum and maximum dimensions
-    const minDimension = 100;
-    const maxDimension = 300;
+    const minDimension = 99;
+    const maxDimension = 301;
   
     // Check if the dimensions are outside the allowed range
     return (width < minDimension || height < minDimension || width > maxDimension || height > maxDimension);
