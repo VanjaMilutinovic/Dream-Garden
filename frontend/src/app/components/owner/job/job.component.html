@@ -8,6 +8,7 @@
             <th>Datum Početka</th>
             <th>Firma</th>
             <th>Usluge</th>
+            <th>Canvas</th>
             <th><!--Cancel--></th>
         </tr>
         </thead>
@@ -20,12 +21,16 @@
                       <li *ngFor="let service of job.services">{{ service.serviceName }}</li>
                 </ul></td>
                 <td>
+                    <button *ngIf="job.canvas" class="btn btn-primary" (click)="showCanvas(job.canvas)">Prikaži Canvas</button>
+                </td>
+                <td>
                     <button class="btn btn-secondary m-1 mb-0 mt-0" *ngIf="isCancelable(job.startDateTime)" 
                         (click)="cancel(job)">Otkaži</button>     
                 </td>
             </tr>
         </tbody>
     </table>
+    <app-canvas *ngIf="selectedCanvas" [existing]="selectedCanvas"></app-canvas>
 </div>
 <div class="container mb-5">
     <h2>Završeni poslovi</h2>

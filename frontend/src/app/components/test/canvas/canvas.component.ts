@@ -22,7 +22,7 @@ export class CanvasComponent {
   @Input("existing")
   public existingShapes !: string;
 
-  constructor(){
+  ngOnInit(){
     if(this.existingShapes){
       try{
         this.shapes = JSON.parse(this.existingShapes) as Shape[];

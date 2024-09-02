@@ -35,6 +35,7 @@ export class JobComponent {
   reviewComment: string = '';
   reviewGrade: number | null = null;
   selectedJobId: number | null = null;
+  selectedCanvas: string | null = null;
 
   async ngOnInit() {
     try {
@@ -83,8 +84,6 @@ export class JobComponent {
     this.finishedJobs.forEach(async job => {      
       const review = await firstValueFrom(this.jobService.getreviewByJob(job.jobId)) as JobReview;
       job.jobReview = review;
-      console.log(job.jobId);
-      console.log(review);
     });
   }
 
@@ -123,6 +122,10 @@ export class JobComponent {
     this.selectedJobId = null;
     this.reviewComment = '';
     this.reviewGrade = null;
+  }
+
+  showCanvas(canvas: string) {
+    this.selectedCanvas = canvas;
   }
 
   async submitReview(job: Job) {
