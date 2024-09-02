@@ -55,6 +55,10 @@ export class JobsService {
     return this.http.get<any>(this.path+"review/getByJob"+params);
   }
 
+  addReview(data: any){
+    return this.http.post<any>(this.path+"review/add", data);
+  }
+
   getServicesByJob(jobId: number){
     let params = "?jobId="+jobId;
     return this.http.get<any>(this.path+"service/getByJob"+params);

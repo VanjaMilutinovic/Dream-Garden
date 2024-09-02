@@ -389,7 +389,7 @@ public class JobController {
         if (job.get().getJobStatusId().getJobStatusId() != 5) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Job must be finished! Job status: " + job.get().getJobStatusId().getStatus());
         }
-        Optional<List<JobReview>> jobReviewByJobId = jobReviewRepository.findByJobId(job.get());
+        Optional<JobReview> jobReviewByJobId = jobReviewRepository.findByJobId(job.get());
         if (jobReviewByJobId.isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Job already reviewed: " + jobReviewByJobId);
         }
@@ -412,9 +412,9 @@ public class JobController {
         List<Job> jobs = jobRepository.findByCompanyId(companies.get());
         List<JobReview> reviews = new ArrayList<>();
         for (Job j: jobs) {
-            Optional<List<JobReview>> rev = jobReviewRepository.findByJobId(j);
+            Optional<JobReview> rev = jobReviewRepository.findByJobId(j);
             if (rev.isPresent())
-                reviews.addAll(rev.get());
+                reviews.add(rev.get());
         }
         return ResponseEntity.ok(reviews);
     }
@@ -425,7 +425,7 @@ public class JobController {
         if (!jobOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Job not found for id " + jobId);
         }
-        Optional<List<JobReview>> review = jobReviewRepository.findByJobId(jobOptional.get());
+        Optional<JobReview> review = jobReviewRepository.findByJobId(jobOptional.get());
         if (review.isEmpty())
             review = null;
          return ResponseEntity.status(HttpStatus.OK).body(review);

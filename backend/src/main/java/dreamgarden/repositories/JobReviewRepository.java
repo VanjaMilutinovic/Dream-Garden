@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface JobReviewRepository extends JpaRepository<JobReview, Integer> {
     
-    Optional<List<JobReview>> findByJobId(Job jobId);
+    Optional<JobReview> findByJobId(Job jobId);
     @Query(value = """
         SELECT AVG(jr.grade) 
         FROM job_review jr 

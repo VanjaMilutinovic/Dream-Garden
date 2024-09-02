@@ -43,12 +43,23 @@
                 <td>{{ job.endDateTime | date:'dd-MM-yyyy hh:mm a' }}</td>
                 <td>{{ job.companyId.name }}</td>
                 <td>
-                    <div *ngIf="job.jobReview; else noReview">
-                        {{ job.jobReview.comment }} {{ job.jobReview.grade }}
+                    <div *ngIf="job.jobReview">{{ job.jobReview.comment }} {{ job.jobReview.grade }}</div>
+                    <div *ngIf="!job.jobReview && !showPopup">
+                        <button class="btn btn-primary"  (click)="openPopup(job.jobId)">
+                            Dodaj recenziju
+                        </button>
                     </div>
-                    <ng-template #noReview>
-                        <button class="btn btn-primary m-1 mb-0 mt-0">Dodaj recenziju</button>
-                    </ng-template>
+                    <div *ngIf="showPopup && selectedJobId==job.jobId" class="popup col-md-4">
+                    <div class="popup-content">
+                        <p><strong>ID: {{ selectedJobId }}</strong></p>
+                        <input id="comment" type="text" [(ngModel)]="reviewComment" 
+                        name="comment" class="form-control" required placeholder="Komentar">
+                        <input id="grade" type="number" min="1" max="5" [(ngModel)]="reviewGrade" 
+                            name="grade" class="form-control mt-2" required placeholder="Ocena">
+                        <button class="btn btn-primary mt-2" (click)="submitReview(job)">Oceni</button>
+                        <button class="btn btn-secondary mt-2" (click)="closePopup()">Cancel</button>
+                    </div>
+                    </div>
                 </td>
             </tr>
         </tbody>

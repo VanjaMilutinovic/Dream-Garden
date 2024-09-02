@@ -31,6 +31,10 @@ export class JobComponent {
   finishedJobs: Array<Job> = [];
   user: User = new User();
   errorMsg: string = "";
+  showPopup = false;
+  reviewComment: string = '';
+  reviewGrade: number | null = null;
+  selectedJobId: number | null = null;
 
   async ngOnInit() {
     try {
@@ -74,16 +78,16 @@ export class JobComponent {
     this.getReviews();
     this.getServices();
   }
+
   async getReviews(){
-    this.currentJobs.forEach(async job => {
+    this.finishedJobs.forEach(async job => {      
       const review = await firstValueFrom(this.jobService.getreviewByJob(job.jobId)) as JobReview;
       job.jobReview = review;
-    });
-    this.finishedJobs.forEach(async job => {
-      const review = await firstValueFrom(this.jobService.getreviewByJob(job.jobId)) as JobReview;
-      job.jobReview = review;
+      console.log(job.jobId);
+      console.log(review);
     });
   }
+
   async getServices(){
     this.currentJobs.forEach(async job => {
       const services = await firstValueFrom(this.jobService.getServicesByJob(job.jobId)) as Array<Service>;
@@ -107,6 +111,33 @@ export class JobComponent {
     } catch (error: any) {
       this.errorMsg = error.error;
     }
-}
+  }
 
+  openPopup(jobId: number): void {
+    this.selectedJobId = jobId;
+    this.showPopup = true;
+  }
+
+  closePopup(): void {
+    this.showPopup = false;
+    this.selectedJobId = null;
+    this.reviewComment = '';
+    this.reviewGrade = null;
+  }
+
+  async submitReview(job: Job) {
+    if (this.selectedJobId !== null && this.reviewComment && this.reviewGrade !== null) {
+      let data = {
+        jobId: this.selectedJobId,
+        comment: this.reviewComment,
+        grade: this.reviewGrade
+      };
+      const r = await firstValueFrom(this.jobService.addReview(data)) as JobReview;
+      job.jobReview = r;
+      this.closePopup();
+    } else {
+      // Handle validation errors if necessary
+      console.error('Review form is not complete.');
+    }
+  }
 }
