@@ -16,5 +16,6 @@ export class Job {
   gardenTypeId: GardenType = new GardenType();
   description?: string;
   rejectedDescription?: string;
+  canvas!: string;
 }
   
