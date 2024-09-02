@@ -1,0 +1,32 @@
+
+<div class="action_div">
+    <canvas [width]="CANVAS_SIZE.width" [height]="CANVAS_SIZE.height" id="canvas" ></canvas>
+    <div class="action_buttons">
+        <div (click)="save()" class="canvas_button">
+            Sačuvaj
+        </div>
+        <div>
+           
+
+          
+            <div class="Block">
+                <label for="files" class="btn"> <div class="canvas_button">
+                    Učitaj
+                </div></label>
+                <input id="files" style="position: absolute;visibility:hidden;" (change)="fileChanged($event)" type="file">
+              
+              </div>
+        </div>
+        <p class="error_msg">{{error_msg}}</p>
+    </div>
+</div>
+<div *ngFor="let shape of shapes" class="shape" [ngClass]="shape.cssClass" 
+cdkDrag (cdkDragEnded)="dragEnd($event, shape)"
+[cdkDragFreeDragPosition]="shape"></div>
+
+<div class="row controls">
+    <div (click)="create(i)" class="canvas_button" *ngFor="let slika of pictureTitles; let i = index">
+        <img [src]="'../../../assets/canvas/'+slika+'.png'">
+    </div>
+
+</div>

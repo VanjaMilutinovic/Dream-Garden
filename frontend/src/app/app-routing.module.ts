@@ -21,8 +21,10 @@ import { CompaniesComponent as AdminCompaniesComponent } from './components/admi
 import { CreateWorkerComponent as AdminCreateWorkerComponent } from './components/admin/create-worker/create-worker.component';
 import { CreateCompanyComponent as AdminCreateCompanyComponent } from './components/admin/create-company/create-company.component';
 import { ChangePasswordComponent } from './components/general/change-password/change-password.component';
+import { CanvasComponent } from './components/test/canvas/canvas.component';
 
 const routes: Routes = [
+  { path: 'canvas', component: CanvasComponent },
   { path: 'home', component: HomeComponent },
   { path: 'login', component: GeneralLoginComponent },
   { path: 'register', component: RegisterComponent },

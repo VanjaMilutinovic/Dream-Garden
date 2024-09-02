@@ -30,6 +30,9 @@ import { LeafletMapComponent } from './components/general/leaflet-map/leaflet-ma
 import { GoogleMapsModule } from "@angular/google-maps";
 import { NgxCaptchaModule } from 'ngx-captcha';
 import { CompanyViewComponent } from './components/owner/company-view/company-view.component';
+import { CanvasComponent } from './components/test/canvas/canvas.component';
+
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [
@@ -52,7 +55,8 @@ import { CompanyViewComponent } from './components/owner/company-view/company-vi
     LeafletMapComponent,
     DecoratorJobComponent,
     CompanyViewComponent,
-    DecoratorProfileComponent
+    DecoratorProfileComponent,
+    CanvasComponent
   ],
   imports: [
     BrowserModule,
@@ -65,7 +69,8 @@ import { CompanyViewComponent } from './components/owner/company-view/company-vi
     MatNativeDateModule,
     MatFormFieldModule,
     NgxCaptchaModule,
-    GoogleMapsModule
+    GoogleMapsModule,
+    DragDropModule
   ],
   providers: [],
   bootstrap: [AppComponent]
