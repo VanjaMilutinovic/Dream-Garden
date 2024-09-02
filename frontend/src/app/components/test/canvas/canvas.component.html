@@ -1,6 +1,6 @@
 
 <div class="action_div">
-    <canvas #ele id="canvas" ></canvas>
+    <canvas [width]="CANVAS_SIZE.width" [height]="CANVAS_SIZE.height" id="canvas" ></canvas>
     <div class="action_buttons">
         <div (click)="save()" class="canvas_button">
             Sačuvaj
