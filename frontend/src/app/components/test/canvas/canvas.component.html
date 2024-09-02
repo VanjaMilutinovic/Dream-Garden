@@ -1,7 +1,7 @@
 
 <div class="action_div">
     <canvas [width]="CANVAS_SIZE.width" [height]="CANVAS_SIZE.height" id="canvas" ></canvas>
-    <div class="action_buttons">
+    <div class="action_buttons" *ngIf="!existingShapes">
         <div (click)="save()" class="canvas_button">
             Sačuvaj
         </div>
@@ -24,7 +24,7 @@
 cdkDrag (cdkDragEnded)="dragEnd($event, shape)"
 [cdkDragFreeDragPosition]="shape"></div>
 
-<div class="row controls">
+<div class="row controls" *ngIf="!existingShapes">
     <div (click)="create(i)" class="canvas_button" *ngFor="let slika of pictureTitles[this.typeId-1]; let i = index">
         <img [src]="'../../../assets/canvas/'+slika+'.png'">
     </div>

@@ -19,6 +19,19 @@ export class CanvasComponent {
   @Input("type")
   public typeId : number = 1;
 
+  @Input("existing")
+  public existingShapes !: string;
+
+  constructor(){
+    if(this.existingShapes){
+      try{
+        this.shapes = JSON.parse(this.existingShapes) as Shape[];
+      }catch(error){
+        this.error_msg = "Fajl je neispravan";
+      }
+    }
+  }
+
   readonly CANVAS_SIZE = { width: 500, height: 300 };
 
   pictureTitles: string[][] = [
