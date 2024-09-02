@@ -71,7 +71,11 @@ export class CanvasComponent {
   fileChanged(e: any) {
     let fileReader = new FileReader();
     fileReader.onload = (e) => {
-      if(fileReader.result) this.shapes = JSON.parse(fileReader.result.toString()) as Shape[];
+      try{
+        if(fileReader.result) this.shapes = JSON.parse(fileReader.result.toString()) as Shape[];
+      }catch(error){
+        this.error_msg = "Fajl je neispravan";
+      }
     }
     fileReader.readAsText(e.target.files[0]);
   }
