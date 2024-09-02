@@ -20,11 +20,12 @@ public class CreateJobRequest {
     private Integer userId;
     private Integer companyId;
     private Integer gardenTypeId;
+    private String canvas;
 
     public CreateJobRequest() {
     }
 
-    public CreateJobRequest(Date startDateTime, BigDecimal gardenSize, String description, CreatePrivateGardenRequest privateGarden, CreateRestaurantGardenRequest restaurantGarden, Integer userId, Integer companyId, Integer gardenTypeId) {
+    public CreateJobRequest(String canvas, Date startDateTime, BigDecimal gardenSize, String description, CreatePrivateGardenRequest privateGarden, CreateRestaurantGardenRequest restaurantGarden, Integer userId, Integer companyId, Integer gardenTypeId) {
         this.startDateTime = startDateTime;
         this.gardenSize = gardenSize;
         this.description = description;
@@ -33,6 +34,7 @@ public class CreateJobRequest {
         this.userId = userId;
         this.companyId = companyId;
         this.gardenTypeId = gardenTypeId;
+        this.canvas = canvas;
     }
 
     public boolean checkCreateJobRequest() {
@@ -44,6 +46,14 @@ public class CreateJobRequest {
             && this.gardenTypeId != null
             && ((this.gardenTypeId == 1 && this.privateGarden != null)
             || (this.gardenTypeId == 2 && this.restaurantGarden!= null));
+    }
+
+    public String getCanvas() {
+        return canvas;
+    }
+
+    public void setCanvas(String canvas) {
+        this.canvas = canvas;
     }
 
     public Date getStartDateTime() {

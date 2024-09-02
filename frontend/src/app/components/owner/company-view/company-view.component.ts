@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { AdminService } from 'src/app/services/admin/admin.service';
@@ -14,6 +14,7 @@ import { JobsService } from 'src/app/services/job/job.service';
 import { JobReview } from 'src/app/models/job-review.model';
 import { GardenType } from 'src/app/enums/garden-type.enum';
 import { Job } from 'src/app/models/job.model';
+import { CanvasComponent } from '../../test/canvas/canvas.component';
 
 
 @Component({
@@ -54,6 +55,7 @@ export class CompanyViewComponent {
   reqRestaurant: { fountainSize: number, numberOfFountains: number, grassSize: number, numberOfTables: number,  numberOfSeats: number } = 
     {fountainSize: 0, numberOfFountains: 0, grassSize: 0, numberOfTables: 0,  numberOfSeats: 0};
   checkedServices: Array<number> = [];
+  canvasFlag=false;
 
 
   async ngOnInit() {
@@ -103,7 +105,7 @@ export class CompanyViewComponent {
     }
     this.step = 2;
   }
-
+  @ViewChild(CanvasComponent) child!:CanvasComponent;
   async checkStepTwo() {
     if (this.reqType == 1) {
       if (this.reqPrivate.poolSize == 0 && this.reqPrivate.numberOfPools == 0 && this.reqPrivate.grassSize == 0 && this.reqPrivate.pavedSize == 0) {
@@ -137,6 +139,8 @@ export class CompanyViewComponent {
       alert("Odaberite usluge!");
       return;
     }
+    if (this.child && this.child.getCanvasString() == null) 
+      return;
     let data = {
       companyId: this.currentCompany.companyId,
       userId: this.currentUser.userId,
@@ -145,8 +149,10 @@ export class CompanyViewComponent {
       description: this.reqDescription,
       gardenTypeId: this.reqType,
       privateGarden: this.reqType==1 ? this.reqPrivate : null,
-      restaurantGarden: this.reqType==2 ? this.reqRestaurant : null
+      restaurantGarden: this.reqType==2 ? this.reqRestaurant : null,
+      canvas: this.child ? this.child.getCanvasString() : null 
     }
+    console.log(data);
     try {
       const job = await firstValueFrom(this.jobService.createJob(data)) as Job;
       await firstValueFrom(this.jobService.addServices(job.jobId, this.checkedServices));

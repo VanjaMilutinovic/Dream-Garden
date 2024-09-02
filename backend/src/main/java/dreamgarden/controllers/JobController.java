@@ -162,6 +162,7 @@ public class JobController {
         job.setRequestDateTime(new Date());
         job.setStartDateTime(request.getStartDateTime());
         job.setUserId(user.get());
+        job.setCanvas(request.getCanvas());
         job = jobRepository.saveAndFlush(job);
         
         switch(job.getGardenTypeId().getGardenTypeId()){
@@ -418,6 +419,18 @@ public class JobController {
         return ResponseEntity.ok(reviews);
     }
     
+    @GetMapping("/review/getByJob")
+    public ResponseEntity<?> getReviewByJob(@RequestParam(name = "jobId", required = true) Integer jobId){
+         Optional<Job> jobOptional = jobRepository.findById(jobId);
+        if (!jobOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Job not found for id " + jobId);
+        }
+        Optional<List<JobReview>> review = jobReviewRepository.findByJobId(jobOptional.get());
+        if (review.isEmpty())
+            review = null;
+         return ResponseEntity.status(HttpStatus.OK).body(review);
+     }
+    
     @PostMapping("/status/update")
     public ResponseEntity<?> updateJobStatus(@RequestParam(name = "jobId", required = true) Integer jobId, 
                                              @RequestParam(name = "jobStatusId", required = true) Integer jobStatusId,
@@ -472,4 +485,14 @@ public class JobController {
         jobServiceList = jobServiceRepository.saveAllAndFlush(jobServiceList);
         return ResponseEntity.status(HttpStatus.OK).body(jobServiceList);
     }
+    
+    @GetMapping("/service/getByJob")
+        public ResponseEntity<?> geServiceByJob(@RequestParam(name = "jobId", required = true) Integer jobId){
+         Optional<Job> jobOptional = jobRepository.findById(jobId);
+        if (!jobOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Job not found for id " + jobId);
+        }
+        List<Service> services = jobServiceRepository.findByJobId(jobOptional.get());
+         return ResponseEntity.status(HttpStatus.OK).body(services);
+     }
 }

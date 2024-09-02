@@ -72,6 +72,9 @@ public class Job implements Serializable {
     @Lob
     @Column(name = "rejected_description")
     private String rejectedDescription;
+    @Lob
+    @Column(name = "canvas")
+    private String canvas;
     @JsonIgnore
     @OneToMany(mappedBy = "jobId")
     private List<JobPhoto> jobPhotoList;
@@ -282,6 +285,14 @@ public class Job implements Serializable {
     @Override
     public String toString() {
         return "dreamgarden.entities.Job[ jobId=" + jobId + " ]";
+    }
+
+    public String getCanvas() {
+        return canvas;
+    }
+
+    public void setCanvas(String canvas) {
+        this.canvas = canvas;
     }
     
 }

@@ -53,8 +53,8 @@
         </thead>
         <tbody>
             <tr *ngFor="let job of acceptedJobs">
-                <td>{{ job.requestDateTime | date:'dd-MM-yyyy hh:mm' }}</td>
-                <td>{{ job.startDateTime | date:'dd-MM-yyyy hh:mm' }}</td>
+                <td>{{ job.requestDateTime | date:'dd-MM-yyyy hh:mm a' }}</td>
+                <td>{{ job.startDateTime | date:'dd-MM-yyyy hh:mm a' }}</td>
                 <td>{{ job.gardenSize }}</td>
                 <td>{{ job.description }}</td>
                 <td>{{ job.gardenTypeId.type }}</td>
@@ -68,8 +68,8 @@
 </div>
 <div class="container">
     <h2>Završeni poslovi</h2>
-    <p class="error-message" *ngIf="acceptedJobs.length==0">Nema Prihvaćenih Poslova</p>
-    <table class="table table-striped" *ngIf="acceptedJobs.length>0">
+    <p class="error-message" *ngIf="finishedJobs.length==0">Nema Prihvaćenih Poslova</p>
+    <table class="table table-striped" *ngIf="finishedJobs.length>0">
         <thead>
         <tr>
             <th>Datum Zakazivanja</th>
@@ -82,9 +82,9 @@
         </thead>
         <tbody>
             <tr *ngFor="let job of finishedJobs">
-                <td>{{ job.requestDateTime | date:'dd-MM-yyyy hh:mm' }}</td>
-                <td>{{ job.startDateTime | date:'dd-MM-yyyy hh:mm' }}</td>
-                <td>{{ job.endDateTime | date:'dd-MM-yyyy hh:mm' }}</td>
+                <td>{{ job.requestDateTime | date:'dd-MM-yyyy hh:mm a' }}</td>
+                <td>{{ job.startDateTime | date:'dd-MM-yyyy hh:mm a' }}</td>
+                <td>{{ job.endDateTime | date:'dd-MM-yyyy hh:mm a' }}</td>
                 <td>{{ job.description }}</td>
                 <td>{{ job.gardenTypeId.type }}</td>
                 <td>

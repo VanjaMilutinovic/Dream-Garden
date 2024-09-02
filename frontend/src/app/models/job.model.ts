@@ -1,6 +1,8 @@
 import { Company } from "./company.model";
 import { GardenType } from "./garden-type.model";
+import { JobReview } from "./job-review.model";
 import { JobStatus } from "./job-status.model";
+import { Service } from "./service.model";
 import { User } from "./user.model";
 
 export class Job {
@@ -16,5 +18,8 @@ export class Job {
   gardenTypeId: GardenType = new GardenType();
   description?: string;
   rejectedDescription?: string;
+  canvas!: string;
+  jobReview!: JobReview;
+  services: Array<Service> = [];
 }
   

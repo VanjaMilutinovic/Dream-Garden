@@ -215,7 +215,8 @@
                         </label>
                     </div>
                 </div>
-                <app-canvas></app-canvas>
+                <button *ngIf="!canvasFlag" class="btn btn-secondary" (click)="canvasFlag=true">Želim da nacrtam baštu</button>
+                <app-canvas *ngIf="canvasFlag" [type]="reqType"></app-canvas>
                 <button class="btn btn-primary mt-2" (click)="checkStepTwo()">Zakaži</button>
             </div>
         </div>
