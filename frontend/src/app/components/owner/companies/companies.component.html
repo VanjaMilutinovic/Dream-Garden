@@ -39,8 +39,6 @@
             </ul>
           </td>
           <td *ngIf="company.rating>0">
-            
-
             <svg
             height="23"
             width="115"
@@ -59,10 +57,10 @@
             </rect>
             <defs>
               <linearGradient id="MyGradient">
-                <stop offset="0%" stop-color="#ed8a19" />
-                <stop [attr.offset]="company.rating*20+'%'" stop-color="#ed8a19" />
-                <stop [attr.offset]="company.rating*20+'%'"stop-color="#6c6c6c" />
-                <stop offset="100%" stop-color="#6c6c6c" />
+                <stop offset="0%" stop-color="#f48fb1" />
+                <stop [attr.offset]="company.rating*20+'%'" stop-color="#f48fb1" />
+                <stop [attr.offset]="company.rating*20+'%'"stop-color="#333" />
+                <stop offset="100%" stop-color="#333" />
               </linearGradient>
             </defs>
             <path
