@@ -77,3 +77,7 @@ p {
   .controls{
     margin-top: 50px;
   }
+  .fileUploader{
+    background-color: transparent;
+    border: none;
+  }
