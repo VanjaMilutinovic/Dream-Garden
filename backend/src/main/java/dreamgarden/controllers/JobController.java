@@ -388,7 +388,7 @@ public class JobController {
         if (job.get().getJobStatusId().getJobStatusId() != 5) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Job must be finished! Job status: " + job.get().getJobStatusId().getStatus());
         }
-        Optional<JobReview> jobReviewByJobId = jobReviewRepository.findByJobId(job.get());
+        Optional<List<JobReview>> jobReviewByJobId = jobReviewRepository.findByJobId(job.get());
         if (jobReviewByJobId.isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Job already reviewed: " + jobReviewByJobId);
         }
@@ -411,9 +411,9 @@ public class JobController {
         List<Job> jobs = jobRepository.findByCompanyId(companies.get());
         List<JobReview> reviews = new ArrayList<>();
         for (Job j: jobs) {
-            Optional<JobReview> rev = jobReviewRepository.findByJobId(j);
+            Optional<List<JobReview>> rev = jobReviewRepository.findByJobId(j);
             if (rev.isPresent())
-                reviews.add(rev.get());
+                reviews.addAll(rev.get());
         }
         return ResponseEntity.ok(reviews);
     }

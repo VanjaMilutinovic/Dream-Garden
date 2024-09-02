@@ -2,6 +2,7 @@ package dreamgarden.repositories;
 
 import dreamgarden.entities.Job;
 import dreamgarden.entities.JobReview;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface JobReviewRepository extends JpaRepository<JobReview, Integer> {
     
-    Optional<JobReview> findByJobId(Job jobId);
+    Optional<List<JobReview>> findByJobId(Job jobId);
     @Query(value = """
         SELECT AVG(jr.grade) 
         FROM job_review jr 
