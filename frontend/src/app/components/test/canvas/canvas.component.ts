@@ -54,19 +54,20 @@ export class CanvasComponent {
     this.shapes.push(newShape);
   }
 
-  save(): void {
+  getCanvasString(): string | null {
+
     //Svaka sa svakim bmk za O(n^2) ne mogu da razbijam glavu 
 
     if (this.shapes.length == 0) {
       this.error_msg = "Canvas je prazan";
-      return;
+      return null;
     }
 
     for (let i = 0; i < this.shapes.length; i++) {
       const shapeA = this.shapes[i];
       if (shapeA.x < 0 || shapeA.x + shapeA.width > this.CANVAS_SIZE.width || shapeA.y < -this.CANVAS_SIZE.height || shapeA.y + shapeA.height > 0) {
         this.error_msg = "Neki oblik izlazi sa canvasa";
-        return;
+        return null;
       }
 
       for (let j = i + 1; j < this.shapes.length; j++) {
@@ -75,13 +76,20 @@ export class CanvasComponent {
         if (shapeA.x < shapeB.x+shapeB.width && shapeA.x+shapeA.width > shapeB.x &&
           shapeA.y+shapeA.height > shapeB.y && shapeA.y < shapeB.y+shapeB.height) {
           this.error_msg = "Postoje oblici koji se preklapaju";
-          return;
+          return null;
         }
       }
     }
+    return JSON.stringify(this.shapes);
 
+  }
+
+  save(): void {
+    
+    const canvasString = this.getCanvasString();
+    if(canvasString == null) return;
     var a = document.createElement("a");
-    var file = new Blob([JSON.stringify(this.shapes)], { type: "text/plain" });
+    var file = new Blob([canvasString], { type: "text/plain" });
     a.href = URL.createObjectURL(file);
     a.download = "basta_" + uuid.v4() + ".json";
     a.click();
