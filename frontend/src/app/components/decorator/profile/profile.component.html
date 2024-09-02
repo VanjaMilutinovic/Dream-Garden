@@ -1,43 +1,100 @@
 <!-- USER VIEW -->
 <div class="container mb-5">
     <div class="card">
-        <div class="card-header">
+      <div class="card-header">
         <h2>Detalji o Korisniku</h2>
-        </div>
-        <div class="card-body">
+      </div>
+      <div class="card-body">
+        <div *ngIf="successMessage" class="alert alert-success" role="alert">
+            {{ successMessage }}
+          </div>
+          <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+            {{ errorMessage }}
+          </div>
         <div class="row">
-            <div class="col-md-4">
-            <img [src]="currentUser.photoId?sanitizer.bypassSecurityTrustResourceUrl(currentUser.photoId.base64):'../../../assets/photos/default-profile.jpg'  " alt="User Photo" class="img-fluid rounded-circle">
+          <div class="col-md-4">
+            <img
+              [src]="previewUrl ? previewUrl : '../../../assets/photos/default-profile.jpg'"
+              alt="User Photo"
+              class="img-fluid rounded-circle"
+            />
+            <div class="mt-3">
+              <input
+                type="file"
+                (change)="onFileChange($event)"
+                accept="image/png, image/jpeg"
+                class="form-control"
+              />
+              <div *ngIf="imageError" class="text-danger">
+                {{ imageError }}
+              </div>
             </div>
-            <div class="col-md-8">
+          </div>
+          <div class="col-md-8">
             <p><strong>ID:</strong> {{ currentUser.userId }}</p>
             <label for="username"><strong>Korisničko Ime:</strong></label>
-            <input type="text" id="username" class="form-control"
-                [(ngModel)]="currentUser.username" name="username"/>
+            <input
+              type="text"
+              id="username"
+              class="form-control"
+              [(ngModel)]="currentUser.username"
+              name="username"
+            />
             <label for="name"><strong>Ime:</strong></label>
-            <input type="text" id="name" class="form-control"
-                [(ngModel)]="currentUser.name" name="name"/>
+            <input
+              type="text"
+              id="name"
+              class="form-control"
+              [(ngModel)]="currentUser.name"
+              name="name"
+            />
             <label for="lastname"><strong>Prezime:</strong></label>
-            <input type="text" id="lastname" class="form-control"
-                [(ngModel)]="currentUser.lastname" name="lastname"/>
+            <input
+              type="text"
+              id="lastname"
+              class="form-control"
+              [(ngModel)]="currentUser.lastname"
+              name="lastname"
+            />
             <label for="gender" class="label">Pol:</label>
-            <select id="gender" class="form-select" [(ngModel)]="currentUser.gender">
-                <option value="M">Muško</option>
-                <option value="F">Žensko</option>
+            <select
+              id="gender"
+              class="form-select"
+              [(ngModel)]="currentUser.gender"
+            >
+              <option value="M">Muško</option>
+              <option value="F">Žensko</option>
             </select>
             <label for="address"><strong>Adresa:</strong></label>
-            <input type="text" id="address" class="form-control"
-                [(ngModel)]="currentUser.address" name="address"/>
+            <input
+              type="text"
+              id="address"
+              class="form-control"
+              [(ngModel)]="currentUser.address"
+              name="address"
+            />
             <label for="contactNumber"><strong>Kontakt Telefon:</strong></label>
-            <input type="text" id="contactNumber" class="form-control"
-                [(ngModel)]="currentUser.contactNumber" name="contactNumber"/>
+            <input
+              type="text"
+              id="contactNumber"
+              class="form-control"
+              [(ngModel)]="currentUser.contactNumber"
+              name="contactNumber"
+            />
             <label for="email"><strong>Email:</strong></label>
-            <input type="text" id="email" class="form-control"
-                [(ngModel)]="currentUser.email" name="email"/>
-            </div>
+            <input
+              type="text"
+              id="email"
+              class="form-control"
+              [(ngModel)]="currentUser.email"
+              name="email"
+            />
+          </div>
         </div>
-    </div>
-    <div class="card-footer text-right">
+      </div>
+      <div class="card-footer text-right">
         <button class="btn btn-primary" (click)="editUser()">Sačuvaj izmene</button>
+      </div>
     </div>
-</div>      
+  </div>
+  
