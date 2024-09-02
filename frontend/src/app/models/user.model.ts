@@ -14,7 +14,7 @@ export class User {
   contactNumber: string = "";
   email: string = "";
   photoId: Photo = new Photo();
-  creditCardNumber?: string;
+  creditCardNumber: string = "";
   userStatusId: UserStatus = new UserStatus();
 }
   

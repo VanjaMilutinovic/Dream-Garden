@@ -33,6 +33,7 @@ export class JobComponent {
   worker: Worker = new Worker();
   pendingJobs: Array<Job> = [];
   acceptedJobs: Array<Job> = [];
+  finishedJobs: Array<Job> = [];
   errorMsg: string = "";
 
   async ngOnInit() {
@@ -64,6 +65,15 @@ export class JobComponent {
     catch (error: any) {
       this.errorMsg = error.error;
     }
+    try {
+      const finishedJobs = await firstValueFrom(this.jobService.getByStatusAndWorker(this.user.userId, JobStatus.Done)) as Array<Job>;
+      finishedJobs.forEach(job => {
+        this.finishedJobs.push(job);
+      });
+    }
+    catch (error: any) {
+      this.errorMsg = error.error;
+    }
   }
 
   async accept(job: Job) {
@@ -77,6 +87,7 @@ export class JobComponent {
     if (index > -1) {
       this.pendingJobs.splice(index, 1);
     }
+    this.acceptedJobs.push(job);
   }
 
   async reject(job: Job) {
@@ -108,5 +119,6 @@ export class JobComponent {
     if (index > -1) {
       this.acceptedJobs.splice(index, 1);
     }
+    this.finishedJobs.push(job);
   }
 }

@@ -1,43 +1,43 @@
-<h1>Nikoly ovde ti radis</h1>
-<p>@PostMapping("admin/user/createWorker")</p>
-<p>
-    private String username;
-    private String hashedPassword;
-    private String name;
-    private String lastname;
-    private Character gender;
-    private String address;
-    private String contactNumber;
-    private String email;
-    private String photoPath;
-</p>
 <!-- USER VIEW -->
-<!-- <div class="container" *ngIf="currenyUserFlag == true">
+<div class="container mb-5">
     <div class="card">
         <div class="card-header">
-        <h4>Detalji o Korisniku</h4>
-        <p><strong>OVO TREBA DA BUDE EDITABILNO</strong></p>
+        <h2>Detalji o Korisniku</h2>
         </div>
         <div class="card-body">
         <div class="row">
-            <div class="col-md-4">
-            <img [src]="'../../../assets/photos/'+currentUser.photoId.path" alt="User Photo" class="img-fluid rounded-circle">
-            </div>
             <div class="col-md-8">
-            <p><strong>ID:</strong> {{ currentUser.userId }}</p>
-            <p><strong>Korisničko Ime:</strong> {{ currentUser.username }}</p>
-            <p><strong>Ime i Prezime:</strong> {{ currentUser.name }} {{ currentUser.lastname }}</p>
-            <p><strong>Pol:</strong> {{ currentUser.gender === 'M' ? 'Muško' : 'Žensko' }}</p>
-            <p><strong>Adresa:</strong> {{ currentUser.address }}</p>
-            <p><strong>Kontakt Telefon:</strong> {{ currentUser.contactNumber }}</p>
-            <p><strong>Email:</strong> {{ currentUser.email }}</p>
-            <p><strong>Tip Korisnika:</strong> {{ currentUser.userTypeId.name }}</p>
-            <p><strong>Status:</strong> {{ currentUser.userStatusId.status }}</p>
+            <label for="username"><strong>Korisničko Ime:</strong></label>
+            <input type="text" id="username" class="form-control"
+                [(ngModel)]="currentUser.username" name="username"/>
+            <label for="password"><strong>Lozinka:</strong></label>
+            <input type="password" id="password" class="form-control"
+                [(ngModel)]="currentUser.hashedPassword" name="password"/>
+            <label for="name"><strong>Ime:</strong></label>
+            <input type="text" id="name" class="form-control"
+                [(ngModel)]="currentUser.name" name="name"/>
+            <label for="lastname"><strong>Prezime:</strong></label>
+            <input type="text" id="lastname" class="form-control"
+                [(ngModel)]="currentUser.lastname" name="lastname"/>
+            <label for="gender" class="label"><strong>Pol:</strong></label>
+            <select id="gender" class="form-select" [(ngModel)]="currentUser.gender">
+                <option value="M">Muško</option>
+                <option value="F">Žensko</option>
+            </select>
+            <label for="address"><strong>Adresa:</strong></label>
+            <input type="text" id="address" class="form-control"
+                [(ngModel)]="currentUser.address" name="address"/>
+            <label for="contactNumber"><strong>Kontakt Telefon:</strong></label>
+            <input type="text" id="contactNumber" class="form-control"
+                [(ngModel)]="currentUser.contactNumber" name="contactNumber"/>
+            <label for="email"><strong>Email:</strong></label>
+            <input type="text" id="email" class="form-control"
+                [(ngModel)]="currentUser.email" name="email"/>
             </div>
         </div>
-        </div>
-        <div class="card-footer text-right">
-            <button class="btn btn-primary" (click)="editUser()">Sačuvaj izmene</button>
-        </div>
-    </div>      
-</div> -->
+    </div>
+    <div class="card-footer text-right">
+        <p class="error-message"><strong>{{ errorMsg }}</strong></p>
+        <button class="btn btn-primary" (click)="editUser()">Sačuvaj izmene</button>
+    </div>
+</div>      

@@ -4,9 +4,8 @@ import { firstValueFrom } from 'rxjs';
 import { User } from 'src/app/models/user.model';
 import { AdminService } from 'src/app/services/admin/admin.service';
 import { UserStatus } from 'src/app/enums/user-status.enum';
-import { CompaniesService } from 'src/app/services/company/company.service';
-import { UserType } from 'src/app/enums/user-type.enum';
 import { DomSanitizer } from '@angular/platform-browser';
+import { UserService } from 'src/app/services/user/user.service';
 
 
 @Component({
@@ -17,6 +16,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class UsersComponent {
 
   constructor(private adminService: AdminService,
+              private userService: UserService,
               private router: Router,
               public sanitizer: DomSanitizer){}
   
@@ -94,7 +94,21 @@ export class UsersComponent {
     this.currentUser = user;
     this.currenyUserFlag = true;
   }
-  editUser(){ }
+  
+  async editUser(){ 
+    let data = {
+      userId: this.currentUser.userId,
+      email: this.currentUser.email,
+      name: this.currentUser.name,
+      lastname: this.currentUser.lastname,
+      address: this.currentUser.address,
+      contactNumber: this.currentUser.contactNumber,
+      creditCardNumber: this.currentUser.creditCardNumber,
+      base64: this.currentUser.photoId.base64
+    }
+    this.currentUser = await firstValueFrom(this.userService.update(data)) as User;
+    this.allUsers = await firstValueFrom(this.adminService.getAll()) as Array<User>;
+  }
 
   createNewDecorator(){
     this.router.navigate(['/admin/users/createWorker']);

@@ -103,7 +103,11 @@ public class JobController {
     
     private boolean areAllWorkersBusyOnDateForCompany(Date jobDate, Company company) {
         // Step 1: Retrieve all workers for the given company
-        List<Worker> workers = workerRepository.findByCompanyId(company);
+        List<Worker> allworkers = workerRepository.findByCompanyId(company);
+        List<Worker>workers = new ArrayList<>();
+        for (Worker w: allworkers)
+            if (w.getUserId().getUserStatusId().getUserStatusId()==2)
+                workers.add(w);
         // Step 2: Check availability of each worker
         for (Worker worker : workers) {
             List<Job> jobs = jobRepository.findByWorkerIdAndCompanyIdAndDateRange(worker.getUserId().getUserId(), company.getCompanyId(), jobDate);
@@ -120,8 +124,8 @@ public class JobController {
     @PostMapping("/create")
     @Transactional
     public ResponseEntity<?> createJob(@RequestBody CreateJobRequest request) {
-        if (request.checkCreateJobRequest()) {
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("CreateJobRequest not adequate");
+        if (!request.checkCreateJobRequest()) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Neispravni ulazni parametri");
         }
         Optional<User> user = userRepository.findById(request.getUserId());
         if(user.isEmpty()) {
@@ -130,17 +134,6 @@ public class JobController {
         if(user.get().getUserTypeId().getUserTypeId()!= 1) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("User must be of type owner. Given: " + user.get().getUserTypeId().getName());
         }
-        Optional<User> worker = userRepository.findById(request.getWorkerId());
-        if(worker.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found for ID " + request.getWorkerId());
-        }
-        if(worker.get().getUserTypeId().getUserTypeId()!= 2) {
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Worker must be of type decorator. Given: " + worker.get().getUserTypeId().getName());
-        }
-        Optional<Worker> workerObj = workerRepository.findByUserId(worker.get());
-         if(workerObj.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Worker not employed for userId " + request.getWorkerId());
-        }
         Optional<Company> company = companyRepository.findById(request.getCompanyId());
         if (company.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Company not found for id " + request.getCompanyId());
@@ -148,10 +141,6 @@ public class JobController {
         CompanyHoliday checkCompanyHoliday = checkCompanyHoliday(request.getStartDateTime(), company.get());
         if (checkCompanyHoliday != null) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Company on holiday during: " + checkCompanyHoliday);
-        }
-        if(!workerObj.get().getCompanyId().getCompanyId().equals(request.getCompanyId())) {
-             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Worker not employed by given company. Worker company: "
-                                                                           + workerObj.get().getCompanyId() + ", company: " + company.get());
         }
         if (areAllWorkersBusyOnDateForCompany(request.getStartDateTime(), company.get())) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No workers available at " + request.getStartDateTime());
@@ -173,7 +162,6 @@ public class JobController {
         job.setRequestDateTime(new Date());
         job.setStartDateTime(request.getStartDateTime());
         job.setUserId(user.get());
-        job.setWorkerId(worker.get());
         job = jobRepository.saveAndFlush(job);
         
         switch(job.getGardenTypeId().getGardenTypeId()){

@@ -28,4 +28,8 @@ export class AdminService {
     let params = "?userId="+userId+"&companyId="+companyId
     return this.http.post<any>(this.path+"worker/employ"+params, null);
   }
+
+  createWorker(data: any){
+    return this.http.post<any>(this.path+"user/createWorker", data);
+  }
 }

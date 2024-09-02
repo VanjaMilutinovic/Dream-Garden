@@ -71,7 +71,7 @@ public interface JobRepository extends JpaRepository<Job, Integer> {
         FROM job j 
         WHERE j.worker_id = :workerId 
             AND j.company_id = :companyId
-            AND :jobDate BETWEEN j.start_date_time AND j.end_date_time""", nativeQuery = true)
+            AND :jobDate BETWEEN j.start_date_time AND DATE_ADD(j.start_date_time, INTERVAL 1 DAY)""", nativeQuery = true)
     List<Job> findByWorkerIdAndCompanyIdAndDateRange(@Param("workerId") Integer workerId, 
             @Param("companyId") Integer companyId, @Param("jobDate") Date jobDate);
     

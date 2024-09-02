@@ -38,7 +38,8 @@
               </li>
             </ul>
           </td>
-          <td>{{ company.rating }}</td>
+          <td *ngIf="company.rating>0">{{ company.rating }}</td>
+          <td *ngIf="company.rating==0">Kompanija nije ocenjena</td>
         </tr>
       </tbody>
     </table>

@@ -44,4 +44,7 @@ export class UserService {
     return this.http.get<any>(this.path+"worker/get" + params);
   }
 
+  update(data: any){
+    return this.http.post<any>(this.path+"update", data);
+  }
 }

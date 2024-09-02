@@ -9,17 +9,17 @@
             <th>Veličina Bašte</th>
             <th>Opis Posla</th>
             <th>Tip Bašte</th>
-            <th><!-- Edit --></th>
+            <th><!--Edit--></th>
         </tr>
         </thead>
         <tbody>
             <tr *ngFor="let job of pendingJobs">
-                <td>{{ job.requestDateTime | date:'dd-MM-yyyy' }}</td>
-                <td>{{ job.startDateTime | date:'dd-MM-yyyy' }}</td>
+                <td>{{ job.requestDateTime | date:'dd-MM-yyyy hh:mm a' }}</td>
+                <td>{{ job.startDateTime | date:'dd-MM-yyyy hh:mm a' }}</td>
                 <td>{{ job.gardenSize }}</td>
                 <td>{{ job.description }}</td>
                 <td>{{ job.gardenTypeId.type }}</td>
-                <td>
+                <td *ngIf="user.userStatusId.userStatusId==2">
                     <button class="btn btn-primary m-1 mb-0 mt-0" 
                         (click)="accept(job)">Prihvati</button>
                     <button class="btn btn-secondary m-1 mb-0 mt-0" 
@@ -32,6 +32,7 @@
                             name="rejectionDescription"
                         />
                 </td>
+                <td *ngIf="user.userStatusId.userStatusId!=2">Morate postaviti slike!</td>
             </tr>
         </tbody>
     </table>
@@ -60,6 +61,34 @@
                 <td>
                     <button class="btn btn-primary m-1 mb-0 mt-0" 
                         (click)="finish(job)">Završi</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="container">
+    <h2>Završeni poslovi</h2>
+    <p class="error-message" *ngIf="acceptedJobs.length==0">Nema Prihvaćenih Poslova</p>
+    <table class="table table-striped" *ngIf="acceptedJobs.length>0">
+        <thead>
+        <tr>
+            <th>Datum Zakazivanja</th>
+            <th>Datum Početka</th>
+            <th>Datum Završetka</th>
+            <th>Opis Posla</th>
+            <th>Tip Bašte</th>
+            <th><!-- Edit --></th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let job of finishedJobs">
+                <td>{{ job.requestDateTime | date:'dd-MM-yyyy hh:mm' }}</td>
+                <td>{{ job.startDateTime | date:'dd-MM-yyyy hh:mm' }}</td>
+                <td>{{ job.endDateTime | date:'dd-MM-yyyy hh:mm' }}</td>
+                <td>{{ job.description }}</td>
+                <td>{{ job.gardenTypeId.type }}</td>
+                <td>
+                    <button class="btn btn-primary m-1 mb-0 mt-0" >Dodaj sliku</button>
                 </td>
             </tr>
         </tbody>

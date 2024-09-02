@@ -1,1 +1,55 @@
-<p>profile works!</p>
+<!-- USER VIEW -->
+<div class="container mb-5">
+    <div class="card">
+        <div class="card-header">
+        <h2>Detalji o Korisniku</h2>
+        </div>
+        <div class="card-body">
+        <div class="row">
+            <div class="col-md-4">
+            <img [src]="currentUser.photoId?sanitizer.bypassSecurityTrustResourceUrl(currentUser.photoId.base64):'../../../assets/photos/default-profile.jpg'  " alt="User Photo" class="img-fluid rounded-circle">
+            </div>
+            <div class="col-md-8">
+                <p><strong>ID:</strong> {{ currentUser.userId }}</p>
+                <label for="username"><strong>Korisničko Ime:</strong></label>
+                <input type="text" id="username" class="form-control"
+                    [(ngModel)]="currentUser.username" name="username"/>
+                <label for="name"><strong>Ime:</strong></label>
+                <input type="text" id="name" class="form-control"
+                    [(ngModel)]="currentUser.name" name="name"/>
+                <label for="lastname"><strong>Prezime:</strong></label>
+                <input type="text" id="lastname" class="form-control"
+                    [(ngModel)]="currentUser.lastname" name="lastname"/>
+                <label for="gender" class="label">Pol:</label>
+                <select id="gender" class="form-select" [(ngModel)]="currentUser.gender">
+                    <option value="M">Muško</option>
+                    <option value="F">Žensko</option>
+                </select>
+                <label for="address"><strong>Adresa:</strong></label>
+                <input type="text" id="address" class="form-control"
+                    [(ngModel)]="currentUser.address" name="address"/>
+                <label for="contactNumber"><strong>Kontakt Telefon:</strong></label>
+                <input type="text" id="contactNumber" class="form-control"
+                    [(ngModel)]="currentUser.contactNumber" name="contactNumber"/>
+                <label for="email"><strong>Email:</strong></label>
+                <input type="text" id="email" class="form-control"
+                    [(ngModel)]="currentUser.email" name="email"/>
+                <div class="row">
+                    <div class="col-md-10">
+                        <label for="creditCardNumber"><strong>Broj Kreditne kartice:</strong></label>
+                        <input type="text" id="creditCardNumber" class="form-control" (input)="detectCardType()"
+                                [(ngModel)]="currentUser.creditCardNumber" name="creditCardNumber"/>
+                    </div>
+                    <div class="col-md-2 d-flex align-items-center">
+                        <img *ngIf="cardType" [src]="cardTypeIcon" alt="{{ cardType }}"  
+                                style="margin: 2%; max-height: 20px; width: auto;"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="card-footer text-right">
+            <button class="btn btn-primary" (click)="editUser()">Sačuvaj izmene</button>
+        </div>
+    </div>      
+</div>

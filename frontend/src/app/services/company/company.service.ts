@@ -39,4 +39,9 @@ export class CompaniesService {
   update(data:any){
     return this.http.post<any>(this.path+"update", data);
   }
+
+  getCompany(companyId:number){
+    let params = "?id="+companyId;
+    return this.http.get<any>(this.path+"getById"+params);
+  }
 }

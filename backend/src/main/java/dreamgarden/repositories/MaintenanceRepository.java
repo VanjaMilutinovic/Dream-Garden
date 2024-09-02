@@ -27,9 +27,10 @@ public interface MaintenanceRepository extends JpaRepository<Maintenance, Intege
     @Query(value = """
         SELECT m.* 
         FROM maintenance m 
+            JOIN job j ON m.job_id = j.job_id
         WHERE m.worker_id = :workerId 
-            AND m.company_id = :companyId
-            AND :jobDate BETWEEN m.start_date_time AND m.end_date_time""", nativeQuery = true)
+            AND j.company_id = :companyId
+            AND :jobDate BETWEEN m.start_date_time AND m.estimated_end_date_time""", nativeQuery = true)
     List<Maintenance> findByWorkerIdAndCompanyIdAndDateRange(@Param("workerId") Integer workerId, 
             @Param("companyId") Integer companyId, @Param("jobDate") Date jobDate);
 

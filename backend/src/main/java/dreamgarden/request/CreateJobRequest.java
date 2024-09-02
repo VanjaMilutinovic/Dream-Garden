@@ -12,7 +12,6 @@ import java.util.Date;
  * @author vamilutinovic
  */
 public class CreateJobRequest {
-    private Integer jobId;
     private Date startDateTime;
     private BigDecimal gardenSize;
     private String description;
@@ -20,14 +19,12 @@ public class CreateJobRequest {
     private CreateRestaurantGardenRequest restaurantGarden;
     private Integer userId;
     private Integer companyId;
-    private Integer workerId;
     private Integer gardenTypeId;
 
     public CreateJobRequest() {
     }
 
-    public CreateJobRequest(Integer jobId, Date startDateTime, BigDecimal gardenSize, String description, CreatePrivateGardenRequest privateGarden, CreateRestaurantGardenRequest restaurantGarden, Integer userId, Integer companyId, Integer workerId, Integer gardenTypeId) {
-        this.jobId = jobId;
+    public CreateJobRequest(Date startDateTime, BigDecimal gardenSize, String description, CreatePrivateGardenRequest privateGarden, CreateRestaurantGardenRequest restaurantGarden, Integer userId, Integer companyId, Integer gardenTypeId) {
         this.startDateTime = startDateTime;
         this.gardenSize = gardenSize;
         this.description = description;
@@ -35,29 +32,18 @@ public class CreateJobRequest {
         this.restaurantGarden = restaurantGarden;
         this.userId = userId;
         this.companyId = companyId;
-        this.workerId = workerId;
         this.gardenTypeId = gardenTypeId;
     }
 
     public boolean checkCreateJobRequest() {
         return this.gardenSize!= null
             && this.startDateTime != null
-            && this.jobId != null
             && this.description != null
             && this.userId!= null
             && this.companyId != null
-            && this.workerId != null
             && this.gardenTypeId != null
             && ((this.gardenTypeId == 1 && this.privateGarden != null)
             || (this.gardenTypeId == 2 && this.restaurantGarden!= null));
-    }
-    
-    public Integer getJobId() {
-        return jobId;
-    }
-
-    public void setJobId(Integer jobId) {
-        this.jobId = jobId;
     }
 
     public Date getStartDateTime() {
@@ -114,14 +100,6 @@ public class CreateJobRequest {
 
     public void setCompanyId(Integer companyId) {
         this.companyId = companyId;
-    }
-
-    public Integer getWorkerId() {
-        return workerId;
-    }
-
-    public void setWorkerId(Integer workerId) {
-        this.workerId = workerId;
     }
 
     public Integer getGardenTypeId() {

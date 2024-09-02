@@ -16,6 +16,7 @@ import { HeaderComponent } from './components/util/header/header.component';
 import { FooterComponent } from './components/util/footer/footer.component';
 import { HomeComponent } from './components/general/home/home.component';
 import { ProfileComponent } from './components/owner/profile/profile.component';
+import { ProfileComponent as DecoratorProfileComponent } from './components/decorator/profile/profile.component';
 import { CompaniesComponent as OwnerCompaniesComponent} from './components/owner/companies/companies.component';
 import { JobComponent } from './components/owner/job/job.component';
 import { JobComponent as DecoratorJobComponent } from './components/decorator/job/job.component';
@@ -50,7 +51,8 @@ import { CompanyViewComponent } from './components/owner/company-view/company-vi
     CreateCompanyComponent,
     LeafletMapComponent,
     DecoratorJobComponent,
-    CompanyViewComponent
+    CompanyViewComponent,
+    DecoratorProfileComponent
   ],
   imports: [
     BrowserModule,

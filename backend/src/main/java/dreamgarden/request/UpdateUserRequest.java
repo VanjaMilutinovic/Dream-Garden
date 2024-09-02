@@ -33,14 +33,13 @@ public class UpdateUserRequest {
     }
     
     public boolean checkUpdateUserRequest() {
+        
         return userId != null && 
                name != null &&
                lastname != null &&
                address != null &&
                contactNumber != null &&
-               email != null &&
-               creditCardNumber != null &&
-               base64 != null;
+               email != null;
     }
 
     public Integer getUserId() {

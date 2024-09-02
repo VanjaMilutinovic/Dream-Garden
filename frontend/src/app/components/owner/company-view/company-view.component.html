@@ -1,0 +1,191 @@
+<!-- COMPANY VIEW -->
+<div class="container mb-5" >
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Detalji o Kompaniji</h3>
+        </div>
+        <div class="card-body">
+            <!-- MAP -->
+            <div class="floatMap">
+                <p><strong>Lokacija:</strong></p>
+                <google-map id="mapa" class="mapa"
+                    width="100%"
+                    height="22em"
+                    [options]="mapOptions"
+                    (mapClick)="moveMap($event)"
+                    [center]="center"
+                    >
+                    <map-marker *ngIf="pin" [position]="pin"/>
+                </google-map>
+            </div>
+            <!-- INFO -->
+            <div class="row">
+                <div class="col-md-8">
+                    <p><strong>ID:</strong> {{ currentCompany.companyId }}</p>
+                    <p><strong>Naziv Kompanije:</strong> {{ currentCompany.name }}</p>
+                    <p><strong>Kontakt Osoba:</strong> {{ currentCompany.contactPerson }}</p>
+                    <p><strong>Kontakt Telefon:</strong> {{ currentCompany.contactNumber }}</p>
+                    <p><strong>Adresa:</strong> {{ currentCompany.address }}</p>
+                </div>
+            </div>
+            <!-- SERVICES -->
+            <h5 class="card-title mt-3"><strong>Usluge</strong></h5>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>ID Usluge</th>
+                    <th>Naziv</th>
+                    <th>Cena (RSD)</th>
+                    <th>Opis</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let service of currentCompany.serviceList">
+                    <td>{{ service.serviceId}}</td>
+                    <td>{{ service.serviceName }}</td>
+                    <td>{{ service.price }}</td>
+                    <td>{{ service.serviceDescription }}</td>
+                </tr>
+                </tbody>
+            </table>
+            <!-- HOLIDAYS -->
+            <h5 class="card-title mt-3"><strong>Godišnji odmor</strong></h5>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Datum Početka</th>
+                    <th>Datum Kraja</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let holiday of currentCompany.holidayList">
+                    <td>{{ holiday.startDateTime | date:'dd-MM-yyyy hh:mm a' }}</td>
+                    <td>{{ holiday.endDateTime | date:'dd-MM-yyyy hh:mm a' }}</td>
+                </tr>
+                </tbody>
+            </table> 
+            <!-- REVIEWS -->  
+            <h5 class="card-title mt-3"><strong>Recenzije</strong></h5>
+            <p *ngIf="reviews.length==0" class="error-message"><strong>Nema recenzija za kompaniju</strong></p>
+            <table class="table table-striped" *ngIf="reviews.length>0">
+                <thead>
+                <tr>
+                    <th>Komentar</th>
+                    <th>Ocena</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let review of reviews">
+                    <td>{{ review.comment }}</td>
+                    <td>{{ review.grade }}</td>
+                </tr>
+                </tbody>
+            </table>        
+        </div>
+        <button class="btn btn-primary col-md-4" (click)="requestJobFlag=true">Zakaži uređivanje bašte</button>
+        <p class="error-message">{{ errorMsg }}</p>  
+    </div>      
+</div>
+<!-- REQUEST JOB -->
+<div class="container mb-5" *ngIf="requestJobFlag">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Zakaži uređivanje bašte</h3>
+            <p class="error-message">{{ errorMsgJob }}</p>
+        </div>
+        <div class="card-body">
+            <div class="row" *ngIf="step==1">
+                <div class="col-md-4 form-group">
+                    <label for="start-date">Početak radova:</label>
+                    <input type="datetime-local" id="start-date" name="start-date"
+                        appearance="fill" class="w-100" [(ngModel)]="reqDate">
+                </div>
+                <div class="col-md-4 form-group">
+                    <label for="size">Veličina Bašte:</label>
+                    <input id="size" type="number" class="form-control" placeholder="Unesite Veličinu" [(ngModel)]="reqSize">
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="type" class="label">Izaberite Tip Bašte</label>
+                    <select id="type" class="form-select" [(ngModel)]="reqType" appearance="fill">
+                        <option value="1">Privatna Bašta</option>
+                        <option value="2">Restoranska Bašta</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary mt-2" (click)="checkStepOne()">Dalje</button>
+            </div>
+            <div class="row" *ngIf="reqType==1 && step==2">
+                <div class="col-md-3">
+                    <label for="poolSize">Veličina bazena</label>
+                    <input type="number" id="poolSize" class="form-control" 
+                        [(ngModel)]="reqPrivate.poolSize" placeholder="Veličina bazena">
+                </div>
+                <div class="col-md-3">
+                    <label for="numberOfPools">Broj bazena</label>
+                    <input type="number" id="numberOfPools" class="form-control" 
+                        [(ngModel)]="reqPrivate.numberOfPools" placeholder="Broj bazena">
+                </div>
+                <div class="col-md-3">
+                    <label for="grassSize">Travnata površina</label>
+                    <input type="number" id="grassSize" class="form-control" 
+                        [(ngModel)]="reqPrivate.grassSize" placeholder="Travnata površina">
+                </div>
+                <div class="col-md-3">
+                    <label for="pavedSize">Popločana površina</label>
+                    <input type="number" id="pavedSize" class="form-control" 
+                        [(ngModel)]="reqPrivate.pavedSize" placeholder="Poplocana povrsina">
+                </div>
+                <div class="col-md-12 form-group">
+                    <label for="desc">Dodatni opis:</label>
+                    <input id="desc" type="text" class="form-control" placeholder="Opciono" [(ngModel)]="reqDescription">
+                </div>
+            </div>
+            <div class="row" *ngIf="reqType==2 && step==2">
+                <div class="col-md-3">
+                    <label for="fountainSize">Veličina fontane</label>
+                    <input type="number" id="fountainSize" class="form-control" 
+                        [(ngModel)]="reqRestaurant.fountainSize" placeholder="Veličina fontane">
+                </div>
+                <div class="col-md-3">
+                    <label for="numberOfFountains">Broj fontana</label>
+                    <input type="number" id="numberOfFountains" class="form-control" 
+                        [(ngModel)]="reqRestaurant.numberOfFountains" placeholder="Broj fontana">
+                </div>
+                <div class="col-md-3">
+                    <label for="grassSize">Travnata površina</label>
+                    <input type="number" id="grassSize" class="form-control" 
+                        [(ngModel)]="reqRestaurant.grassSize" placeholder="Travnata površina">
+                </div>
+                <div class="col-md-3">
+                    <label for="numberOfTables">Broj stolova</label>
+                    <input type="number" id="numberOfTables" class="form-control" 
+                        [(ngModel)]="reqRestaurant.numberOfTables" placeholder="Broj stolova">
+                </div>
+                <div class="col-md-3">
+                    <label for="numberOfSeats">Broj stolica</label>
+                    <input type="number" id="numberOfSeats" class="form-control" 
+                        [(ngModel)]="reqRestaurant.numberOfSeats" placeholder="Broj sjedišta">
+                </div>
+                <div class="col-md-9 form-group">
+                    <label for="desc">Dodatni opis:</label>
+                    <input id="desc" type="text" class="form-control" placeholder="Opciono" [(ngModel)]="reqDescription">
+                </div>
+            </div>
+            <div class="row" *ngIf="step==2">
+                <!-- CHOOSE SERVICES -->
+                <div class="form-group">
+                    <label for="services">Dostupne usluge:</label>
+                    <div *ngFor="let service of currentCompany.serviceList" class="form-check">
+                        <input type="checkbox" class="form-check-input checkbox-input" 
+                            [id]="'service_' + service.serviceId" [value]="service.serviceId" 
+                            (change)="onServiceChecked($event, service.serviceId)"
+                            [checked]="checkedServices.includes(service.serviceId)">
+                        <label class="form-check-label" [for]="'service_' + service.serviceId">
+                            {{ service.serviceName }} - {{ service.price }} RSD
+                        </label>
+                    </div>
+                </div>
+                <button class="btn btn-primary mt-2" (click)="checkStepTwo()">Zakaži</button>
+            </div>
+        </div>
+    </div>
+</div>
