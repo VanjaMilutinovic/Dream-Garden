@@ -1,6 +1,6 @@
 import { ShapeFactory } from './factories/shape.factory'
 import { BazenFactory, FontanaFactory, StoFactory, StolicaFactory, ZeleninoFactory } from './factories/factories'
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Shape } from './shape'
 import { CdkDragEnd } from '@angular/cdk/drag-drop';
 import * as uuid from 'uuid';
@@ -16,10 +16,19 @@ export class CanvasComponent {
 
   error_msg: string = "";
 
+  @Input("type")
+  public typeId : number = 1;
+
   readonly CANVAS_SIZE = { width: 500, height: 300 };
 
-  pictureTitles: string[] = ["zelenino", "bazen", "fontana", "sto", "stolica"]
-  factories: ShapeFactory[] = [new ZeleninoFactory(), new BazenFactory(), new FontanaFactory(), new StoFactory(), new StolicaFactory()]
+  pictureTitles: string[][] = [
+    ["zelenino", "bazen"],
+    ["zelenino", "fontana", "sto", "stolica"]
+  ]
+  factories: ShapeFactory[][] = [
+    [new ZeleninoFactory(), new BazenFactory()],
+    [new ZeleninoFactory(), new FontanaFactory(), new StoFactory(), new StolicaFactory()],
+  ]
 
   dragEnd($event: CdkDragEnd, shape: Shape) {
     const position = $event.source.getFreeDragPosition();
@@ -28,7 +37,7 @@ export class CanvasComponent {
   }
 
   create(shapeIndex: number) {
-    const newShape: Shape = this.factories[shapeIndex].create(this.pictureTitles[shapeIndex]);
+    const newShape: Shape = this.factories[this.typeId-1][shapeIndex].create(this.pictureTitles[this.typeId-1][shapeIndex]);
     this.shapes.push(newShape);
   }
 
