@@ -1,1 +1,56 @@
-<p>job works!</p>
+<div class="container">
+    <h2>Trenutni poslovi</h2>
+    <p class="error-message" *ngIf="currentJobs.length==0">Nema Neobrađenih Poslova</p>
+    <table class="table table-striped" *ngIf="currentJobs.length>0">
+        <thead>
+        <tr>
+            <th>Datum Zakazivanja</th>
+            <th>Datum Početka</th>
+            <th>Firma</th>
+            <th>Usluge</th>
+            <th><!--Cancel--></th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let job of currentJobs">
+                <td>{{ job.requestDateTime | date:'dd-MM-yyyy hh:mm a' }}</td>
+                <td>{{ job.startDateTime | date:'dd-MM-yyyy hh:mm a' }}</td>
+                <td>{{ job.companyId.name }}</td>
+                <td><ul>
+                      <li *ngFor="let service of job.services">{{ service.serviceName }}</li>
+                </ul></td>
+                <td>
+                    <button class="btn btn-secondary m-1 mb-0 mt-0" *ngIf="isCancelable(job.startDateTime)" 
+                        (click)="cancel(job)">Otkaži</button>     
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="container mb-5">
+    <h2>Završeni poslovi</h2>
+    <p class="error-message" *ngIf="finishedJobs.length==0">Nema Prihvaćenih Poslova</p>
+    <table class="table table-striped" *ngIf="finishedJobs.length>0">
+        <thead>
+        <tr>
+            <th>Datum Završetka</th>
+            <th>Firma</th>
+            <th>Recenzija</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let job of finishedJobs">
+                <td>{{ job.endDateTime | date:'dd-MM-yyyy hh:mm a' }}</td>
+                <td>{{ job.companyId.name }}</td>
+                <td>
+                    <div *ngIf="job.jobReview; else noReview">
+                        {{ job.jobReview.comment }} {{ job.jobReview.grade }}
+                    </div>
+                    <ng-template #noReview>
+                        <button class="btn btn-primary m-1 mb-0 mt-0">Dodaj recenziju</button>
+                    </ng-template>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

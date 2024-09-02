@@ -44,5 +44,25 @@ export class JobsService {
     }
     return this.http.post<any>(this.path+"service/addServices", data);
   }
+
+  getByStatusAndUser(userId: number, jobStatusId: number){
+    let params = "?userId="+userId+"&jobStatusId="+jobStatusId;
+    return this.http.get<any>(this.path+"getByStatusAndUser"+params);
+  }
+
+  getreviewByJob(jobId: number){
+    let params = "?jobId="+jobId;
+    return this.http.get<any>(this.path+"review/getByJob"+params);
+  }
+
+  getServicesByJob(jobId: number){
+    let params = "?jobId="+jobId;
+    return this.http.get<any>(this.path+"service/getByJob"+params);
+  }
+
+  cancelJob(jobId: number, userId: number){
+    let params = "?jobId="+jobId+"&userId="+userId;
+    return this.http.post<any>(this.path+"owner/cancel"+params, null);
+  }
   
 }

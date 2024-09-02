@@ -55,6 +55,7 @@ export class CompanyViewComponent {
   reqRestaurant: { fountainSize: number, numberOfFountains: number, grassSize: number, numberOfTables: number,  numberOfSeats: number } = 
     {fountainSize: 0, numberOfFountains: 0, grassSize: 0, numberOfTables: 0,  numberOfSeats: 0};
   checkedServices: Array<number> = [];
+  canvasFlag=false;
 
 
   async ngOnInit() {
@@ -151,6 +152,7 @@ export class CompanyViewComponent {
       restaurantGarden: this.reqType==2 ? this.reqRestaurant : null,
       canvas: this.child ? this.child.getCanvasString() : null 
     }
+    console.log(data);
     try {
       const job = await firstValueFrom(this.jobService.createJob(data)) as Job;
       await firstValueFrom(this.jobService.addServices(job.jobId, this.checkedServices));
