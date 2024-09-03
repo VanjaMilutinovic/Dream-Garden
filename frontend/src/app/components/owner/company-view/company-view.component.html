@@ -215,8 +215,15 @@
                         </label>
                     </div>
                 </div>
-                <button *ngIf="!canvasFlag" class="btn btn-secondary" (click)="canvasFlag=true">Želim da nacrtam baštu</button>
-                <app-canvas *ngIf="canvasFlag" [type]="reqType"></app-canvas>
+                <button class="btn btn-secondary" (click)="step=3">Želim da nacrtam baštu</button>
+                <button class="btn btn-primary mt-2" (click)="checkStepTwo()">Zakaži</button>
+            </div>
+            <div class="row" *ngIf="reqType==1 && step==3">
+                <app-canvas [availibles]="[reqPrivate.grassSize, reqPrivate.numberOfPools, 0,0,0]"></app-canvas>
+                <button class="btn btn-primary mt-2" (click)="checkStepTwo()">Zakaži</button>
+            </div>
+            <div class="row" *ngIf="reqType==2 && step==3">
+                <app-canvas [availibles]="[reqRestaurant.grassSize, 0, reqRestaurant.numberOfFountains, reqRestaurant.numberOfTables, reqRestaurant.numberOfSeats]"></app-canvas>
                 <button class="btn btn-primary mt-2" (click)="checkStepTwo()">Zakaži</button>
             </div>
         </div>

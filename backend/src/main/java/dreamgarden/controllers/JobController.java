@@ -124,8 +124,9 @@ public class JobController {
     @PostMapping("/create")
     @Transactional
     public ResponseEntity<?> createJob(@RequestBody CreateJobRequest request) {
+        System.out.println(request);
         if (!request.checkCreateJobRequest()) {
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Neispravni ulazni parametri");
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Neispravni ulazni parametri " + request);
         }
         Optional<User> user = userRepository.findById(request.getUserId());
         if(user.isEmpty()) {

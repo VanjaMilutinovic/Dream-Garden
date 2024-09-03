@@ -105,6 +105,7 @@ export class CompanyViewComponent {
     }
     this.step = 2;
   }
+
   @ViewChild(CanvasComponent) child!:CanvasComponent;
   async checkStepTwo() {
     if (this.reqType == 1) {

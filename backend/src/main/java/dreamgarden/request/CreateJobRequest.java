@@ -40,7 +40,6 @@ public class CreateJobRequest {
     public boolean checkCreateJobRequest() {
         return this.gardenSize!= null
             && this.startDateTime != null
-            && this.description != null
             && this.userId!= null
             && this.companyId != null
             && this.gardenTypeId != null

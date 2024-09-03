@@ -30,7 +30,8 @@ public interface MaintenanceRepository extends JpaRepository<Maintenance, Intege
             JOIN job j ON m.job_id = j.job_id
         WHERE m.worker_id = :workerId 
             AND j.company_id = :companyId
-            AND :jobDate BETWEEN m.start_date_time AND m.estimated_end_date_time""", nativeQuery = true)
+            AND ((m.estimated_end_date_time is not null AND :jobDate BETWEEN m.start_date_time AND m.estimated_end_date_time) 
+            OR (m.estimated_end_date_time is null AND :jobDate BETWEEN m.start_date_time AND DATE_ADD(m.start_date_time, INTERVAL 1 DAY)))""", nativeQuery = true)
     List<Maintenance> findByWorkerIdAndCompanyIdAndDateRange(@Param("workerId") Integer workerId, 
             @Param("companyId") Integer companyId, @Param("jobDate") Date jobDate);
 

@@ -7,7 +7,6 @@ import { User } from 'src/app/models/user.model';
 
 import { JobsService } from 'src/app/services/job/job.service';
 import { MaintenanceService } from 'src/app/services/maintenance/maintenance.service';
-
 @Component({
   selector: 'app-maintenance',
   templateUrl: './maintenance.component.html',
