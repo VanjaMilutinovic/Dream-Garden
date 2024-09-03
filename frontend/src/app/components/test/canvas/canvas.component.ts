@@ -22,7 +22,11 @@ export class CanvasComponent {
   @Input("existing")
   public existingShapes !: string;
 
+  @Input("availibles")
+  public availibles : number[] = [9,1,2,3,0];
+
   ngOnInit(){
+      this.availibles?.forEach((x,i)=>{ if(i<this.factories.length) this.factories[i].availible=x; });
     if(this.existingShapes){
       try{
         this.shapes = JSON.parse(this.existingShapes) as Shape[];
@@ -34,13 +38,11 @@ export class CanvasComponent {
 
   readonly CANVAS_SIZE = { width: 500, height: 300 };
 
-  pictureTitles: string[][] = [
-    ["zelenino", "bazen"],
-    ["zelenino", "fontana", "sto", "stolica"]
-  ]
-  factories: ShapeFactory[][] = [
-    [new ZeleninoFactory(), new BazenFactory()],
-    [new ZeleninoFactory(), new FontanaFactory(), new StoFactory(), new StolicaFactory()],
+  pictureTitles: string[] = 
+    ["zelenino","bazen", "fontana", "sto", "stolica"]
+  
+  factories: ShapeFactory[] = [
+    new ZeleninoFactory(), new BazenFactory(), new FontanaFactory(), new StoFactory(), new StolicaFactory(),
   ]
 
   dragEnd($event: CdkDragEnd, shape: Shape) {
@@ -50,8 +52,8 @@ export class CanvasComponent {
   }
 
   create(shapeIndex: number) {
-    const newShape: Shape = this.factories[this.typeId-1][shapeIndex].create(this.pictureTitles[this.typeId-1][shapeIndex]);
-    this.shapes.push(newShape);
+    const newShape: Shape | null = this.factories[shapeIndex].create(this.pictureTitles[shapeIndex]);
+    if(newShape) this.shapes.push(newShape);
   }
 
   getCanvasString(): string | null {
