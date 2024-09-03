@@ -63,7 +63,7 @@ public class UserController {
         if (!user.get().getHashedPassword().equals(hashedPassword)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
         }
-        if (user.get().getUserStatusId().getUserStatusId() != 2) {
+        if (user.get().getUserStatusId().getUserStatusId() != 2 && user.get().getUserStatusId().getUserStatusId() != 4) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User must be active!");
         }
         if (user.get().getUserTypeId().getUserTypeId() != 1 && user.get().getUserTypeId().getUserTypeId() != 2) {

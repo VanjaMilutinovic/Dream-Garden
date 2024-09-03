@@ -60,7 +60,7 @@
                 <td>{{ job.gardenTypeId.type }}</td>
                 <td>
                     <div>
-                        <button class="btn btn-primary mb-2" 
+                        <button class="btn btn-secondary mb-2" 
                             (click)="fileInput.click()">Izaberi slike za upload</button>
                         <input type="file" 
                                #fileInput
@@ -72,7 +72,7 @@
                         <div *ngIf="(jobImageMap[job.jobId]?.count || 0) > 0" class="mb-2">
                             {{ jobImageMap[job.jobId]?.count || 0 }} slika odabrano
                         </div>
-                        <button class="btn btn-success" 
+                        <button class="btn btn-primary mb-2" 
                                 (click)="uploadImages(job.jobId)">Upload slike</button>
                     </div>
                 </td>
