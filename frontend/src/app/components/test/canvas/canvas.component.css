@@ -86,3 +86,8 @@ p {
     background-color: transparent;
     border: none;
   }
+
+  .disabled{
+    opacity: .6;
+    pointer-events: none;
+  }
