@@ -122,7 +122,14 @@ export class JobComponent {
       let data = {
         jobId: this.selectedJobId,
         comment: this.reviewComment,
-        grade: this.reviewGrade
+        /*
+          Iako se this.reviewGrade cini da je broj, on se iz forme dobije kao string...
+        To za posledicu ima da je this.reviewGrade po tipu broj ali cuva string vrednost,
+        tako da kad se radi console.log(this.reviewGrade), ispise se "5" (sa se navodnicima).
+        Zato je potrebno da se ovaj "broj" pretvori u broj. Typescript i dalje misli da je
+        u pitanju brojni podatak pa zato mora da se doda +"" jer funkcija parseInt prima string
+          */
+        grade: parseInt(this.reviewGrade+"")
       };
       const r = await firstValueFrom(this.jobService.addReview(data)) as JobReview;
       job.jobReview = r;
