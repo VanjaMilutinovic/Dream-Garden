@@ -1,1 +1,31 @@
-<p>maintenance works!</p>
+<div class="container mb-5">
+    <h2>Završeni poslovi</h2>
+    <p class="error-message" *ngIf="finishedJobs.length==0">Nema Završenih Poslova</p>
+    <p class="error-message">{{ errorMsg }}</p>
+    <table class="table table-striped" *ngIf="finishedJobs.length>0">
+        <thead>
+        <tr>
+            <th>Datum Završetka</th>
+            <th>Tip Bašte</th>
+            <th>Broj vodenih objekata</th>
+            <th>Održavanja</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let job of finishedJobs">
+                <td>{{job.jobId}} {{ job.endDateTime | date:'dd-MM-yyyy hh:mm a' }}</td>
+                <td>{{ job.gardenTypeId.type }}</td>
+                <td>
+                    <span *ngIf="job.gardenTypeId.gardenTypeId == 1">{{ job.privateGarden.numberOfPools }}</span>
+                    <span *ngIf="job.gardenTypeId.gardenTypeId == 2">{{ job.restaurantGarden.numberOfFountains }}</span>
+                </td>
+                <td *ngIf="!job.lastLessThanSixMonths">
+                    <input type="datetime-local" id="start-date" name="start-date"
+                        [(ngModel)]="job.maintenanceDate">
+                    <button class="btn btn-primary" (click)="create(job)">Zakaži održavanje</button>
+                </td>
+                <td *ngIf="job.lastLessThanSixMonths"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

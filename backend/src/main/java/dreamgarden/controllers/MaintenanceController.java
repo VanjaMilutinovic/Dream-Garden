@@ -92,7 +92,13 @@ public class MaintenanceController {
         return lastDate;
     }
     
-    private boolean isDifferenceLessThanSixMonths(Date date) {
+    @GetMapping("/isDifferenceLessThanSixMonths")
+    public ResponseEntity<?> isDifferenceLessThanSixMonths(@RequestParam(name = "jobId", required = true) Integer jobId) {
+        Optional<Job> job = jobRepository.findById(jobId);
+        if (job.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("");
+        }
+        Date date = getLastDate(job.get());
         // Get the current date
         Calendar currentDate = Calendar.getInstance();
         currentDate.setTime(new Date());
@@ -105,7 +111,8 @@ public class MaintenanceController {
         // Convert the year difference to months and add to the month difference
         int totalMonthDiff = (yearDiff * 12) + monthDiff;
         // Check if the difference is less than 6 months
-        return totalMonthDiff < 6;
+        boolean result = totalMonthDiff < 6;
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
     
     private boolean areAllWorkersBusyOnDateForCompany(Date jobDate, Company company) {
@@ -132,10 +139,6 @@ public class MaintenanceController {
         Optional<Job> job = jobRepository.findById(request.getJobId());
         if (job.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Job not found for id " + request.getJobId());
-        }
-        Date lastDate = getLastDate(job.get());
-        if (isDifferenceLessThanSixMonths(lastDate)) {
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Latest job/maintenance was less than 6 months ago on: " + lastDate);
         }
         CompanyHoliday checkCompanyHoliday = checkCompanyHoliday(request.getStartDateTime(), job.get().getCompanyId());
         if (checkCompanyHoliday != null) {

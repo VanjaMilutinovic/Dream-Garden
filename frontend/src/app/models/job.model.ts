@@ -2,6 +2,8 @@ import { Company } from "./company.model";
 import { GardenType } from "./garden-type.model";
 import { JobReview } from "./job-review.model";
 import { JobStatus } from "./job-status.model";
+import { PrivateGarden } from "./private-garden.model";
+import { RestaurantGarden } from "./restaurant-garden.model";
 import { Service } from "./service.model";
 import { User } from "./user.model";
 
@@ -21,5 +23,10 @@ export class Job {
   canvas!: string;
   jobReview!: JobReview;
   services: Array<Service> = [];
+  restaurantGarden!: RestaurantGarden;
+  privateGarden!: PrivateGarden;
+  //temp
+  maintenanceDate!: string; // ISO format date string
+  lastLessThanSixMonths!: boolean;
 }
   

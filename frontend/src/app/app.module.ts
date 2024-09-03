@@ -56,7 +56,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     DecoratorJobComponent,
     CompanyViewComponent,
     DecoratorProfileComponent,
-    CanvasComponent
+    CanvasComponent,
   ],
   imports: [
     BrowserModule,

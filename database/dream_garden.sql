@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 02, 2024 at 05:58 AM
+-- Generation Time: Sep 03, 2024 at 02:17 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -90,8 +90,8 @@ CREATE TABLE `garden_type` (
 --
 
 INSERT INTO `garden_type` (`garden_type_id`, `type`) VALUES
-(1, 'private'),
-(2, 'restaurant');
+(1, 'privatna'),
+(2, 'restoranska');
 
 -- --------------------------------------------------------
 
@@ -111,22 +111,26 @@ CREATE TABLE `job` (
   `garden_size` decimal(10,2) NOT NULL,
   `garden_type_id` int(11) DEFAULT NULL,
   `description` text DEFAULT NULL,
-  `rejected_description` text DEFAULT NULL
+  `rejected_description` text DEFAULT NULL,
+  `canvas` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `job`
 --
 
-INSERT INTO `job` (`job_id`, `user_id`, `company_id`, `worker_id`, `job_status_id`, `request_date_time`, `start_date_time`, `end_date_time`, `garden_size`, `garden_type_id`, `description`, `rejected_description`) VALUES
-(1, 1, 1, 3, 5, '2024-08-21 17:22:23', '2024-09-21 02:00:00', '2024-09-01 00:00:00', 19.00, 1, 'Prvi posao', ''),
-(2, 2, 1, 3, 2, '2024-08-01 21:56:38', '2024-09-20 02:00:00', NULL, 19.00, 1, 'Prvi posao', 'Odbijanje'),
-(3, 4, 1, 6, 5, '2024-08-21 21:59:48', '2024-09-21 02:00:00', NULL, 19.00, 2, 'Prvi posao', NULL),
-(4, 2, 1, 3, 3, '2024-09-02 03:48:08', '2024-09-10 17:36:00', NULL, 10.00, 1, '', NULL),
-(5, 2, 1, NULL, 1, '2024-09-02 03:54:02', '2024-09-17 05:53:00', NULL, 10.00, 2, 'Opis', NULL),
-(6, 2, 1, 6, 3, '2024-09-02 03:58:28', '2024-09-23 22:57:00', NULL, 20.00, 1, 'Pool party', NULL),
-(7, 2, 1, NULL, 2, '2024-09-02 04:05:48', '2024-09-10 21:05:00', NULL, 5.00, 1, 'Mala basta', 'zauzet'),
-(8, 2, 1, 6, 3, '2024-09-02 04:05:59', '2024-09-10 21:05:00', NULL, 5.00, 1, 'Mala basta', NULL);
+INSERT INTO `job` (`job_id`, `user_id`, `company_id`, `worker_id`, `job_status_id`, `request_date_time`, `start_date_time`, `end_date_time`, `garden_size`, `garden_type_id`, `description`, `rejected_description`, `canvas`) VALUES
+(1, 4, 1, 3, 5, '2024-08-21 17:22:23', '2024-09-21 02:00:00', '2023-09-01 00:00:00', 19.00, 1, 'Prvi posao', '', NULL),
+(2, 2, 1, 3, 2, '2024-08-01 21:56:38', '2024-09-20 02:00:00', NULL, 19.00, 1, 'Prvi posao', 'Odbijanje', NULL),
+(3, 4, 1, 6, 5, '2024-08-21 21:59:48', '2024-09-21 02:00:00', '2024-08-29 22:53:23', 19.00, 2, 'Prvi posao', NULL, NULL),
+(4, 2, 1, NULL, 6, '2024-09-02 03:48:08', '2024-09-10 17:36:00', NULL, 10.00, 1, '', NULL, NULL),
+(5, 2, 1, NULL, 1, '2024-09-02 03:54:02', '2024-09-03 05:53:00', NULL, 10.00, 2, 'Opis', NULL, NULL),
+(6, 2, 1, 6, 5, '2024-09-02 03:58:28', '2024-09-23 22:57:00', '2024-09-02 22:12:53', 20.00, 1, 'Pool party', NULL, NULL),
+(7, 2, 1, NULL, 2, '2024-09-02 04:05:48', '2024-09-10 21:05:00', NULL, 5.00, 1, 'Mala basta', 'zauzet', NULL),
+(8, 2, 1, 6, 5, '2024-09-02 04:05:59', '2024-09-10 21:05:00', '2024-09-02 22:12:56', 5.00, 1, 'Mala basta', NULL, NULL),
+(9, 4, 1, 6, 5, '2024-09-02 12:11:20', '2024-09-12 14:10:00', '2024-09-02 12:11:57', 10.00, 1, 'Nema sezonska', NULL, NULL),
+(10, 2, 1, 6, 5, '2024-09-02 20:49:27', '2024-09-19 22:48:00', '2024-09-01 22:12:54', 10.00, 1, 'upload canvas', NULL, '[{\"cssClass\":\"zelenino\",\"x\":9,\"y\":-288,\"width\":30,\"height\":30},{\"cssClass\":\"bazen\",\"x\":176,\"y\":-152,\"width\":140,\"height\":46},{\"cssClass\":\"bazen\",\"x\":178,\"y\":-212,\"width\":140,\"height\":46},{\"cssClass\":\"zelenino\",\"x\":10,\"y\":-245,\"width\":30,\"height\":30},{\"cssClass\":\"zelenino\",\"x\":56,\"y\":-290,\"width\":30,\"height\":30},{\"cssClass\":\"zelenino\",\"x\":461,\"y\":-38,\"width\":30,\"height\":30},{\"cssClass\":\"zelenino\",\"x\":423,\"y\":-39,\"width\":30,\"height\":30},{\"cssClass\":\"zelenino\",\"x\":461,\"y\":-81,\"width\":30,\"height\":30}]'),
+(11, 4, 1, NULL, 1, '2024-09-02 22:54:45', '2024-09-05 00:53:00', NULL, 10.00, 2, '', NULL, '[{\"cssClass\":\"zelenino\",\"x\":9,\"y\":-288,\"width\":30,\"height\":30},{\"cssClass\":\"bazen\",\"x\":176,\"y\":-152,\"width\":140,\"height\":46},{\"cssClass\":\"bazen\",\"x\":178,\"y\":-212,\"width\":140,\"height\":46},{\"cssClass\":\"zelenino\",\"x\":10,\"y\":-245,\"width\":30,\"height\":30},{\"cssClass\":\"zelenino\",\"x\":56,\"y\":-290,\"width\":30,\"height\":30},{\"cssClass\":\"zelenino\",\"x\":461,\"y\":-38,\"width\":30,\"height\":30},{\"cssClass\":\"zelenino\",\"x\":423,\"y\":-39,\"width\":30,\"height\":30},{\"cssClass\":\"zelenino\",\"x\":461,\"y\":-81,\"width\":30,\"height\":30},{\"cssClass\":\"sto\",\"x\":36,\"y\":-94,\"width\":30,\"height\":30},{\"cssClass\":\"sto\",\"x\":412,\"y\":-254,\"width\":30,\"height\":30},{\"cssClass\":\"stolica\",\"x\":33,\"y\":-51,\"width\":40,\"height\":15},{\"cssClass\":\"stolica\",\"x\":402,\"y\":-276,\"width\":40,\"height\":15}]');
 
 -- --------------------------------------------------------
 
@@ -165,7 +169,8 @@ CREATE TABLE `job_review` (
 --
 
 INSERT INTO `job_review` (`job_review_id`, `job_id`, `comment`, `grade`) VALUES
-(1, 3, 'Savršeno odrađen posao!', 5);
+(1, 3, 'Savršeno odrađen posao!', 5),
+(2, 9, 'Dobar', 4);
 
 -- --------------------------------------------------------
 
@@ -200,7 +205,13 @@ INSERT INTO `job_service` (`job_service_id`, `job_id`, `service_id`) VALUES
 (14, 6, 4),
 (15, 6, 6),
 (16, 7, 6),
-(17, 8, 6);
+(17, 8, 6),
+(18, 9, 1),
+(19, 9, 5),
+(20, 10, 1),
+(21, 11, 3),
+(22, 11, 4),
+(23, 11, 5);
 
 -- --------------------------------------------------------
 
@@ -247,7 +258,8 @@ CREATE TABLE `maintenance` (
 
 INSERT INTO `maintenance` (`maintenance_id`, `job_id`, `job_status_id`, `request_date_time`, `start_date_time`, `estimated_end_date_time`, `worker_id`) VALUES
 (1, 3, 5, '2024-08-18 22:17:51', '2024-08-19 02:00:00', '2024-08-20 22:22:37', 3),
-(2, 3, 3, '2024-08-22 22:20:54', '2024-09-27 02:00:00', '2024-10-02 02:00:00', 3);
+(2, 3, 3, '2024-08-22 22:20:54', '2024-09-27 02:00:00', '2024-10-02 02:00:00', 3),
+(3, 1, 1, '2024-09-03 02:15:33', '2024-09-11 04:15:00', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -294,7 +306,9 @@ INSERT INTO `private_garden` (`job_id`, `pool_size`, `number_of_pools`, `grass_s
 (4, 2.00, 1, 3.00, 5.00),
 (6, 5.00, 2, 10.00, 5.00),
 (7, 0.00, 0, 4.00, 1.00),
-(8, 0.00, 0, 4.00, 1.00);
+(8, 0.00, 0, 4.00, 1.00),
+(9, 0.00, 0, 10.00, 0.00),
+(10, 4.00, 2, 6.00, 0.00);
 
 -- --------------------------------------------------------
 
@@ -317,7 +331,8 @@ CREATE TABLE `restaurant_garden` (
 
 INSERT INTO `restaurant_garden` (`job_id`, `fountain_size`, `number_of_fountains`, `grass_size`, `number_of_tables`, `number_of_seats`) VALUES
 (3, 7.00, 3, 12.00, 6, 18),
-(5, 3.00, 3, 7.00, 4, 12);
+(5, 3.00, 3, 7.00, 4, 12),
+(11, 2.00, 1, 8.00, 4, 19);
 
 -- --------------------------------------------------------
 
@@ -382,7 +397,7 @@ INSERT INTO `user` (`user_id`, `user_type_id`, `username`, `hashed_password`, `n
 (1, 3, 'admin', 'c7ad44cbad762a5da0a452f9e854fdc1e0e7a52a38015f23f3eab1d80b931dd472634dfac71cd34ebc35d16ab7fb8a90c81f975113d6c7538dc69dd8de9077ec', 'Admin', 'Sistema', 'F', 'Omladinskih Brigada 90', '0645993433', 'admin@gmail.com', 1, '', 2),
 (2, 1, 'nikola', '866c151c3f96ea5f3ae6e4d0f0be21663faea41c7e4db1d0b36a80619e74b056f828904826425dd0b2a49621f5c117e3248155ceaf02231b5a107b723cc0016a', 'Nikola', 'Petric', 'M', 'Kneza Stracimira 2', '0638575608', 'petricn671@gmail.com', 1, '4556499739738072', 2),
 (3, 2, 'strahinja', '8d85e1bbdc597767d7e5d58163248cc9048858c43957d64ced55ad9fc309e1321099c95fb23eba98b1695abab3b79f5d059493c07e8a0727b75f25b8af0185f7', 'Strahinja', 'Milutinovic', 'M', 'Vatroslava Jagica 5', '0645993434', 'strahinja.milutinovic.sm@gmail.com', 1, '', 4),
-(4, 1, 'vanja', 'b0011bbd369242765ccb556e53f8e045469a888d8068d2c9944b1ca313e16732f162562a2af7d851bcf2f0ef50063dec022d5cb3d48f4e8b26a39ca9f8a2c289', 'Vanja', 'Milutinovic', 'F', 'Kneza Stracimira 2', '0638574709', 'vanja@gmail.com', 1, '', 1),
+(4, 1, 'vanja', 'b0011bbd369242765ccb556e53f8e045469a888d8068d2c9944b1ca313e16732f162562a2af7d851bcf2f0ef50063dec022d5cb3d48f4e8b26a39ca9f8a2c289', 'Vanja', 'Milutinovic', 'F', 'Kneza Stracimira 2', '0638574709', 'vanja@gmail.com', 1, '', 2),
 (6, 2, 'radnik', 'c05c9072edbb00eb73274cdb2228a7e90bfda1de3b85255d4418079a95d0a4a519d9da53f934cb7ce8e6269cf2118eda9072c87d6c0bb29bed97c9ed4182dbd0', 'Nikola', 'Tesla', 'M', 'Bulevar kralja Aleksandra 72', '064123123', 'tesla@gmail.com', 1, '', 2),
 (7, 1, 'nina', 'b7811a4153cbbb6afb7c0c577775d01a8529a2ace277ee8e0f1ea8c9d7bd4c689909d756a9603a1670b41c3285a948978e5a3cdfa5ba62770d2d33fff59d03b7', 'Nina', 'Perić', 'F', 'Test Adresa 12', '0651234567', 'test@gmail.com', 3, '4556499739738072', 2),
 (8, 2, 'test', 'ea6c2c424364adfdb23999f22e11f8864745b0e4c31a0fbbedbb60c64d67d0bc2adef1f7e1fc670799b554a1d20b1f9643614f2af3d220083b4319d576b630b1', 'Test', 'Test', 'F', 'Test 12', '0657891234', 'test12@gmail.com', NULL, '', 1),
@@ -448,7 +463,10 @@ CREATE TABLE `worker` (
 
 INSERT INTO `worker` (`worker_id`, `user_id`, `company_id`) VALUES
 (9, 3, 1),
-(10, 6, 1);
+(10, 6, 1),
+(11, 8, 2),
+(12, 10, 2),
+(13, 9, 9);
 
 --
 -- Indexes for dumped tables
@@ -604,7 +622,7 @@ ALTER TABLE `garden_type`
 -- AUTO_INCREMENT for table `job`
 --
 ALTER TABLE `job`
-  MODIFY `job_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `job_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `job_photo`
@@ -616,19 +634,25 @@ ALTER TABLE `job_photo`
 -- AUTO_INCREMENT for table `job_review`
 --
 ALTER TABLE `job_review`
-  MODIFY `job_review_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `job_review_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `job_service`
 --
 ALTER TABLE `job_service`
-  MODIFY `job_service_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `job_service_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `job_status`
 --
 ALTER TABLE `job_status`
   MODIFY `job_status_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `maintenance`
+--
+ALTER TABLE `maintenance`
+  MODIFY `maintenance_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `photo`
@@ -664,7 +688,7 @@ ALTER TABLE `user_type`
 -- AUTO_INCREMENT for table `worker`
 --
 ALTER TABLE `worker`
-  MODIFY `worker_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `worker_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- Constraints for dumped tables

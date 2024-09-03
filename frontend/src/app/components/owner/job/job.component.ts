@@ -1,15 +1,9 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
-import { AdminService } from 'src/app/services/admin/admin.service';
-import { CompaniesService } from 'src/app/services/company/company.service';
-import { ServicesService } from 'src/app/services/services/services.service';
 import { JobsService } from 'src/app/services/job/job.service';
 import { User } from 'src/app/models/user.model';
-import { UserService } from 'src/app/services/user/user.service';
 import { Job } from 'src/app/models/job.model';
 import { JobStatus } from 'src/app/enums/job-status.enum';
-import { Company } from 'src/app/models/company.model';
 import { JobReview } from 'src/app/models/job-review.model';
 import { Service } from 'src/app/models/service.model';
 
@@ -20,12 +14,7 @@ import { Service } from 'src/app/models/service.model';
 })
 export class JobComponent {
 
-  constructor(private adminService: AdminService,
-    private servicesService: ServicesService,
-    private companyService: CompaniesService,
-    private jobService: JobsService,
-    private userService: UserService,
-    private router: Router){}
+  constructor(private jobService: JobsService){}
 
   currentJobs: Array<Job> = [];
   finishedJobs: Array<Job> = [];
