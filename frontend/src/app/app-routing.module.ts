@@ -8,7 +8,7 @@ import { RegisterComponent } from './components/general/register/register.compon
 import { ProfileComponent as OwnerProfileComponent} from './components/owner/profile/profile.component';
 import { CompaniesComponent as OwnerCompaniesComponent } from './components/owner/companies/companies.component';
 import { CompanyViewComponent as OwnerCompanyViewComponent } from './components/owner/company-view/company-view.component';
-import { JobComponent as OwnerJobComponent } from './components/owner/job/job.component';
+import { JobComponent, JobComponent as OwnerJobComponent } from './components/owner/job/job.component';
 import { MaintenanceComponent as OwnerMaintenanceComponent } from './components/owner/maintenance/maintenance.component';
 
 import { ProfileComponent as DecoratorProfileComponent } from './components/decorator/profile/profile.component';
@@ -25,6 +25,7 @@ import { CanvasComponent } from './components/test/canvas/canvas.component';
 
 const routes: Routes = [
   { path: 'canvas', component: CanvasComponent },
+  { path: 'job', component: JobComponent },
   { path: 'home', component: HomeComponent },
   { path: 'login', component: GeneralLoginComponent },
   { path: 'register', component: RegisterComponent },
