@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 02, 2024 at 05:58 AM
+-- Generation Time: Sep 02, 2024 at 10:26 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -111,22 +111,25 @@ CREATE TABLE `job` (
   `garden_size` decimal(10,2) NOT NULL,
   `garden_type_id` int(11) DEFAULT NULL,
   `description` text DEFAULT NULL,
-  `rejected_description` text DEFAULT NULL
+  `rejected_description` text DEFAULT NULL,
+  `canvas` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `job`
 --
 
-INSERT INTO `job` (`job_id`, `user_id`, `company_id`, `worker_id`, `job_status_id`, `request_date_time`, `start_date_time`, `end_date_time`, `garden_size`, `garden_type_id`, `description`, `rejected_description`) VALUES
-(1, 1, 1, 3, 5, '2024-08-21 17:22:23', '2024-09-21 02:00:00', '2024-09-01 00:00:00', 19.00, 1, 'Prvi posao', ''),
-(2, 2, 1, 3, 2, '2024-08-01 21:56:38', '2024-09-20 02:00:00', NULL, 19.00, 1, 'Prvi posao', 'Odbijanje'),
-(3, 4, 1, 6, 5, '2024-08-21 21:59:48', '2024-09-21 02:00:00', NULL, 19.00, 2, 'Prvi posao', NULL),
-(4, 2, 1, 3, 3, '2024-09-02 03:48:08', '2024-09-10 17:36:00', NULL, 10.00, 1, '', NULL),
-(5, 2, 1, NULL, 1, '2024-09-02 03:54:02', '2024-09-17 05:53:00', NULL, 10.00, 2, 'Opis', NULL),
-(6, 2, 1, 6, 3, '2024-09-02 03:58:28', '2024-09-23 22:57:00', NULL, 20.00, 1, 'Pool party', NULL),
-(7, 2, 1, NULL, 2, '2024-09-02 04:05:48', '2024-09-10 21:05:00', NULL, 5.00, 1, 'Mala basta', 'zauzet'),
-(8, 2, 1, 6, 3, '2024-09-02 04:05:59', '2024-09-10 21:05:00', NULL, 5.00, 1, 'Mala basta', NULL);
+INSERT INTO `job` (`job_id`, `user_id`, `company_id`, `worker_id`, `job_status_id`, `request_date_time`, `start_date_time`, `end_date_time`, `garden_size`, `garden_type_id`, `description`, `rejected_description`, `canvas`) VALUES
+(1, 1, 1, 3, 5, '2024-08-21 17:22:23', '2024-09-21 02:00:00', '2024-09-01 00:00:00', 19.00, 1, 'Prvi posao', '', NULL),
+(2, 2, 1, 3, 2, '2024-08-01 21:56:38', '2024-09-20 02:00:00', NULL, 19.00, 1, 'Prvi posao', 'Odbijanje', NULL),
+(3, 4, 1, 6, 5, '2024-08-21 21:59:48', '2024-09-21 02:00:00', NULL, 19.00, 2, 'Prvi posao', NULL, NULL),
+(4, 2, 1, NULL, 6, '2024-09-02 03:48:08', '2024-09-10 17:36:00', NULL, 10.00, 1, '', NULL, NULL),
+(5, 2, 1, NULL, 1, '2024-09-02 03:54:02', '2024-09-03 05:53:00', NULL, 10.00, 2, 'Opis', NULL, NULL),
+(6, 2, 1, 6, 5, '2024-09-02 03:58:28', '2024-09-23 22:57:00', '2024-09-02 22:12:53', 20.00, 1, 'Pool party', NULL, NULL),
+(7, 2, 1, NULL, 2, '2024-09-02 04:05:48', '2024-09-10 21:05:00', NULL, 5.00, 1, 'Mala basta', 'zauzet', NULL),
+(8, 2, 1, 6, 5, '2024-09-02 04:05:59', '2024-09-10 21:05:00', '2024-09-02 22:12:56', 5.00, 1, 'Mala basta', NULL, NULL),
+(9, 2, 1, 6, 5, '2024-09-02 12:11:20', '2024-09-12 14:10:00', '2024-09-02 12:11:57', 10.00, 1, 'Nema sezonska', NULL, NULL),
+(10, 2, 1, 6, 5, '2024-09-02 20:49:27', '2024-09-19 22:48:00', '2024-09-01 22:12:54', 10.00, 1, 'upload canvas', NULL, '[{\"cssClass\":\"zelenino\",\"x\":9,\"y\":-288,\"width\":30,\"height\":30},{\"cssClass\":\"bazen\",\"x\":176,\"y\":-152,\"width\":140,\"height\":46},{\"cssClass\":\"bazen\",\"x\":178,\"y\":-212,\"width\":140,\"height\":46},{\"cssClass\":\"zelenino\",\"x\":10,\"y\":-245,\"width\":30,\"height\":30},{\"cssClass\":\"zelenino\",\"x\":56,\"y\":-290,\"width\":30,\"height\":30},{\"cssClass\":\"zelenino\",\"x\":461,\"y\":-38,\"width\":30,\"height\":30},{\"cssClass\":\"zelenino\",\"x\":423,\"y\":-39,\"width\":30,\"height\":30},{\"cssClass\":\"zelenino\",\"x\":461,\"y\":-81,\"width\":30,\"height\":30}]');
 
 -- --------------------------------------------------------
 
@@ -200,7 +203,10 @@ INSERT INTO `job_service` (`job_service_id`, `job_id`, `service_id`) VALUES
 (14, 6, 4),
 (15, 6, 6),
 (16, 7, 6),
-(17, 8, 6);
+(17, 8, 6),
+(18, 9, 1),
+(19, 9, 5),
+(20, 10, 1);
 
 -- --------------------------------------------------------
 
@@ -294,7 +300,9 @@ INSERT INTO `private_garden` (`job_id`, `pool_size`, `number_of_pools`, `grass_s
 (4, 2.00, 1, 3.00, 5.00),
 (6, 5.00, 2, 10.00, 5.00),
 (7, 0.00, 0, 4.00, 1.00),
-(8, 0.00, 0, 4.00, 1.00);
+(8, 0.00, 0, 4.00, 1.00),
+(9, 0.00, 0, 10.00, 0.00),
+(10, 4.00, 2, 6.00, 0.00);
 
 -- --------------------------------------------------------
 
@@ -604,7 +612,7 @@ ALTER TABLE `garden_type`
 -- AUTO_INCREMENT for table `job`
 --
 ALTER TABLE `job`
-  MODIFY `job_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `job_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `job_photo`
@@ -622,7 +630,7 @@ ALTER TABLE `job_review`
 -- AUTO_INCREMENT for table `job_service`
 --
 ALTER TABLE `job_service`
-  MODIFY `job_service_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `job_service_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `job_status`
