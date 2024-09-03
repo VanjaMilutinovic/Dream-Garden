@@ -28,10 +28,7 @@ import dreamgarden.repositories.PhotoRepository;
 import dreamgarden.repositories.ServiceRepository;
 import dreamgarden.repositories.UserRepository;
 import dreamgarden.repositories.WorkerRepository;
-import dreamgarden.request.AddJobServicesRequest;
-import dreamgarden.request.CreateJobRequest;
-import dreamgarden.request.CreateJobReviewRequest;
-import dreamgarden.request.SetJobStatusRequest;
+import dreamgarden.request.*;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
@@ -343,24 +340,25 @@ public class JobController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Job not found");
         }
     }
-    
+
     @PostMapping("/photo/add")
     @Transactional
-    public ResponseEntity<?> addJobPhoto(@RequestParam(name = "jobId", required = true) Integer jobId, 
-                                         @RequestParam(name = "photoPath", required = true) String photoPath) {
-        //todo popraviti sranja sa slikom i odje
+    public ResponseEntity<?> addJobPhoto(@RequestBody PhotoUploadRequest request) {
+        Integer jobId = request.getJobId();
+        String base64 = request.getBase64();
+
         Optional<Job> jobOptional = jobRepository.findById(jobId);
         if (!jobOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Job not found for id " + jobId);
         }
-        Optional<Photo> photoByPath = photoRepository.findByBase64(photoPath);
+        Optional<Photo> photoByPath = photoRepository.findByBase64(base64);
         if(photoByPath.isPresent()) {
             //Workers need to upload new photos for each job!
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Photo with provided path already exists. Path: " + photoPath);
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("This photo already exists in the database");
         }
-        
+
         Photo photo = new Photo();
-        photo.setBase64(photoPath);
+        photo.setBase64(base64);
         photo = photoRepository.saveAndFlush(photo);
 
         JobPhoto jobPhoto = new JobPhoto();
@@ -368,8 +366,7 @@ public class JobController {
         jobPhoto.setPhotoId(photo);
         jobPhoto = jobPhotoRepository.save(jobPhoto);
         return ResponseEntity.status(HttpStatus.CREATED).body(jobPhoto);
-    }   
-    
+    }
     @GetMapping("/photo/getTopK")
     public ResponseEntity<?> getTopKJobPhotos(@RequestParam(name = "k", required = true) Integer k){
         if (k<3)

@@ -38,38 +38,9 @@
     </table>
 </div>
 <div class="container">
-    <h2>Prihvaćeni poslovi</h2>
-    <p class="error-message" *ngIf="acceptedJobs.length==0">Nema Prihvaćenih Poslova</p>
-    <table class="table table-striped" *ngIf="acceptedJobs.length>0">
-        <thead>
-        <tr>
-            <th>Datum Zakazivanja</th>
-            <th>Datum Početka</th>
-            <th>Veličina Bašte</th>
-            <th>Opis Posla</th>
-            <th>Tip Bašte</th>
-            <th><!-- Edit --></th>
-        </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let job of acceptedJobs">
-                <td>{{ job.requestDateTime | date:'dd-MM-yyyy hh:mm a' }}</td>
-                <td>{{ job.startDateTime | date:'dd-MM-yyyy hh:mm a' }}</td>
-                <td>{{ job.gardenSize }}</td>
-                <td>{{ job.description }}</td>
-                <td>{{ job.gardenTypeId.type }}</td>
-                <td>
-                    <button class="btn btn-primary m-1 mb-0 mt-0" 
-                        (click)="finish(job)">Završi</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-<div class="container">
     <h2>Završeni poslovi</h2>
-    <p class="error-message" *ngIf="finishedJobs.length==0">Nema Prihvaćenih Poslova</p>
-    <table class="table table-striped" *ngIf="finishedJobs.length>0">
+    <p class="error-message" *ngIf="finishedJobs.length == 0">Nema Prihvaćenih Poslova</p>
+    <table class="table table-striped" *ngIf="finishedJobs.length > 0">
         <thead>
         <tr>
             <th>Datum Zakazivanja</th>
@@ -88,7 +59,22 @@
                 <td>{{ job.description }}</td>
                 <td>{{ job.gardenTypeId.type }}</td>
                 <td>
-                    <button class="btn btn-primary m-1 mb-0 mt-0" >Dodaj sliku</button>
+                    <div>
+                        <button class="btn btn-secondary mb-2" 
+                            (click)="fileInput.click()">Izaberi slike za upload</button>
+                        <input type="file" 
+                               #fileInput
+                               (change)="onFileChange($event, job.jobId)" 
+                               accept="image/png, image/jpeg" 
+                               class="form-control mb-2" 
+                               multiple style="display: none;"
+                               [attr.data-job-id]="job.jobId" />
+                        <div *ngIf="(jobImageMap[job.jobId]?.count || 0) > 0" class="mb-2">
+                            {{ jobImageMap[job.jobId]?.count || 0 }} slika odabrano
+                        </div>
+                        <button class="btn btn-primary mb-2" 
+                                (click)="uploadImages(job.jobId)">Upload slike</button>
+                    </div>
                 </td>
             </tr>
         </tbody>

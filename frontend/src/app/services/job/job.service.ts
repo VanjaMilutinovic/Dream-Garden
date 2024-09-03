@@ -69,4 +69,7 @@ export class JobsService {
     return this.http.post<any>(this.path+"owner/cancel"+params, null);
   }
   
+uploadImage(data: { jobId: number; base64: string }) {
+  return this.http.post(this.path+'photo/add', data); 
+}
 }
