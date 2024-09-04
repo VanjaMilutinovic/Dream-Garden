@@ -4,9 +4,12 @@ import { JobStatus } from 'src/app/enums/job-status.enum';
 import { Job } from 'src/app/models/job.model';
 import { Maintenance } from 'src/app/models/maintenance.model';
 import { User } from 'src/app/models/user.model';
-
+import { Worker } from 'src/app/models/worker.model';
 import { JobsService } from 'src/app/services/job/job.service';
 import { MaintenanceService } from 'src/app/services/maintenance/maintenance.service';
+import { UserService } from 'src/app/services/user/user.service';
+
+
 @Component({
   selector: 'app-maintenance',
   templateUrl: './maintenance.component.html',
@@ -14,9 +17,11 @@ import { MaintenanceService } from 'src/app/services/maintenance/maintenance.ser
 })
 export class MaintenanceComponent {
   constructor(private jobService: JobsService,
-    private maintenanceService: MaintenanceService){}
+    private maintenanceService: MaintenanceService,
+    private userService: UserService){}
 
     finishedJobs: Array<Job> = [];
+    activeMaintenance: Array<Maintenance> = [];
     user: User = new User();
     errorMsg: string = "";
     selectedStartDateTimes: { [key: string]: string } = {}
@@ -32,6 +37,23 @@ export class MaintenanceComponent {
       catch (error: any) {
         this.errorMsg = error.error;
       }
+      try {
+        this.activeMaintenance = await firstValueFrom(this.maintenanceService.getByUserIdAndJobStatusId(this.user.userId, JobStatus.Pending)) as Array<Maintenance>;
+        console.log(this.activeMaintenance);
+      }
+      catch (error: any) { }
+      try {
+        const jobs = await firstValueFrom(this.maintenanceService.getByUserIdAndJobStatusId(this.user.userId, JobStatus.Accepted)) as Array<Maintenance>;
+        this.activeMaintenance = this.activeMaintenance.concat(jobs);
+        console.log(jobs);
+      }
+      catch (error: any) { }
+      try {
+        const jobs = await firstValueFrom(this.maintenanceService.getByUserIdAndJobStatusId(this.user.userId, JobStatus.InProgress)) as Array<Maintenance>;
+        this.activeMaintenance = this.activeMaintenance.concat(jobs);
+        console.log(jobs);
+      }
+      catch (error: any) { }
     }
 
     async create(job: Job){

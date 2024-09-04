@@ -10,6 +10,7 @@ import dreamgarden.entities.Worker;
 import dreamgarden.repositories.CompanyHolidayRepository;
 import dreamgarden.repositories.CompanyRepository;
 import dreamgarden.repositories.JobRepository;
+import dreamgarden.repositories.JobStatusRepository;
 import dreamgarden.repositories.MaintenanceRepository;
 import dreamgarden.repositories.UserRepository;
 import dreamgarden.repositories.WorkerRepository;
@@ -53,6 +54,9 @@ public class MaintenanceController {
     @Autowired
     private CompanyHolidayRepository companyHolidayRepository;
     
+    @Autowired
+    private JobStatusRepository jobStatusRepository;
+    
     
     @GetMapping("/getPendingByCompanyId")
     public ResponseEntity<?> getPendingByCompanyId(@RequestParam(name = "companyId", required = true) Integer companyId) {
@@ -64,6 +68,39 @@ public class MaintenanceController {
         if (maintenances.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No pending maintenance for company: " + company.get());
         }
+        return ResponseEntity.status(HttpStatus.OK).body(maintenances);
+    }
+    
+    @GetMapping("/getByStatusAndCompanyId")
+    public ResponseEntity<?> getByStatusAndCompanyId(@RequestParam(name = "companyId", required = true) Integer companyId,
+                                                     @RequestParam(name = "jobStatusId", required = true) Integer jobStatusId) {
+        Optional<Company> company = companyRepository.findById(companyId);
+        if (company.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Ne postoji kompanija za ID " + companyId);
+        }
+        Optional<JobStatus> jobStatus = jobStatusRepository.findById(jobStatusId);
+        if (jobStatus.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Ne postoji status za ID " + jobStatusId);
+        }
+        List<Maintenance> maintenances = maintenanceRepository.findByCompanyIdAndJobStatusId(company.get().getCompanyId(), jobStatus.get().getJobStatusId());
+        if (maintenances.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No pending maintenance for company: " + company.get());
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(maintenances);
+    }
+    
+    @GetMapping("getByUserIdAndJobStatusId")
+    public ResponseEntity<?> getByUserIdAndJobStatusId(@RequestParam(name = "userId", required = true) Integer userId,
+                                                     @RequestParam(name = "jobStatusId", required = true) Integer jobStatusId){
+        Optional<JobStatus> jobStatus = jobStatusRepository.findById(jobStatusId);
+        if (jobStatus.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Ne postoji status za ID " + jobStatusId);
+        }
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Ne postoji korisnik za ID " + userId);
+        }
+        List<Maintenance> maintenances = maintenanceRepository.findByUserIdAndStatusId(userId, jobStatusId);
         return ResponseEntity.status(HttpStatus.OK).body(maintenances);
     }
 
@@ -86,7 +123,7 @@ public class MaintenanceController {
         }
         Date lastDate = job.getEndDateTime();
         for (Maintenance m: maintenances) {
-            if (m.getEstimatedEndDateTime().after(lastDate))
+            if (m.getEstimatedEndDateTime()!=null && m.getEstimatedEndDateTime().after(lastDate))
                 lastDate = m.getEstimatedEndDateTime();
         }
         return lastDate;
@@ -226,16 +263,6 @@ public class MaintenanceController {
         Optional<Maintenance> maintainance = maintenanceRepository.findById(maintainanceId);
         if (maintainance.isEmpty()){
              return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Maintenance not found for ID " + maintainanceId);
-        }
-        Optional<User> userWorker = userRepository.findById(maintainance.get().getWorkerId().getUserId());
-        if (userWorker.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Worker not found for userID " + maintainance.get().getWorkerId().getUserId());
-        }
-        if (userWorker.get().getUserTypeId().getUserTypeId() != 2) {
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Provided user must be a decorator. Provided: " + userWorker.get().getUserTypeId().getName());
-        }
-        if (userWorker.get().getUserStatusId().getUserStatusId() != 2) {
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Provided user must be a active. Provided: " + userWorker.get().getUserStatusId().getStatus());
         }
         maintainance.get().setJobStatusId(new JobStatus(2));
         Maintenance savedMaintenance = maintenanceRepository.saveAndFlush(maintainance.get());

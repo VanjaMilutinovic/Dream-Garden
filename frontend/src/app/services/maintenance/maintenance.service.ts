@@ -16,6 +16,16 @@ export class MaintenanceService {
     return this.http.get<any>(this.path+"getPendingByCompanyId"+params);
   }
 
+  getByStatusAndCompanyId(companyId: number, status: number){
+    let params = "?companyId="+companyId+"&jobStatusId="+status
+    return this.http.get<any>(this.path+"getByStatusAndCompanyId"+params);
+  }
+
+  getByUserIdAndJobStatusId(userId: number, jobStatusId: number){ 
+    let params = "?userId="+userId+"&jobStatusId="+jobStatusId
+    return this.http.get<any>(this.path+"getByUserIdAndJobStatusId"+params);
+  }
+
   findById(id: number){
     let params = "?maintainanceId="+id
     return this.http.get<any>(this.path+"findById"+params);
@@ -30,12 +40,12 @@ export class MaintenanceService {
     return this.http.post<any>(this.path+"create", data);
   }
 
-  estimateEndDate(maintainanceId: number){
-    let params = "?maintainanceId="+maintainanceId
-    return this.http.post<any>(this.path+"estimateEndDate"+params, null);
+  estimateEndDate(data: any){
+    return this.http.post<any>(this.path+"estimateEndDate", data);
   }
 
-  reject(data: any){
-    return this.http.post<any>(this.path+"reject", data);
+  reject(maintainanceId: number){
+    let params = "?maintainanceId="+maintainanceId
+    return this.http.post<any>(this.path+"reject"+params, null);
   }
 }

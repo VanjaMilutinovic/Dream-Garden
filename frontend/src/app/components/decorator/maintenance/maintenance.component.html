@@ -1,1 +1,27 @@
-<p>maintenance works!</p>
+
+<div class="container mb-5">
+    <h2>Neobrađena Održavanja</h2>
+    <p class="error-message" *ngIf="pendingJobs.length==0">Nema Neobrađenih Održavanja</p>
+    <p class="error-message">{{ errorMsg }}</p>
+    <table class="table table-striped" *ngIf="pendingJobs.length>0">
+        <thead>
+        <tr>
+            <th>Datum Zakazivanja</th>
+            <th>Datum Početka</th>
+            <th>Opcije</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let m of pendingJobs">
+                <td>{{ m.requestDateTime | date:"dd.MM.yyyy hh:mm a" }}</td>
+                <td>{{ m.startDateTime | date:"dd.MM.yyyy hh:mm a" }}</td>
+                <td >
+                    <input type="datetime-local" appearance="fill" [(ngModel)]="m.estimatedEndDateTime">
+                    <button class="btn btn-primary" style="margin: 5px;" (click)="accept(m)">Prihvati</button>
+                    <button class="btn btn-secondary" (click)="reject(m)">Odbij</button>
+                </td>
+                <td *ngIf="user.userStatusId.userStatusId!=2"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -1,5 +1,5 @@
 <div class="container mb-5">
-    <h2>Završeni poslovi</h2>
+    <h2>Završeni Poslovi</h2>
     <p class="error-message" *ngIf="finishedJobs.length==0">Nema Završenih Poslova</p>
     <p class="error-message">{{ errorMsg }}</p>
     <table class="table table-striped" *ngIf="finishedJobs.length>0">
@@ -25,6 +25,33 @@
                     <button class="btn btn-primary" (click)="create(job)">Zakaži održavanje</button>
                 </td>
                 <td *ngIf="job.lastLessThanSixMonths"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="container mb-5">
+    <h2>Aktivna Održavanja</h2>
+    <p class="error-message" *ngIf="activeMaintenance.length==0">Nema Aktivnih Održavanja</p>
+    <p class="error-message">{{ errorMsg }}</p>
+    <table class="table table-striped" *ngIf="activeMaintenance.length>0">
+        <thead>
+        <tr>
+            <th>Datum Zakazivanja</th>
+            <th>Datum Početka</th>
+            <th>Datum Završetka</th>
+            <th>Status</th>
+            <th>Radnik</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let m of activeMaintenance">
+                <td>{{ m.requestDateTime | date:'dd-MM-yyyy hh:mm a' }}</td>
+                <td>{{ m.startDateTime | date:'dd-MM-yyyy hh:mm a' }}</td>
+                <td>{{ m.estimatedEndDateTime | date:'dd-MM-yyyy hh:mm a' }}</td>
+                <td>{{ m.jobStatusId.status }}</td>
+                <td *ngIf="m.workerId">{{ m.workerId.name }} {{ m.workerId.lastname }}</td>
+                <td *ngIf="!m.workerId"></td>
             </tr>
         </tbody>
     </table>

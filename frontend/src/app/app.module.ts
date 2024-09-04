@@ -21,6 +21,7 @@ import { CompaniesComponent as OwnerCompaniesComponent} from './components/owner
 import { JobComponent } from './components/owner/job/job.component';
 import { JobComponent as DecoratorJobComponent } from './components/decorator/job/job.component';
 import { MaintenanceComponent } from './components/owner/maintenance/maintenance.component';
+import { MaintenanceComponent as DecoratorMaintenanceComponent } from './components/decorator/maintenance/maintenance.component';
 import { StatisticComponent } from './components/decorator/statistic/statistic.component';
 import { UsersComponent } from './components/admin/users/users.component';
 import { CreateWorkerComponent } from './components/admin/create-worker/create-worker.component';
@@ -57,6 +58,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     CompanyViewComponent,
     DecoratorProfileComponent,
     CanvasComponent,
+    DecoratorMaintenanceComponent
   ],
   imports: [
     BrowserModule,

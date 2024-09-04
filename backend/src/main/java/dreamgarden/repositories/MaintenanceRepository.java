@@ -16,12 +16,21 @@ import org.springframework.stereotype.Repository;
 public interface MaintenanceRepository extends JpaRepository<Maintenance, Integer> {
 
     List<Maintenance> findByJobId(Job jobId);
+    
     @Query(value = """
         SELECT m.*
         FROM maintenance m 
-        	JOIN job j ON m.job_id = j.job_id
+            JOIN job j ON m.job_id = j.job_id
+        WHERE j.user_id = :userId
+            AND m.job_status_id = :jobStatusId""", nativeQuery = true)
+    List<Maintenance> findByUserIdAndStatusId(@Param("userId") Integer userId, @Param("jobStatusId") Integer jobStatusId);
+    
+    @Query(value = """
+        SELECT m.*
+        FROM maintenance m 
+            JOIN job j ON m.job_id = j.job_id
         WHERE j.company_id = :companyId
-        	AND m.job_status_id = :jobStatusId""", nativeQuery = true)
+            AND m.job_status_id = :jobStatusId""", nativeQuery = true)
     List<Maintenance> findByCompanyIdAndJobStatusId(@Param("companyId") Integer companyId, @Param("jobStatusId") Integer jobStatusId);
     
     @Query(value = """
